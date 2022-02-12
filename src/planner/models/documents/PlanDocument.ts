@@ -4,6 +4,7 @@ import { UserDocument } from "./UserDocument";
 
 export interface PlanDocument {
   id: string;
+  owner: UserDocument;
   title: string;
   description?: string;
   location: string;

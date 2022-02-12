@@ -1,6 +1,7 @@
 import { PlanRepository } from "../../models/PlanRepository";
 import { Plan } from "../../models/Plan";
 import { Identifier } from "../../models/Identifier";
+import { Category } from "../../types/Category";
 
 export class InMemoryPlanRepository implements PlanRepository {
   private map: Map<string, Plan>;
@@ -11,7 +12,7 @@ export class InMemoryPlanRepository implements PlanRepository {
 
   public create(plan: Plan): void {
     this.map.set(plan.getId().toString(), plan);
-    console.log("Plan created!! ", plan.getId());
+    console.log("Plan created!! ", plan.getId().toString());
   }
 
   public find(id: Identifier): Plan | null {
@@ -22,9 +23,19 @@ export class InMemoryPlanRepository implements PlanRepository {
     return plan;
   }
 
-  public findMany(): Plan[] {
+  public findAll(): Plan[] {
     const plans = new Array<Plan>();
     this.map.forEach((plan) => plans.push(plan));
+    return plans;
+  }
+
+  public findByCategory(category: Category): Plan[] {
+    const plans = new Array<Plan>();
+    this.map.forEach((plan) => {
+      if (plan.hasCategory(category)) {
+        plans.push(plan);
+      }
+    });
     return plans;
   }
 

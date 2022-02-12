@@ -16,7 +16,7 @@
     "typeRoots": ["node_modules/@types"],
     "noStrictGenericChecks": true
   },
-  "files": ["src/planner/index.ts"],
+  "files": ["src/planner/apps/index.ts"],
   "exclude": ["node_modules", "dist"],
   "include": ["test/**/*.test.ts", "src/**/*.ts", "scripts/**/*.ts"]
 }

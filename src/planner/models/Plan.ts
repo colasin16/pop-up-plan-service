@@ -7,6 +7,7 @@ import { User } from "./User";
 
 export class Plan {
   private id: Identifier;
+  private owner: User;
   private title: string;
   private location: string;
   private time: number;
@@ -24,6 +25,7 @@ export class Plan {
       document.category,
       document.description
     );
+    plan.setOwner(User.deserialize(document.owner));
     plan.id = new Identifier(new ObjectId(document.id));
     plan.atendees = document.atendees.map((atendee) =>
       User.deserialize(atendee)
@@ -53,6 +55,14 @@ export class Plan {
     return this.id;
   }
 
+  public setOwner(user: User) {
+    this.owner = user;
+  }
+
+  public hasCategory(category: Category) {
+    return category.equals(this.category);
+  }
+
   public addAtendees(atendees: User[]) {
     this.atendees.push(...atendees);
   }
@@ -60,6 +70,7 @@ export class Plan {
   public serialize(): PlanDocument {
     return {
       id: this.id.toString(),
+      owner: this.owner.serialize(),
       title: this.title,
       description: this.description,
       location: this.location,

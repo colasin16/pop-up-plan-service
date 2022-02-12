@@ -3,6 +3,7 @@ import { User } from "../models/User";
 import { Category } from "../types/Category";
 import { Privacy } from "../types/Privacy";
 import { PlanRepository } from "../models/PlanRepository";
+import { Identifier } from "../models/Identifier";
 
 export interface CreatePlanMessage {
   owner: string;
@@ -24,7 +25,7 @@ export class CreatePlanView {
     this.planRepository = planRepository;
   }
 
-  public interact(message: CreatePlanMessage): void {
+  public interact(message: CreatePlanMessage): Identifier {
     const plan = new Plan(
       message.title,
       message.location,
@@ -33,6 +34,8 @@ export class CreatePlanView {
       new Category(message.category).value,
       message.description
     );
+    plan.setOwner(new User(message.owner));
     this.planRepository.create(plan);
+    return plan.getId();
   }
 }
