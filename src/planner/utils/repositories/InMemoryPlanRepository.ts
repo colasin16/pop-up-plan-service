@@ -11,6 +11,7 @@ export class InMemoryPlanRepository implements PlanRepository {
 
   public create(plan: Plan): void {
     this.map.set(plan.getId().toString(), plan);
+    console.log("Plan created!! ", plan.getId());
   }
 
   public find(id: Identifier): Plan | null {

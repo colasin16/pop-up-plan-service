@@ -7,6 +7,7 @@ import { PlanCreatorRepository } from "../domain/plan-creator-repository";
 
 export class PlanCreatorPrivilegedRepository implements PlanCreatorRepository {
   private userView: UserView;
+  private host: "localhost";
 
   constructor() {
     this.userView = new UserView();

@@ -8,7 +8,7 @@ export class Planner {
   constructor() {
     console.log("Planner initialized");
     const user = new User(); // just a fake
-    this.userView = new UserView(user);
+    this.userView = new UserView();
   }
 
   public async justATest() {
