@@ -1,0 +1,18 @@
+@startuml
+
+left to right direction
+
+actor Moñito
+
+usecase seeplans as "see plans"
+usecase createplan as "create plan"
+usecase joinplan as "join plan"
+usecase showplan as "show plan"
+
+Moñito --> createplan
+Moñito --> joinplan
+Moñito --> seeplans
+joinplan ..> showplan : "includes"
+seeplans ..> showplan : "includes"
+
+@enduml
