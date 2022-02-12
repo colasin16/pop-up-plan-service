@@ -1,0 +1,92 @@
+@startuml
+
+namespace views {
+  class UserView {}
+  class RegisterView {}
+  class LoginView {}
+  class LookupView {}
+  class LikeView {}
+  class MatchView {}
+  ' class DismissView {}
+  class ErrorView {}
+  class UserProfileView {}
+
+  enum Message {}
+
+  UserView *-- LookupView
+  UserView *-- LikeView
+  ' UserView *-- DismissView
+  UserView *-- RegisterView
+  UserView *-- LoginView
+
+  RegisterView ..> ErrorView
+  RegisterView ..> Message
+
+  LoginView ..> Message
+  LoginView ..> ErrorView
+
+  LookupView ..> UserProfileView
+  LookupView ..> Message
+
+  LikeView ..> UserProfileView
+  LikeView ..> MatchView
+  LikeView ..> Message
+
+}
+
+' namespace controllers {
+'   abstract Controller
+'   class RegisterController {}
+'   class LoginController {}
+'   class LookupController {}
+'   class LikeController {}
+'   class MatchController {}
+
+'   RegisterController -up-|> Controller
+'   LoginController -up-|> Controller
+'   LookupController -up-|> Controller
+'   LikeController -up-|> Controller
+'   LikeController *-- MatchController
+' }
+
+namespace models {
+  class User {
+    + likes(user: User)
+  }
+  class Profile {}
+  class UserList {
+    - owner: User
+    - actions: Action[]
+    + addLike(user: User)
+  }
+  class Action {
+    - from: User
+    - to: User
+  }
+  class Like extends Action {
+
+  }
+  ' class Dismiss {}
+  class Match {}
+
+  User *-- Profile
+  User *-- UserList
+  UserList o-- Action
+
+  Like --> "2" User
+  Match --> "2" Like
+
+  ' User *-- Profile
+  ' ActionList *-- User
+  ' ActionList o-- "N" Action
+  ' Like -up-|> Action
+  ' Match o-- "2" User
+  ' Match --> "2" Like
+
+
+}
+
+namespace types {
+  enum Error {}
+}
+@enduml
