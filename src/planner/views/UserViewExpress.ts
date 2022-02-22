@@ -1,9 +1,8 @@
+import { Request, Response } from "express";
 import { User } from "../models/User";
 import { CreatePlanMessage, CreatePlanView } from "./CreatePlanView";
 import { FindPlanView } from "./FindPlanView";
 import { InMemoryPlanRepository } from "../utils/repositories/InMemoryPlanRepository";
-import { PlanDocument } from "../models/documents/PlanDocument";
-import { Request, Response } from "express";
 import {
   FindPlanByCategoryMessage,
   FindPlanByCategoryView,
@@ -27,7 +26,6 @@ export class UserViewExpress {
   }
 
   public createPlan(req: Request, res: Response): void {
-    console.log("create plan called", req.body);
     const message: CreatePlanMessage = {
       owner: req.body.owner.id,
       title: req.body.title,
@@ -45,28 +43,25 @@ export class UserViewExpress {
       res.status(500).send({ message: "internal-error" });
     }
   }
-  //prettier-ignore
+
   public findAll(req: Request, res: Response): void {
     try {
       const plans = this.findPlanView.interact();
-      res
-        .status(200)
-        .send({
-          success: true,
-          plans: plans.map(
-            (plan) => {
-              return {
-                ...plan.serialize(),
-                owner: {
-                  id: plan.serialize().owner.id,
-                  name: {
-                    firstName: "Deivasss", lastName: "Cuellaar"
-                  }
-                }
-              }
-            }
-          ),
-        });
+      res.status(200).send({
+        success: true,
+        plans: plans.map((plan) => {
+          return {
+            ...plan.serialize(),
+            owner: {
+              id: plan.serialize().owner.id,
+              name: {
+                firstName: "Deivasss",
+                lastName: "Cuellaar",
+              },
+            },
+          };
+        }),
+      });
     } catch (e) {
       console.error(e);
       res.status(500).send({ message: "internal-error" });

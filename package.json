@@ -1,11 +1,12 @@
 {
-  "name": "PlannerPopUpBE",
+  "name": "planner-pop-up-backend",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
     "build:only": "tsc -p tsconfig.json --pretty",
-    "start": "ts-node dist/src/planner/apps/index.js"
+    "start": "ts-node dist/src/planner/apps/index.js",
+    "test": "NODE_ENV=test mocha"
   },
   "dependencies": {
     "express": "^4.17.2",
