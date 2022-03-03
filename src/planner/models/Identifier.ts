@@ -1,9 +1,9 @@
 import { ObjectID } from "bson";
 
 export class Identifier {
-  private readonly _value: ObjectID;
+  private readonly _value: ObjectID | string;
 
-  constructor(id?: ObjectID) {
+  constructor(id?: ObjectID | string) {
     this._value = id || new ObjectID();
   }
 
@@ -12,6 +12,6 @@ export class Identifier {
   }
 
   public toString(): string {
-    return this._value.toHexString();
+    return typeof this._value === "string" ? this._value : this._value.toHexString();
   }
 }

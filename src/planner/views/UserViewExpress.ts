@@ -7,12 +7,14 @@ import {
   FindPlanByCategoryMessage,
   FindPlanByCategoryView,
 } from "./FindPlanByCategoryView";
+import { FindPlanByIdMessage, FindPlanByIdView } from "./findPlanByIdView";
 
 export class UserViewExpress {
   private user: User;
   private createPlanView: CreatePlanView;
   private findPlanView: FindPlanView;
   private findPlanByCategoryView: FindPlanByCategoryView;
+  private FindPlanByIdView: FindPlanByIdView;
 
   constructor() {
     this.user = new User();
@@ -20,6 +22,10 @@ export class UserViewExpress {
     this.createPlanView = new CreatePlanView(this.user, planRepository);
     this.findPlanView = new FindPlanView(this.user, planRepository);
     this.findPlanByCategoryView = new FindPlanByCategoryView(
+      this.user,
+      planRepository
+    );
+    this.FindPlanByIdView = new FindPlanByIdView(
       this.user,
       planRepository
     );
@@ -89,6 +95,36 @@ export class UserViewExpress {
             },
           };
         }),
+      });
+    } catch (e) {
+      console.error(e);
+      res.status(500).send({ message: "internal-error" });
+    }
+  }
+
+  public find(req: Request, res: Response): void {
+    const message: FindPlanByIdMessage = {
+      id: req.params.id,
+    };
+    try {
+      const plan = this.FindPlanByIdView.interact(message);
+
+      if (!plan) {
+        res.status(404).send("Not found")
+        return 
+      }
+      res.status(200).send({
+        success: true,
+        plan: {
+            ...plan.serialize(),
+            owner: {
+              id: plan.serialize().owner.id,
+              name: {
+                firstName: "Deivasss",
+                lastName: "Cuellaar",
+              },
+            },
+          }
       });
     } catch (e) {
       console.error(e);

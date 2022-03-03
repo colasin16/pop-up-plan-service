@@ -21,9 +21,17 @@ export class PlannerExpress {
     this.app.get("/plans", (req: Request, res: Response) =>
       this.view.findAll(req, res)
     );
+
+    // TODO: Support query parameters -> https://stackabuse.com/get-query-strings-and-parameters-in-express-js/
+    // e.g, GET /plans/id=62212a4479c1c54757a32283&category=RUN
+    this.app.get("/plans/id/:id", (req: Request, res: Response) =>
+      this.view.find(req, res)
+    );
+
     this.app.get("/plans/:category", (req: Request, res: Response) =>
       this.view.findByCategory(req, res)
     );
+
     this.app.post("/plan", (req: Request, res: Response) =>
       this.view.createPlan(req, res)
     );
