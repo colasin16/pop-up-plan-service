@@ -23,7 +23,7 @@ export class PlannerExpress {
     );
 
     // TODO: Support query parameters -> https://stackabuse.com/get-query-strings-and-parameters-in-express-js/
-    // e.g, GET /plans/id=62212a4479c1c54757a32283&category=RUN
+    // e.g, GET /plans/?id=62212a4479c1c54757a32283&category=RUN
     this.app.get("/plans/id/:id", (req: Request, res: Response) =>
       this.view.find(req, res)
     );
