@@ -102,7 +102,7 @@ export class UserViewExpress {
     }
   }
 
-  public find(req: Request, res: Response): void {
+  public findById(req: Request, res: Response): void {
     const message: FindPlanByIdMessage = {
       id: req.params.id,
     };
