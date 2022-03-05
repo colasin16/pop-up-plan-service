@@ -26,7 +26,6 @@ export class UserViewExpress {
       planRepository
     );
     this.FindPlanByIdView = new FindPlanByIdView(
-      this.user,
       planRepository
     );
   }

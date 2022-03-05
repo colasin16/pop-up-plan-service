@@ -1,4 +1,3 @@
-import { User } from "../models/User";
 import { PlanRepository } from "../models/PlanRepository";
 import { Identifier } from "../models/Identifier";
 import { Plan } from "../models/Plan";
