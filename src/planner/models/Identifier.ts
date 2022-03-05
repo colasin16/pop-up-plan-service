@@ -3,7 +3,7 @@ import { ObjectID } from "bson";
 export class Identifier {
   private readonly _value: ObjectID;
 
-  constructor(id?: ObjectID | string) {
+  constructor(id?: ObjectID) {
     this._value = id || new ObjectID();
   }
 
