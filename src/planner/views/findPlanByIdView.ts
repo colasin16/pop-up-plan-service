@@ -10,11 +10,9 @@ export interface FindPlanByIdMessage {
 
 // esta vista... jejejeje
 export class FindPlanByIdView {
-  private user: User;
   private planRepository: PlanRepository;
 
-  constructor(user: User, planRepository: PlanRepository) {
-    this.user = user;
+  constructor(planRepository: PlanRepository) {
     this.planRepository = planRepository;
   }
 

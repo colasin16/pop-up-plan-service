@@ -117,6 +117,8 @@ export class UserViewExpress {
         success: true,
         plan: {
             ...plan.serialize(),
+            // TODO: The reason behind this is we don't have coded anything related with plan owners.
+            // Once everything with plans is working kind of properly we can introduce the owner concept/idea and fix this
             owner: {
               id: plan.serialize().owner.id,
               name: {
