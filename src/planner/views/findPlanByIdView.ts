@@ -19,7 +19,7 @@ export class FindPlanByIdView {
 
   public interact(message: FindPlanByIdMessage): Plan | null {
     const plan = this.planRepository.find(
-      new Identifier(message.id)
+      new Identifier(new ObjectId(message.id));
     );
     return plan;
   }
