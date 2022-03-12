@@ -7,7 +7,6 @@ export interface FindPlanByIdMessage {
   id: string;
 }
 
-// esta vista... jejejeje
 export class FindPlanByIdView {
   private planRepository: PlanRepository;
 
