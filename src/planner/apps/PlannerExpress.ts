@@ -18,6 +18,7 @@ export class PlannerExpress {
 
   public setup(): PlannerExpress {
     this.app.use(bodyParser.json());
+    // TODO: It would be better if we add trailing slash for all API urls
     this.app.get("/plans", (req: Request, res: Response) =>
       this.view.findAll(req, res)
     );
