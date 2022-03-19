@@ -5,7 +5,7 @@ services:
     container_name: mongo
     image: mongo
     volumes:
-      - ./db:/data/db
+      - /var/planner/db:/data/db
   app:
     build:
       context: .
