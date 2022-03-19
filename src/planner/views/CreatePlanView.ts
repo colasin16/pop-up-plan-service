@@ -20,7 +20,7 @@ export class CreatePlanView {
   private user: User;
   private planRepository: PlanRepository;
 
-  constructor (user: User, planRepository: PlanRepository) {
+  constructor(user: User, planRepository: PlanRepository) {
     this.user = user;
     this.planRepository = planRepository;
   }
