@@ -6,7 +6,8 @@
   "scripts": {
     "build:only": "tsc -p tsconfig.json --pretty",
     "start": "ts-node dist/src/planner/apps/index.js",
-    "test": "NODE_ENV=test mocha"
+    "test": "NODE_ENV=test mocha",
+    "start:dev": "nodemon src/planner/index.ts"
   },
   "dependencies": {
     "express": "^4.17.2",
@@ -21,6 +22,7 @@
     "@types/sinon": "9.0.0",
     "chai": "4.2.0",
     "mocha": "7.1.2",
+    "nodemon": "^2.0.15",
     "sinon": "9.0.2"
   }
 }

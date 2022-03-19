@@ -1,0 +1,23 @@
+version: "3.7"
+
+services:
+  mongo:
+    container_name: mongo
+    image: mongo
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    container_name: app
+    external_links:
+      - mongo
+    depends_on:
+      - mongo
+    # Docker container has access to the following environment variables
+    environment:
+      SERVER_PORT: ${SERVER_PORT}
+    expose:
+      - "${SERVER_PORT}" #Publishes ${SERVER_PORT} to other containers but NOT to host machine
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}" # it maps a port on our machine to the docker container

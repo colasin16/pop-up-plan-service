@@ -12,7 +12,7 @@ export class PlannerExpress {
 
   constructor() {
     this.app = express();
-    this.port = 8080;
+    this.port = Number(process.env.SERVER_PORT)??8080;
     this.view = new UserViewExpress();
   }
 
