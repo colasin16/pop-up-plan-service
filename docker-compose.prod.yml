@@ -11,4 +11,4 @@ services:
     # it will be started automatically
     restart: always 
     
-    command: npm run start
+    command: yarn start

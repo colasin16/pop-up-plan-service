@@ -9,4 +9,4 @@ services:
     volumes:
       - ./src:/home/node/app/src
       - ./nodemon.json:/home/node/app/nodemon.json
-    command: npm run start:dev
+    command: yarn run start:dev

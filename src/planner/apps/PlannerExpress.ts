@@ -4,6 +4,8 @@ import { Request, Response } from "express";
 import * as bodyParser from "body-parser";
 import { UserViewExpress } from "../views/UserViewExpress";
 
+const SERVER_PORT = Number(process.env.SERVER_PORT)
+
 // TODO: deberia ser una implementacion de una abstracta pura (interface) HttpServer o se podria montar jerarquia de API pero hacer los contratos
 export class PlannerExpress {
   private app: Express;
@@ -12,7 +14,7 @@ export class PlannerExpress {
 
   constructor() {
     this.app = express();
-    this.port = Number(process.env.SERVER_PORT)??8080;
+    this.port = SERVER_PORT||8080;
     this.view = new UserViewExpress();
   }
 
