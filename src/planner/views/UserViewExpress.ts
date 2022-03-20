@@ -7,12 +7,16 @@ import {
   FindPlanByCategoryMessage,
   FindPlanByCategoryView,
 } from "./FindPlanByCategoryView";
+import { FindPlanByIdMessage, FindPlanByIdView } from "./findPlanByIdView";
 
+// I don't understand, why here we have UserViewExpress which contains all other views?
+// All the future views will be included in `UserViewExpress` later?
 export class UserViewExpress {
   private user: User;
   private createPlanView: CreatePlanView;
   private findPlanView: FindPlanView;
   private findPlanByCategoryView: FindPlanByCategoryView;
+  private FindPlanByIdView: FindPlanByIdView;
 
   constructor() {
     this.user = new User();
@@ -21,6 +25,9 @@ export class UserViewExpress {
     this.findPlanView = new FindPlanView(this.user, planRepository);
     this.findPlanByCategoryView = new FindPlanByCategoryView(
       this.user,
+      planRepository
+    );
+    this.FindPlanByIdView = new FindPlanByIdView(
       planRepository
     );
   }
@@ -89,6 +96,38 @@ export class UserViewExpress {
             },
           };
         }),
+      });
+    } catch (e) {
+      console.error(e);
+      res.status(500).send({ message: "internal-error" });
+    }
+  }
+
+  public findById(req: Request, res: Response): void {
+    const message: FindPlanByIdMessage = {
+      id: req.params.id,
+    };
+    try {
+      const plan = this.FindPlanByIdView.interact(message);
+
+      if (!plan) {
+        res.status(404).send("Not found")
+        return 
+      }
+      res.status(200).send({
+        success: true,
+        plan: {
+            ...plan.serialize(),
+            // TODO: The reason behind this is we don't have coded anything related with plan owners.
+            // Once everything with plans is working kind of properly we can introduce the owner concept/idea and fix this
+            owner: {
+              id: plan.serialize().owner.id,
+              name: {
+                firstName: "Deivasss",
+                lastName: "Cuellaar",
+              },
+            },
+          }
       });
     } catch (e) {
       console.error(e);

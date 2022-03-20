@@ -1,7 +1,5 @@
 import { User } from "../models/User";
 import { PlanRepository } from "../models/PlanRepository";
-import { ObjectId } from "bson";
-import { Identifier } from "../models/Identifier";
 import { Plan } from "../models/Plan";
 import { Category } from "../types/Category";
 

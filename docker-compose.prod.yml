@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      target: production
+    env_file:
+      - .env.prod
+
+    # It is best practice, sometimes that docker crashes, 
+    # it will be started automatically
+    restart: always 
+    
+    command: yarn start
