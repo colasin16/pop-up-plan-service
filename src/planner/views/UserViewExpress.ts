@@ -9,6 +9,8 @@ import {
 } from "./FindPlanByCategoryView";
 import { FindPlanByIdMessage, FindPlanByIdView } from "./findPlanByIdView";
 
+// I don't understand, why here we have UserViewExpress which contains all other views?
+// All the future views will be included in `UserViewExpress` later?
 export class UserViewExpress {
   private user: User;
   private createPlanView: CreatePlanView;
