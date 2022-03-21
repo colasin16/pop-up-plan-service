@@ -1,8 +1,9 @@
 import { Identifier } from "./Identifier";
 import { Plan } from "./Plan";
 import { Category } from "../types/Category";
+import { IRepository } from "./IRespository";
 
-export interface PlanRepository {
+export interface PlanRepository extends IRepository{
   create(plan: Plan): void;
   find(id: Identifier): Plan | null;
   findAll(): Plan[];
