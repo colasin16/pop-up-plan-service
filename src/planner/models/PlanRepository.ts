@@ -8,6 +8,7 @@ export interface PlanRepository {
   findAll(): Plan[];
   // README: que no se haga la lista muy grande de findByNske findByNscuantos findBySkibidi... [igual que en el UserViewExpress!!]
   findByCategory(category: Category): Plan[];
+  findByOwner(ownerId: Identifier): Plan[];
   update(plan: Plan): void;
   delete(id: Identifier): void;
 }

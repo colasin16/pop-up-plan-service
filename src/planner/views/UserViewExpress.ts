@@ -8,6 +8,10 @@ import {
   FindPlanByCategoryView,
 } from "./FindPlanByCategoryView";
 import { FindPlanByIdMessage, FindPlanByIdView } from "./findPlanByIdView";
+import {
+  FindPlanByOwnerMessage,
+  FindPlanByOwnerView,
+} from "./findPlanByOwnerView";
 
 // I don't understand, why here we have UserViewExpress which contains all other views?
 // All the future views will be included in `UserViewExpress` later?
@@ -16,7 +20,8 @@ export class UserViewExpress {
   private createPlanView: CreatePlanView;
   private findPlanView: FindPlanView;
   private findPlanByCategoryView: FindPlanByCategoryView;
-  private FindPlanByIdView: FindPlanByIdView;
+  private findPlanByIdView: FindPlanByIdView;
+  private findPlanByOwnerView: FindPlanByOwnerView;
 
   constructor() {
     this.user = new User();
@@ -27,9 +32,7 @@ export class UserViewExpress {
       this.user,
       planRepository
     );
-    this.FindPlanByIdView = new FindPlanByIdView(
-      planRepository
-    );
+    this.findPlanByIdView = new FindPlanByIdView(planRepository);
   }
 
   public createPlan(req: Request, res: Response): void {
@@ -75,6 +78,12 @@ export class UserViewExpress {
     }
   }
 
+  public findByOwner(req: Request, res: Response): void {
+    // get the ower id somehow from the API request
+    const ownerId: FindPlanByOwnerMessage = { ownerId: req.params.owner };
+    const plans = this.findPlanByOwnerView.interact(ownerId);
+  }
+
   // README: que no se haga la lista muy grande de findByNske findByNscuantos findBySkibidi... Criteria pattern si se va de las manos
   public findByCategory(req: Request, res: Response): void {
     const message: FindPlanByCategoryMessage = {
@@ -108,26 +117,26 @@ export class UserViewExpress {
       id: req.params.id,
     };
     try {
-      const plan = this.FindPlanByIdView.interact(message);
+      const plan = this.findPlanByIdView.interact(message);
 
       if (!plan) {
-        res.status(404).send("Not found")
-        return 
+        res.status(404).send("Not found");
+        return;
       }
       res.status(200).send({
         success: true,
         plan: {
-            ...plan.serialize(),
-            // TODO: The reason behind this is we don't have coded anything related with plan owners.
-            // Once everything with plans is working kind of properly we can introduce the owner concept/idea and fix this
-            owner: {
-              id: plan.serialize().owner.id,
-              name: {
-                firstName: "Deivasss",
-                lastName: "Cuellaar",
-              },
+          ...plan.serialize(),
+          // TODO: The reason behind this is we don't have coded anything related with plan owners.
+          // Once everything with plans is working kind of properly we can introduce the owner concept/idea and fix this
+          owner: {
+            id: plan.serialize().owner.id,
+            name: {
+              firstName: "Deivasss",
+              lastName: "Cuellaar",
             },
-          }
+          },
+        },
       });
     } catch (e) {
       console.error(e);
