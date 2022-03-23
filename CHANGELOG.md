@@ -2,9 +2,15 @@
 
 All changes are be kept here.
 
-## [0.3.0]
+## [0.1.0]
 
-## [0.3.0] - 2022-03-19
+## [0.1.0] - 2022-03-23
+
+### Added
+
+- Add `/plans/owner/:ownerId` endpoint.
+
+## [0.1.0] - 2022-03-19
 
 ### Added
 

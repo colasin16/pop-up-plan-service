@@ -18,6 +18,8 @@ export class FindPlanByCategoryView {
   }
 
   public interact(message: FindPlanByCategoryMessage): Plan[] {
+    console.debug(`message.category: ${message.category}`);
+
     const plans = this.planRepository.findByCategory(
       new Category(message.category)
     );

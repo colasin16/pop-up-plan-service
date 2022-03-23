@@ -63,6 +63,10 @@ export class Plan {
     return category.equals(this.category);
   }
 
+  public isOwner(ownerId: Identifier) {
+    return this.owner.getId() === ownerId;
+  }
+
   public addAtendees(atendees: User[]) {
     this.atendees.push(...atendees);
   }
