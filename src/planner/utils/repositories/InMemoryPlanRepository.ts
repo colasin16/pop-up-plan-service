@@ -39,6 +39,16 @@ export class InMemoryPlanRepository implements PlanRepository {
     return plans;
   }
 
+  public findByOwner(ownerId: Identifier): Plan[] {
+    const plans = new Array<Plan>();
+    this.map.forEach((plan) => {
+      if (plan.isOwner(ownerId)) {
+        plans.push(plan);
+      }
+    });
+    return plans;
+  }
+  
   public update(plan: Plan): void {
     this.map.set(plan.getId().toString(), plan);
   }

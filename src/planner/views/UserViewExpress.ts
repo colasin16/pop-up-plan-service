@@ -8,6 +8,11 @@ import {
   FindPlanByCategoryView,
 } from "./FindPlanByCategoryView";
 import { FindPlanByIdMessage, FindPlanByIdView } from "./findPlanByIdView";
+import {
+  FindPlanByOwnerMessage,
+  FindPlanByOwnerView,
+} from "./findPlanByOwnerView";
+import { INTERNAL_ERROR, ResponseData } from "./responses";
 
 // I don't understand, why here we have UserViewExpress which contains all other views?
 // All the future views will be included in `UserViewExpress` later?
@@ -17,6 +22,7 @@ export class UserViewExpress {
   private findPlanView: FindPlanView;
   private findPlanByCategoryView: FindPlanByCategoryView;
   private FindPlanByIdView: FindPlanByIdView;
+  private FindPlanByOwnerView: FindPlanByOwnerView;
 
   constructor() {
     this.user = new User();
@@ -27,9 +33,8 @@ export class UserViewExpress {
       this.user,
       planRepository
     );
-    this.FindPlanByIdView = new FindPlanByIdView(
-      planRepository
-    );
+    this.FindPlanByIdView = new FindPlanByIdView(planRepository);
+    this.FindPlanByOwnerView = new FindPlanByOwnerView(planRepository);
   }
 
   public createPlan(req: Request, res: Response): void {
@@ -42,12 +47,13 @@ export class UserViewExpress {
       privacy: req.body.privacy,
       capacity: req.body.capacity,
     };
+
     try {
       const planId = this.createPlanView.interact(message);
       res.status(200).send({ success: true, planId: planId.toString() });
     } catch (e) {
       console.error(e);
-      res.status(500).send({ message: "internal-error" });
+      res.status(500).send(INTERNAL_ERROR);
     }
   }
 
@@ -71,7 +77,7 @@ export class UserViewExpress {
       });
     } catch (e) {
       console.error(e);
-      res.status(500).send({ message: "internal-error" });
+      res.status(500).send(INTERNAL_ERROR);
     }
   }
 
@@ -80,6 +86,7 @@ export class UserViewExpress {
     const message: FindPlanByCategoryMessage = {
       category: req.params.category,
     };
+
     try {
       const plans = this.findPlanByCategoryView.interact(message);
       res.status(200).send({
@@ -99,27 +106,27 @@ export class UserViewExpress {
       });
     } catch (e) {
       console.error(e);
-      res.status(500).send({ message: "internal-error" });
+      res.status(500).send(INTERNAL_ERROR);
     }
   }
 
-  public findById(req: Request, res: Response): void {
-    const message: FindPlanByIdMessage = {
-      id: req.params.id,
-    };
-    try {
-      const plan = this.FindPlanByIdView.interact(message);
+  /**
+   * get the ower id somehow from the API request
+   * @param req
+   * @param res
+   */
+  public findByOwner(req: Request, res: Response): void {
+    const message: FindPlanByOwnerMessage = { ownerId: req.params.ownerId };
 
-      if (!plan) {
-        res.status(404).send("Not found")
-        return 
-      }
-      res.status(200).send({
+    try {
+      const plans = this.FindPlanByOwnerView.interact(message);
+
+      const response: ResponseData = {
         success: true,
-        plan: {
+        data: plans.map((plan) => {
+          return {
             ...plan.serialize(),
-            // TODO: The reason behind this is we don't have coded anything related with plan owners.
-            // Once everything with plans is working kind of properly we can introduce the owner concept/idea and fix this
+            // TODO: replace this with real user
             owner: {
               id: plan.serialize().owner.id,
               name: {
@@ -127,11 +134,47 @@ export class UserViewExpress {
                 lastName: "Cuellaar",
               },
             },
-          }
+          };
+        }),
+        message: "",
+      };
+      res.status(200).send(response);
+    } catch (e) {
+      console.error(e);
+      res.status(500).send(INTERNAL_ERROR);
+    }
+  }
+
+  public findById(req: Request, res: Response): void {
+    const message: FindPlanByIdMessage = {
+      id: req.params.id,
+    };
+
+    try {
+      const plan = this.FindPlanByIdView.interact(message);
+
+      if (!plan) {
+        res.status(404).send("Not found");
+        return;
+      }
+      res.status(200).send({
+        success: true,
+        plan: {
+          ...plan.serialize(),
+          // TODO: The reason behind this is we don't have coded anything related with plan owners.
+          // Once everything with plans is working kind of properly we can introduce the owner concept/idea and fix this
+          owner: {
+            id: plan.serialize().owner.id,
+            name: {
+              firstName: "Deivasss",
+              lastName: "Cuellaar",
+            },
+          },
+        },
       });
     } catch (e) {
       console.error(e);
-      res.status(500).send({ message: "internal-error" });
+      res.status(500).send(INTERNAL_ERROR);
     }
   }
 }

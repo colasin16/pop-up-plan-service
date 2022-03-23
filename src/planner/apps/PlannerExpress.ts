@@ -31,6 +31,14 @@ export class PlannerExpress {
       this.view.findById(req, res)
     );
 
+    this.app.get("/plans/owner/:ownerId", (req: Request, res: Response) =>
+      this.view.findByOwner(req, res)
+    );
+
+    // this.app.get("/plans/attendee/:id", (req: Request, res: Response) =>
+    //   this.view.findById(req, res)
+    // );
+
     this.app.get("/plans/:category", (req: Request, res: Response) =>
       this.view.findByCategory(req, res)
     );

@@ -1,8 +1,6 @@
-import { User } from "../models/User";
-import { PlanRepository } from "../models/PlanRepository";
-import { ObjectId } from "bson";
-import { Identifier } from "../models/Identifier";
 import { Plan } from "../models/Plan";
+import { PlanRepository } from "../models/PlanRepository";
+import { User } from "../models/User";
 
 export class FindPlanView {
   private user: User;
