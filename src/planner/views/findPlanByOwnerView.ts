@@ -15,7 +15,7 @@ export class FindPlanByOwnerView {
   }
 
   public interact(message: FindPlanByOwnerMessage): Plan[] {
-    const plan_id =  new Identifier(new ObjectId(message.ownerId));
+    const plan_id = new Identifier(new ObjectId(message.ownerId));
     const plan = this.planRepository.findByOwner(plan_id);
     return plan;
   }

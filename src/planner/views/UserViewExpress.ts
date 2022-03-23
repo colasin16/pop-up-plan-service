@@ -140,8 +140,11 @@ export class UserViewExpress {
       };
       res.status(200).send(response);
     } catch (e) {
-      console.error(e);
-      res.status(500).send(INTERNAL_ERROR);
+      console.error(e.toString());
+      res.status(500).send({
+        ...INTERNAL_ERROR,
+        message: INTERNAL_ERROR.message + "," + e.toString(),
+      });
     }
   }
 
