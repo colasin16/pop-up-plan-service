@@ -6,6 +6,8 @@ services:
     image: mongo
     volumes:
       - /var/planner/db:/data/db
+    ports:
+      - "27017:27017"
   app:
     build:
       context: .
