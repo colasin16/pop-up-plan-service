@@ -2,12 +2,12 @@ import { Request, Response } from "express";
 import { User } from "../models/User";
 import { CreatePlanMessage, CreatePlanView } from "./CreatePlanView";
 import { FindPlanView } from "./FindPlanView";
-import { InMemoryPlanRepository } from "../utils/repositories/InMemoryPlanRepository";
 import {
   FindPlanByCategoryMessage,
   FindPlanByCategoryView,
 } from "./FindPlanByCategoryView";
 import { FindPlanByIdMessage, FindPlanByIdView } from "./findPlanByIdView";
+import { MongoPlanRepository } from "../utils/repositories/ MongoPlanRepository";
 
 // I don't understand, why here we have UserViewExpress which contains all other views?
 // All the future views will be included in `UserViewExpress` later?
@@ -20,16 +20,17 @@ export class UserViewExpress {
 
   constructor() {
     this.user = new User();
-    const planRepository = new InMemoryPlanRepository();
+
+    // const planRepository = new InMemoryPlanRepository();
+    const planRepository = new MongoPlanRepository();
+
     this.createPlanView = new CreatePlanView(this.user, planRepository);
     this.findPlanView = new FindPlanView(this.user, planRepository);
     this.findPlanByCategoryView = new FindPlanByCategoryView(
       this.user,
       planRepository
     );
-    this.FindPlanByIdView = new FindPlanByIdView(
-      planRepository
-    );
+    this.FindPlanByIdView = new FindPlanByIdView(planRepository);
   }
 
   public createPlan(req: Request, res: Response): void {
@@ -111,23 +112,23 @@ export class UserViewExpress {
       const plan = this.FindPlanByIdView.interact(message);
 
       if (!plan) {
-        res.status(404).send("Not found")
-        return 
+        res.status(404).send("Not found");
+        return;
       }
       res.status(200).send({
         success: true,
         plan: {
-            ...plan.serialize(),
-            // TODO: The reason behind this is we don't have coded anything related with plan owners.
-            // Once everything with plans is working kind of properly we can introduce the owner concept/idea and fix this
-            owner: {
-              id: plan.serialize().owner.id,
-              name: {
-                firstName: "Deivasss",
-                lastName: "Cuellaar",
-              },
+          ...plan.serialize(),
+          // TODO: The reason behind this is we don't have coded anything related with plan owners.
+          // Once everything with plans is working kind of properly we can introduce the owner concept/idea and fix this
+          owner: {
+            id: plan.serialize().owner.id,
+            name: {
+              firstName: "Deivasss",
+              lastName: "Cuellaar",
             },
-          }
+          },
+        },
       });
     } catch (e) {
       console.error(e);

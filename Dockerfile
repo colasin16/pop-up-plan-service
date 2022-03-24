@@ -6,7 +6,8 @@ RUN yarn install && \
     yarn cache clean
 RUN useradd -m planner-user
 RUN mkdir -p /var/planner/db
-RUN chown -R planner-user:planner-user /tmp/nsg4 /var/nsg4/db
+RUN mkdir -p /tmp/planner
+RUN chown -R planner-user:planner-user /tmp/planner /var/planner/db
 COPY --chown=planner-user:planner-user . .
 
 FROM base as production
