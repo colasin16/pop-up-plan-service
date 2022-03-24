@@ -4,18 +4,13 @@ namespace views {
   class UserView {}
   class RegisterView {}
   class LoginView {}
-  class LookupView {}
-  class LikeView {}
-  class MatchView {}
-  ' class DismissView {}
+  class ProfileView {}
   class ErrorView {}
-  class UserProfileView {}
 
   enum Message {}
 
-  UserView *-- LookupView
+  UserView *-- ProfileView
   UserView *-- LikeView
-  ' UserView *-- DismissView
   UserView *-- RegisterView
   UserView *-- LoginView
 
@@ -25,11 +20,10 @@ namespace views {
   LoginView ..> Message
   LoginView ..> ErrorView
 
-  LookupView ..> UserProfileView
+  LookupView ..> ProfileView
   LookupView ..> Message
 
-  LikeView ..> UserProfileView
-  LikeView ..> MatchView
+  LikeView ..> ProfileView
   LikeView ..> Message
 
 }

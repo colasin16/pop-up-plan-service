@@ -1,0 +1,28 @@
+@startuml DomainModel
+
+object FriendInCrime
+object User
+object Profile
+object Plan
+object Owner
+object Atendees
+object Name
+object Conversation
+
+FriendInCrime --> "2..n" User
+User *--> Profile
+Profile *--> Name
+Profile --> Plan
+
+Plan --> Conversation
+
+Owner -up-|> Profile
+Atendees -up-|> Profile
+
+Plan "1" o-down-> Owner
+Owner .up.> Plan
+
+Plan "0..n" o-down-> Atendees
+Atendees ..> Plan
+
+@enduml

@@ -1,0 +1,51 @@
+@startuml FriendInCrimeContext
+
+state INITIAL
+state IN_APP
+state PROFILE
+state PLAN_SEARCH
+state PLAN_CREATION
+state PLAN
+state CHAT
+
+[*] --> INITIAL
+INITIAL --> IN_APP
+note on link
+Login
+CreateProfile
+end note
+IN_APP --> INITIAL
+note on link
+DeleteProfile
+endnote
+IN_APP --> PROFILE
+note on link
+EditProfile
+GetProfile
+endnote
+IN_APP --> PLAN_SEARCH
+note on link
+FindFriendInCrime
+endnote
+IN_APP --> PLAN_CREATION
+note on link
+FindFriendInCrime
+endnote
+PLAN_CREATION --> PLAN
+note on link
+CreatePlan
+endnote
+PLAN_SEARCH --> PLAN
+note on link
+SearchPlan
+endnote
+PLAN --> CHAT
+note on link
+JoinPlan
+endnote
+PLAN --> PROFILE
+note on link
+GetProfile
+endnote
+
+@enduml

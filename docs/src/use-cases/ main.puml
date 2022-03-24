@@ -1,0 +1,41 @@
+@startuml
+left to right direction
+
+actor User
+
+usecase Login
+
+usecase CreateProfile
+usecase EditProfile
+usecase GetProfile 
+usecase DeleteProfile 
+
+usecase FindFriendInCrime
+
+usecase CreatePlan
+usecase SearchPlan
+usecase EditPlan
+usecase DeletePlan
+usecase InviteToPlan
+usecase JoinPlan
+
+usecase Chat
+
+usecase RateUser
+
+User --> Login
+User --> CreateProfile
+User --> DeleteProfile
+User --> EditProfile
+User --> GetProfile
+User --> CreatePlan
+User --> FindFriendInCrime
+User --> SearchPlan
+User --> EditPlan
+User --> DeletePlan
+User --> InviteToPlan
+User --> JoinPlan
+User --> Chat
+User --> RateUser
+
+@enduml
