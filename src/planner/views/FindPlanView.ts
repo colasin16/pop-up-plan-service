@@ -13,9 +13,8 @@ export class FindPlanView {
     this.planRepository = planRepository;
   }
 
-  public interact(): Plan[] {
+  public interact(): Promise<Plan[]> {
     const plans = this.planRepository.findAll();
-    // @ts-expect-error
     return plans;
   }
 }

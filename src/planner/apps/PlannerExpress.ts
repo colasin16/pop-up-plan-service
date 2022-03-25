@@ -21,9 +21,9 @@ export class PlannerExpress {
   public setup(): PlannerExpress {
     this.app.use(bodyParser.json());
     // TODO: It would be better if we add trailing slash for all API urls
-    this.app.get("/plans", (req: Request, res: Response) =>
-      this.view.findAll(req, res)
-    );
+    this.app.get("/plans", (req: Request, res: Response) => {
+      this.view.findAll(req, res);
+    });
 
     // TODO: Support query parameters -> https://stackabuse.com/get-query-strings-and-parameters-in-express-js/
     // e.g, GET /plans/?id=62212a4479c1c54757a32283&category=RUN

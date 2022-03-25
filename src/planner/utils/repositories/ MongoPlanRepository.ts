@@ -110,7 +110,7 @@ export class MongoPlanRepository implements PlanRepository {
   }
 
   public async findAll(): Promise<Plan[]> {
-    // let returnPlans: any = [];
+    let returnPlans: any = [];
 
     async function run() {
       try {
@@ -119,9 +119,8 @@ export class MongoPlanRepository implements PlanRepository {
         // finds and inserts
         const plan_collection = database.collection<Plan>(PLAN_COLLECTION_NAME);
         const foundPlan = await plan_collection.find().toArray();
-        // returnPlans = foundPlan;
-        // console.log(`returnPlans: ${returnPlans[0].location}`);
-        return foundPlan;
+        returnPlans = foundPlan;
+        return returnPlans;
         // return foundPlan;
       } finally {
         // await client.close();
@@ -135,6 +134,10 @@ export class MongoPlanRepository implements PlanRepository {
     let plans: any[] = [];
 
     plans = await run();
+    console.log("*&**&**&**&*&");
+    console.log(`returnPlans*******************: ${returnPlans.length}`);
+
+    // console.log(`plans: ${plans[0].getId().toString()}`);
 
     return plans;
 

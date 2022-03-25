@@ -17,11 +17,11 @@ export class FindPlanByCategoryView {
     this.planRepository = planRepository;
   }
 
-  public interact(message: FindPlanByCategoryMessage): Plan[] {
+  public interact(message: FindPlanByCategoryMessage): Promise<Plan[]> {
     const plans = this.planRepository.findByCategory(
       new Category(message.category)
     );
-    // @ts-expect-error
+
     return plans;
   }
 }

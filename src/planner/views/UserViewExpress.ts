@@ -55,20 +55,24 @@ export class UserViewExpress {
   public findAll(req: Request, res: Response): void {
     try {
       const plans = this.findPlanView.interact();
-      res.status(200).send({
-        success: true,
-        plans: plans.map((plan) => {
-          return {
-            ...plan.serialize(),
-            owner: {
-              id: plan.serialize().owner.id,
-              name: {
-                firstName: "Deivasss",
-                lastName: "Cuellaar",
+      plans.then((items) => {
+        console.log("**************************************************");
+        res.status(200).send({
+          success: true,
+          plans: items.map((plan) => {
+            // console.log(`plan_id: ${plan.getId().toString()}`);
+            return {
+              ...plan.serialize(),
+              owner: {
+                id: plan.serialize().owner.id,
+                name: {
+                  firstName: "Deivasss",
+                  lastName: "Cuellaar",
+                },
               },
-            },
-          };
-        }),
+            };
+          }),
+        });
       });
     } catch (e) {
       console.error(e);
@@ -83,20 +87,22 @@ export class UserViewExpress {
     };
     try {
       const plans = this.findPlanByCategoryView.interact(message);
-      res.status(200).send({
-        success: true,
-        plans: plans.map((plan) => {
-          return {
-            ...plan.serialize(),
-            owner: {
-              id: plan.serialize().owner.id,
-              name: {
-                firstName: "Deivasss",
-                lastName: "Cuellaar",
+      plans.then((items) => {
+        res.status(200).send({
+          success: true,
+          plans: items.map((plan) => {
+            return {
+              ...plan.serialize(),
+              owner: {
+                id: plan.serialize().owner.id,
+                name: {
+                  firstName: "Deivasss",
+                  lastName: "Cuellaar",
+                },
               },
-            },
-          };
-        }),
+            };
+          }),
+        });
       });
     } catch (e) {
       console.error(e);
