@@ -15,6 +15,7 @@ export class FindPlanView {
 
   public interact(): Plan[] {
     const plans = this.planRepository.findAll();
+    // @ts-expect-error
     return plans;
   }
 }

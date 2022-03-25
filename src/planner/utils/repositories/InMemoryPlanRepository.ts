@@ -23,12 +23,14 @@ export class InMemoryPlanRepository implements PlanRepository {
     return plan;
   }
 
+  // @ts-expect-error
   public findAll(): Plan[] {
     const plans = new Array<Plan>();
     this.map.forEach((plan) => plans.push(plan));
     return plans;
   }
 
+  // @ts-expect-error
   public findByCategory(category: Category): Plan[] {
     const plans = new Array<Plan>();
     this.map.forEach((plan) => {

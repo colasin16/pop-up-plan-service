@@ -21,6 +21,7 @@ export class FindPlanByCategoryView {
     const plans = this.planRepository.findByCategory(
       new Category(message.category)
     );
+    // @ts-expect-error
     return plans;
   }
 }
