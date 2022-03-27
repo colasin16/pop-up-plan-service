@@ -1,4 +1,6 @@
+import { container } from "tsyringe";
 import { Request, Response } from "express";
+
 import { User } from "../models/User";
 import { CreatePlanMessage, CreatePlanView } from "./CreatePlanView";
 import { FindPlanView } from "./FindPlanView";
@@ -8,28 +10,52 @@ import {
   FindPlanByCategoryView,
 } from "./FindPlanByCategoryView";
 import { FindPlanByIdMessage, FindPlanByIdView } from "./findPlanByIdView";
+import { MongoPlanRepository } from "../utils/repositories/MongoPlanRepository";
+import { MongoDBClient } from "../apps/PlannerMongo";
+import { CreateUserMessage, CreateUserView } from "./CreateUserView";
+import { MongoUserRepository } from "../utils/repositories/MongoUserRepository";
 
 // I don't understand, why here we have UserViewExpress which contains all other views?
 // All the future views will be included in `UserViewExpress` later?
+
+// This is becoming too big, be should separate views
+// PlanView
+// --/CreatePlanView
+// --/CreateUserView
+// --/FindPlanView;
+// --/FindPlanByCategoryView;
+
+// UserView
+// --/CreateUserView;
+
 export class UserViewExpress {
   private user: User;
+
   private createPlanView: CreatePlanView;
   private findPlanView: FindPlanView;
   private findPlanByCategoryView: FindPlanByCategoryView;
-  private FindPlanByIdView: FindPlanByIdView;
+  private findPlanByIdView: FindPlanByIdView;
+
+  private createUserView: CreateUserView;
 
   constructor() {
-    this.user = new User();
+    // User doing the call
+    this.user = new User("Random");
+    const mongoDBClient = container.resolve(MongoDBClient);
     const planRepository = new InMemoryPlanRepository();
-    this.createPlanView = new CreatePlanView(this.user, planRepository);
+
     this.findPlanView = new FindPlanView(this.user, planRepository);
     this.findPlanByCategoryView = new FindPlanByCategoryView(
       this.user,
       planRepository
     );
-    this.FindPlanByIdView = new FindPlanByIdView(
-      planRepository
-    );
+    this.findPlanByIdView = new FindPlanByIdView(planRepository);
+
+    const mongoPlanRepository = new MongoPlanRepository(mongoDBClient);
+    this.createPlanView = new CreatePlanView(this.user, mongoPlanRepository);
+
+    const mongoUserRepository = new MongoUserRepository(mongoDBClient);
+    this.createUserView = new CreateUserView(mongoUserRepository);
   }
 
   public createPlan(req: Request, res: Response): void {
@@ -45,6 +71,20 @@ export class UserViewExpress {
     try {
       const planId = this.createPlanView.interact(message);
       res.status(200).send({ success: true, planId: planId.toString() });
+    } catch (e) {
+      console.error(e);
+      res.status(500).send({ message: "internal-error" });
+    }
+  }
+
+  public createUser(req: Request, res: Response): void {
+    const message: CreateUserMessage = {
+      id: req.body.id,
+      name: req.body.name,
+    };
+    try {
+      const userId = this.createUserView.interact(message);
+      res.status(200).send({ success: true, userId: userId.toString() });
     } catch (e) {
       console.error(e);
       res.status(500).send({ message: "internal-error" });
@@ -108,26 +148,26 @@ export class UserViewExpress {
       id: req.params.id,
     };
     try {
-      const plan = this.FindPlanByIdView.interact(message);
+      const plan = this.findPlanByIdView.interact(message);
 
       if (!plan) {
-        res.status(404).send("Not found")
-        return 
+        res.status(404).send("Not found");
+        return;
       }
       res.status(200).send({
         success: true,
         plan: {
-            ...plan.serialize(),
-            // TODO: The reason behind this is we don't have coded anything related with plan owners.
-            // Once everything with plans is working kind of properly we can introduce the owner concept/idea and fix this
-            owner: {
-              id: plan.serialize().owner.id,
-              name: {
-                firstName: "Deivasss",
-                lastName: "Cuellaar",
-              },
+          ...plan.serialize(),
+          // TODO: The reason behind this is we don't have coded anything related with plan owners.
+          // Once everything with plans is working kind of properly we can introduce the owner concept/idea and fix this
+          owner: {
+            id: plan.serialize().owner.id,
+            name: {
+              firstName: "Deivasss",
+              lastName: "Cuellaar",
             },
-          }
+          },
+        },
       });
     } catch (e) {
       console.error(e);

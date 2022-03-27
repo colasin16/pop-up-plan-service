@@ -4,12 +4,14 @@ import { Identifier } from "./Identifier";
 
 export class User {
   private id: Identifier;
+  private name: string;
 
   public static deserialize(document: UserDocument) {
-    return new User(document.id);
+    return new User(document.name, document.id);
   }
 
-  constructor(id?: string) {
+  constructor(name: string, id?: string) {
+    this.name = name;
     this.id = id ? new Identifier(new ObjectId(id)) : new Identifier();
   }
 
@@ -17,9 +19,10 @@ export class User {
     return this.id;
   }
 
-  public serialize(): any {
+  public serialize(): UserDocument {
     return {
       id: this.id.toString(),
+      name: this.name,
     };
   }
 }
