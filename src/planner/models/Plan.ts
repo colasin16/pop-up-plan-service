@@ -13,7 +13,7 @@ export class Plan {
   private time: number;
   private privacy: Privacy;
   private category: Category;
-  private atendees: User[];
+  private attendees: User[];
   private description?: string;
 
   public static deserialize(document: PlanDocument): Plan {
@@ -27,8 +27,8 @@ export class Plan {
     );
     plan.setOwner(User.deserialize(document.owner));
     plan.id = new Identifier(new ObjectId(document.id));
-    plan.atendees = document.atendees.map((atendee) =>
-      User.deserialize(atendee)
+    plan.attendees = document.attendees.map((attendee) =>
+      User.deserialize(attendee)
     );
     return plan;
   }
@@ -48,7 +48,7 @@ export class Plan {
     this.description = description;
     this.privacy = new Privacy(privacy);
     this.category = new Category(category);
-    this.atendees = new Array<User>();
+    this.attendees = new Array<User>();
   }
 
   public getId(): Identifier {
@@ -63,8 +63,8 @@ export class Plan {
     return category.equals(this.category);
   }
 
-  public addAtendees(atendees: User[]) {
-    this.atendees.push(...atendees);
+  public addAttendees(attendees: User[]) {
+    this.attendees.push(...attendees);
   }
 
   public serialize(): PlanDocument {
@@ -77,7 +77,7 @@ export class Plan {
       time: this.time,
       privacy: this.privacy.value,
       category: this.category.value,
-      atendees: this.atendees.map((atendee) => atendee.serialize()),
+      attendees: this.attendees.map((attendee) => attendee.serialize()),
     };
   }
 }

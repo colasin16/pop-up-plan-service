@@ -11,5 +11,5 @@ export interface PlanDocument {
   time: number;
   privacy: EPrivacy;
   category: ECategory;
-  atendees: UserDocument[];
+  attendees: UserDocument[];
 }
