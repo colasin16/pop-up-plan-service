@@ -40,7 +40,12 @@ export class UserViewExpress {
 
   constructor() {
     // User doing the call
-    this.user = new User("Random");
+    this.user = new User(
+      "Random",
+      "Random",
+      "random@random.com",
+      "+1111111111"
+    );
     const mongoDBClient = container.resolve(MongoDBClient);
     const planRepository = new InMemoryPlanRepository();
 
@@ -60,7 +65,7 @@ export class UserViewExpress {
 
   public createPlan(req: Request, res: Response): void {
     const message: CreatePlanMessage = {
-      owner: req.body.owner.id,
+      ownerId: req.body.owner.id,
       title: req.body.title,
       location: req.body.location,
       time: req.body.time,
@@ -79,8 +84,11 @@ export class UserViewExpress {
 
   public createUser(req: Request, res: Response): void {
     const message: CreateUserMessage = {
+      email: req.body.email,
       id: req.body.id,
       name: req.body.name,
+      lastName: req.body.lastName,
+      phoneNumber: req.body.phoneNumber,
     };
     try {
       const userId = this.createUserView.interact(message);

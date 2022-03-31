@@ -16,7 +16,7 @@ describe("Unit test", () => {
           location: "Barcelona",
           privacy: "PUBLIC",
           category: "WALK",
-          owner: "1644055774364",
+          ownerId: "1644055774364",
         };
 
         const planEntity = new Plan(

@@ -5,6 +5,9 @@ import { UserRepository } from "../models/UserRepository";
 export interface CreateUserMessage {
   id?: string;
   name: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
 }
 
 export class CreateUserView {
@@ -15,7 +18,13 @@ export class CreateUserView {
   }
 
   public interact(message: CreateUserMessage): Identifier {
-    const user = new User(message.name, message.id);
+    const user = new User(
+      message.name,
+      message.lastName,
+      message.email,
+      message.phoneNumber,
+      message.id
+    );
     this.userRepository.create(user);
     return user.getId();
   }

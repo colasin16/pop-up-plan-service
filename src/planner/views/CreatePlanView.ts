@@ -6,7 +6,7 @@ import { PlanRepository } from "../models/PlanRepository";
 import { Identifier } from "../models/Identifier";
 
 export interface CreatePlanMessage {
-  owner: string;
+  ownerId: string;
   title: string;
   location: string;
   time: number;
@@ -34,7 +34,7 @@ export class CreatePlanView {
       new Category(message.category).value,
       message.description
     );
-    plan.setOwner(new User(message.owner));
+    plan.setOwner(new User(message.ownerId));
     this.planRepository.create(plan);
     return plan.getId();
   }
