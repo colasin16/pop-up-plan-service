@@ -38,29 +38,47 @@ export class UserViewExpress {
 
   private createUserView: CreateUserView;
 
-  constructor() {
+  constructor(async_param) {
     // User doing the call
-    this.user = new User(
+    //ref: https://stackoverflow.com/a/43433773/5377615
+    if (typeof async_param === "undefined") {
+      throw new Error("Cannot be called directly");
+    }
+  }
+
+  public static async build(): Promise<UserViewExpress> {
+    //TODO: check this
+    const user = await User.build(
       "Random",
       "Random",
       "random@random.com",
-      "+1111111111"
+      "+1111111111",
+      "mypassword"
     );
     const mongoDBClient = container.resolve(MongoDBClient);
     const planRepository = new InMemoryPlanRepository();
 
-    this.findPlanView = new FindPlanView(this.user, planRepository);
-    this.findPlanByCategoryView = new FindPlanByCategoryView(
-      this.user,
+    const userViewExpress: UserViewExpress = new UserViewExpress(user);
+    userViewExpress.findPlanView = new FindPlanView(
+      userViewExpress.user,
       planRepository
     );
-    this.findPlanByIdView = new FindPlanByIdView(planRepository);
+    userViewExpress.findPlanByCategoryView = new FindPlanByCategoryView(
+      userViewExpress.user,
+      planRepository
+    );
+    userViewExpress.findPlanByIdView = new FindPlanByIdView(planRepository);
 
     const mongoPlanRepository = new MongoPlanRepository(mongoDBClient);
-    this.createPlanView = new CreatePlanView(this.user, mongoPlanRepository);
+    userViewExpress.createPlanView = new CreatePlanView(
+      userViewExpress.user,
+      mongoPlanRepository
+    );
 
     const mongoUserRepository = new MongoUserRepository(mongoDBClient);
-    this.createUserView = new CreateUserView(mongoUserRepository);
+    userViewExpress.createUserView = new CreateUserView(mongoUserRepository);
+
+    return userViewExpress;
   }
 
   public createPlan(req: Request, res: Response): void {
@@ -75,24 +93,26 @@ export class UserViewExpress {
     };
     try {
       const planId = this.createPlanView.interact(message);
-      res.status(200).send({ success: true, planId: planId.toString() });
+      res.status(201).send({ success: true, planId: planId.toString() });
     } catch (e) {
       console.error(e);
       res.status(500).send({ message: "internal-error" });
     }
   }
 
-  public createUser(req: Request, res: Response): void {
+  public async createUser(req: Request, res: Response): Promise<void> {
     const message: CreateUserMessage = {
       email: req.body.email,
       id: req.body.id,
       name: req.body.name,
       lastName: req.body.lastName,
       phoneNumber: req.body.phoneNumber,
+      password: req.body.password,
     };
     try {
-      const userId = this.createUserView.interact(message);
-      res.status(200).send({ success: true, userId: userId.toString() });
+      const userId = await this.createUserView.interact(message);
+      console.debug(`user '${userId.toString()} has been created!`);
+      res.status(201).send({ success: true, userId: userId.toString() });
     } catch (e) {
       console.error(e);
       res.status(500).send({ message: "internal-error" });

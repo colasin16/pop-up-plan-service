@@ -12,10 +12,22 @@ export class PlannerExpress {
   private port: number;
   private view: UserViewExpress;
 
-  constructor() {
-    this.app = express();
-    this.port = SERVER_PORT || 8080;
-    this.view = new UserViewExpress();
+  constructor(async_param) {
+    //ref: https://stackoverflow.com/a/43433773/5377615
+    if (typeof async_param === "undefined") {
+      throw new Error("Cannot be called directly");
+    }
+  }
+
+  public static async build(): Promise<PlannerExpress> {
+    const view = await UserViewExpress.build();
+    const planner = new PlannerExpress(view);
+
+    planner.app = express();
+    planner.port = SERVER_PORT || 8080;
+    planner.view = view;
+
+    return planner;
   }
 
   public setup(): PlannerExpress {

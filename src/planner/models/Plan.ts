@@ -16,7 +16,7 @@ export class Plan {
   private atendees: User[];
   private description?: string;
 
-  public static deserialize(document: PlanDocument): Plan {
+  public static async deserialize(document: PlanDocument): Promise<Plan> {
     const plan = new Plan(
       document.title,
       document.location,
@@ -25,11 +25,12 @@ export class Plan {
       document.category,
       document.description
     );
-    plan.setOwner(User.deserialize(document.owner));
+    plan.setOwner(await User.deserialize(document.owner));
     plan.id = new Identifier(new ObjectId(document.id));
-    plan.atendees = document.atendees.map((atendee) =>
-      User.deserialize(atendee)
+    let userPromises: Promise<User>[] = document.atendees.map(
+      async (atendee) => await User.deserialize(atendee)
     );
+    plan.atendees = await Promise.all(userPromises);
     return plan;
   }
 

@@ -8,9 +8,8 @@ async function main() {
     await DIManager.setup();
 
     // prettier-ignore
-    new PlannerExpress()
-      .setup()
-      .listen();
+    const plannerExpress = await PlannerExpress.build()
+    plannerExpress.setup().listen();
   } catch (e) {
     console.error(e);
   }

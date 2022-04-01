@@ -8,6 +8,7 @@ export interface CreateUserMessage {
   lastName: string;
   email: string;
   phoneNumber: string;
+  password: string;
 }
 
 export class CreateUserView {
@@ -17,12 +18,13 @@ export class CreateUserView {
     this.userRepository = userRepository;
   }
 
-  public interact(message: CreateUserMessage): Identifier {
-    const user = new User(
+  public async interact(message: CreateUserMessage): Promise<Identifier> {
+    const user = await User.build(
       message.name,
       message.lastName,
       message.email,
       message.phoneNumber,
+      message.password,
       message.id
     );
     this.userRepository.create(user);

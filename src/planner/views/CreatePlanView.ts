@@ -25,7 +25,7 @@ export class CreatePlanView {
     this.planRepository = planRepository;
   }
 
-  public interact(message: CreatePlanMessage): Identifier {
+  public async interact(message: CreatePlanMessage): Promise<Identifier> {
     const plan = new Plan(
       message.title,
       message.location,
@@ -34,7 +34,9 @@ export class CreatePlanView {
       new Category(message.category).value,
       message.description
     );
-    plan.setOwner(new User(message.ownerId));
+
+    // TODO: check input arguments of method build
+    plan.setOwner(await User.build(message.ownerId));
     this.planRepository.create(plan);
     return plan.getId();
   }

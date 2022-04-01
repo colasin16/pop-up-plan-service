@@ -4,4 +4,5 @@ export interface UserDocument {
   lastName: string;
   email: string;
   phoneNumber: string;
+  password: string;
 }
