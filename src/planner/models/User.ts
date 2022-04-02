@@ -57,7 +57,9 @@ export class User {
     const lastNameThis = lastName ?? "";
     const emailThis = email ?? "";
     const phoneNumberThis = phoneNumber ?? "";
-    const encryptedPassword = await PasswordEncryptor.encryptPassword(password);
+    const encryptedPassword = password
+      ? await PasswordEncryptor.encryptPassword(password)
+      : "";
 
     const passwordThis = password ? encryptedPassword : "";
     const idThis = id ? new Identifier(new ObjectId(id)) : new Identifier();

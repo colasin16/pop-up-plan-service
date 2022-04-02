@@ -92,6 +92,7 @@ export class UserViewExpress {
       category: req.body.category,
       privacy: req.body.privacy,
       capacity: req.body.capacity,
+      description: req.body.description,
     };
     try {
       const planId = this.createPlanView.interact(message);

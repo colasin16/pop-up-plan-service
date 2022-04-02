@@ -2,6 +2,9 @@ const bcrypt = require("bcryptjs");
 
 export class PasswordEncryptor {
   static async encryptPassword(password): Promise<string> {
+    if (!password) {
+      throw Error("empty password encryption is not supported");
+    }
     // const password = "mypass123";
     const saltRounds = 10;
     return new Promise((resolve, reject) => {
