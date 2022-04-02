@@ -57,9 +57,7 @@ export class User {
     const lastNameThis = lastName ?? "";
     const emailThis = email ?? "";
     const phoneNumberThis = phoneNumber ?? "";
-    console.debug(`plainPassword: ${password}`);
     const encryptedPassword = await PasswordEncryptor.encryptPassword(password);
-    console.log(`encrypted: ${encryptedPassword}`);
 
     const passwordThis = password ? encryptedPassword : "";
     const idThis = id ? new Identifier(new ObjectId(id)) : new Identifier();

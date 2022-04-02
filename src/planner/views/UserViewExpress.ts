@@ -56,6 +56,8 @@ export class UserViewExpress {
       "mypassword"
     );
     const mongoDBClient = container.resolve(MongoDBClient);
+
+    // TODO: change InMemoryPlanRepository to MongoPlanRepository
     const planRepository = new InMemoryPlanRepository();
 
     const userViewExpress: UserViewExpress = new UserViewExpress(user);
@@ -101,6 +103,7 @@ export class UserViewExpress {
   }
 
   public async createUser(req: Request, res: Response): Promise<void> {
+    console.debug(`req.body: ${JSON.stringify(req.body)}`);
     const message: CreateUserMessage = {
       email: req.body.email,
       id: req.body.id,

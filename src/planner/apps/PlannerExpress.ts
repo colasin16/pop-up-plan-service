@@ -54,6 +54,7 @@ export class PlannerExpress {
     this.app.post("/user", (req: Request, res: Response) =>
       this.view.createUser(req, res)
     );
+
     return this;
   }
 

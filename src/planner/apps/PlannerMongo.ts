@@ -1,5 +1,6 @@
 import { MongoClient } from "mongodb";
 import { singleton } from "tsyringe";
+import { MongoConnectionProblem } from "./exceptions";
 
 @singleton()
 export class MongoDBClient {
@@ -14,7 +15,9 @@ export class MongoDBClient {
 
       if (client) {
         this.client = client;
+        return this;
       }
+      throw new MongoConnectionProblem();
     } catch (e) {
       console.error(e);
     }
