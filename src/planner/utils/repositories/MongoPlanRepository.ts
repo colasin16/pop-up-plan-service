@@ -9,8 +9,8 @@ export class MongoPlanRepository implements PlanRepository {
   // TODO: add type annotation later
   // private collection: Collection;
   // or
-  private collection: Collection<Plan>;
-  // private collection;
+  // private collection: Collection<Plan>;
+  private collection;
 
   constructor(mongoClient: MongoDBClient) {
     this.collection = mongoClient.client
@@ -19,7 +19,7 @@ export class MongoPlanRepository implements PlanRepository {
   }
 
   public async find(id: Identifier): Promise<Plan | null> {
-    const foundPlan: WithId<Plan> | null = await this.collection.findOne({
+    const foundPlan = await this.collection.findOne({
       id: id,
     });
 
@@ -27,7 +27,7 @@ export class MongoPlanRepository implements PlanRepository {
   }
 
   public async findAll(): Promise<Plan[]> {
-    const foundPlans: WithId<Plan>[] = await this.collection.find().toArray();
+    const foundPlans = await this.collection.find().toArray();
     return foundPlans;
   }
 
