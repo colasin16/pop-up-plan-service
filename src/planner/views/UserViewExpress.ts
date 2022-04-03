@@ -14,6 +14,8 @@ import { MongoPlanRepository } from "../utils/repositories/MongoPlanRepository";
 import { MongoDBClient } from "../apps/PlannerMongo";
 import { CreateUserMessage, CreateUserView } from "./CreateUserView";
 import { MongoUserRepository } from "../utils/repositories/MongoUserRepository";
+import { Identifier } from "../models/Identifier";
+import { ObjectId } from "bson";
 
 // I don't understand, why here we have UserViewExpress which contains all other views?
 // All the future views will be included in `UserViewExpress` later?
@@ -49,6 +51,7 @@ export class UserViewExpress {
   public static async build(): Promise<UserViewExpress> {
     //TODO: check this
     const user = await User.build(
+      new Identifier(new ObjectId("624880125f84a6b5fe84e485")),
       "Random",
       "Random",
       "random@random.com",
@@ -58,20 +61,22 @@ export class UserViewExpress {
     const mongoDBClient = container.resolve(MongoDBClient);
 
     // TODO: change InMemoryPlanRepository to MongoPlanRepository
-    const planRepository = new InMemoryPlanRepository();
+    const mongoPlanRepository = new MongoPlanRepository(mongoDBClient);
+    // const planRepository = new InMemoryPlanRepository();
 
     const userViewExpress: UserViewExpress = new UserViewExpress(user);
     userViewExpress.findPlanView = new FindPlanView(
       userViewExpress.user,
-      planRepository
+      mongoPlanRepository
     );
     userViewExpress.findPlanByCategoryView = new FindPlanByCategoryView(
       userViewExpress.user,
-      planRepository
+      mongoPlanRepository
     );
-    userViewExpress.findPlanByIdView = new FindPlanByIdView(planRepository);
+    userViewExpress.findPlanByIdView = new FindPlanByIdView(
+      mongoPlanRepository
+    );
 
-    const mongoPlanRepository = new MongoPlanRepository(mongoDBClient);
     userViewExpress.createPlanView = new CreatePlanView(
       userViewExpress.user,
       mongoPlanRepository
@@ -123,9 +128,9 @@ export class UserViewExpress {
     }
   }
 
-  public findAll(req: Request, res: Response): void {
+  public async findAll(req: Request, res: Response): Promise<void> {
     try {
-      const plans = this.findPlanView.interact();
+      const plans = await this.findPlanView.interact();
       res.status(200).send({
         success: true,
         plans: plans.map((plan) => {
@@ -148,12 +153,12 @@ export class UserViewExpress {
   }
 
   // README: que no se haga la lista muy grande de findByNske findByNscuantos findBySkibidi... Criteria pattern si se va de las manos
-  public findByCategory(req: Request, res: Response): void {
+  public async findByCategory(req: Request, res: Response): Promise<void> {
     const message: FindPlanByCategoryMessage = {
       category: req.params.category,
     };
     try {
-      const plans = this.findPlanByCategoryView.interact(message);
+      const plans = await this.findPlanByCategoryView.interact(message);
       res.status(200).send({
         success: true,
         plans: plans.map((plan) => {
@@ -175,12 +180,12 @@ export class UserViewExpress {
     }
   }
 
-  public findById(req: Request, res: Response): void {
+  public async findById(req: Request, res: Response): Promise<void> {
     const message: FindPlanByIdMessage = {
       id: req.params.id,
     };
     try {
-      const plan = this.findPlanByIdView.interact(message);
+      const plan = await this.findPlanByIdView.interact(message);
 
       if (!plan) {
         res.status(404).send("Not found");

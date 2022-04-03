@@ -17,8 +17,8 @@ export class FindPlanByCategoryView {
     this.planRepository = planRepository;
   }
 
-  public interact(message: FindPlanByCategoryMessage): Plan[] {
-    const plans = this.planRepository.findByCategory(
+  public async interact(message: FindPlanByCategoryMessage): Promise<Plan[]> {
+    const plans = await this.planRepository.findByCategory(
       new Category(message.category)
     );
     return plans;

@@ -1,7 +1,5 @@
 import { User } from "../models/User";
 import { PlanRepository } from "../models/PlanRepository";
-import { ObjectId } from "bson";
-import { Identifier } from "../models/Identifier";
 import { Plan } from "../models/Plan";
 
 export class FindPlanView {
@@ -13,8 +11,8 @@ export class FindPlanView {
     this.planRepository = planRepository;
   }
 
-  public interact(): Plan[] {
-    const plans = this.planRepository.findAll();
+  public async interact(): Promise<Plan[]> {
+    const plans = await this.planRepository.findAll();
     return plans;
   }
 }

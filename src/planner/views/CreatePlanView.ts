@@ -4,6 +4,7 @@ import { Category } from "../types/Category";
 import { Privacy } from "../types/Privacy";
 import { PlanRepository } from "../models/PlanRepository";
 import { Identifier } from "../models/Identifier";
+import { ObjectId } from "bson";
 
 export interface CreatePlanMessage {
   ownerId: string;
@@ -36,7 +37,8 @@ export class CreatePlanView {
     );
 
     // TODO: check input arguments of method build
-    plan.setOwner(await User.build(message.ownerId));
+    const userId: Identifier = new Identifier(new ObjectId(message.ownerId));
+    plan.setOwner(await User.build(userId));
     this.planRepository.create(plan);
     return plan.getId();
   }

@@ -1,6 +1,7 @@
 import { User } from "../models/User";
 import { Identifier } from "../models/Identifier";
 import { UserRepository } from "../models/UserRepository";
+import { ObjectId } from "bson";
 
 export interface CreateUserMessage {
   id?: string;
@@ -20,12 +21,12 @@ export class CreateUserView {
 
   public async interact(message: CreateUserMessage): Promise<Identifier> {
     const user = await User.build(
+      new Identifier(new ObjectId(message.id)),
       message.name,
       message.lastName,
       message.email,
       message.phoneNumber,
-      message.password,
-      message.id
+      message.password
     );
     this.userRepository.create(user);
     return user.getId();

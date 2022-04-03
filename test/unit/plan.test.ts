@@ -9,7 +9,7 @@ import { CreatePlanMessage } from "../../src/planner/views/CreatePlanView";
 describe("Unit test", () => {
   describe("Plan", () => {
     describe(".addAtendees", () => {
-      before(() => {
+      before(async () => {
         const createPlanMessage: CreatePlanMessage = {
           title: "A walk to test",
           time: new Date().valueOf(),
@@ -32,7 +32,7 @@ describe("Unit test", () => {
         const inMemoryPlanRepository = new InMemoryPlanRepository();
         inMemoryPlanRepository.create(planEntity);
 
-        const plans = inMemoryPlanRepository.findAll();
+        const plans = await inMemoryPlanRepository.findAll();
         const plan = plans.find((p) => p.getId() === planId);
 
         expect(plan).to.not.be.eq(undefined);

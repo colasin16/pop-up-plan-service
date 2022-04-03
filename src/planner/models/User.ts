@@ -14,12 +14,12 @@ export class User {
 
   public static deserialize(document: UserDocument): Promise<User> {
     return this.build(
+      new Identifier(new ObjectId(document.id)),
       document.name,
       document.lastName,
       document.email,
       document.phoneNumber,
-      document.password,
-      document.id
+      document.password
     );
   }
 
@@ -46,12 +46,12 @@ export class User {
   }
 
   static async build(
+    id?: Identifier,
     name?: string,
     lastName?: string,
     email?: string,
     phoneNumber?: string,
-    password?: string,
-    id?: string
+    password?: string
   ): Promise<User> {
     const nameThis = name ?? "";
     const lastNameThis = lastName ?? "";
@@ -62,7 +62,7 @@ export class User {
       : "";
 
     const passwordThis = password ? encryptedPassword : "";
-    const idThis = id ? new Identifier(new ObjectId(id)) : new Identifier();
+    const idThis = id ? id : new Identifier();
 
     // var async_result = await doSomeAsyncStuff();
     let tmpUser = new User(encryptedPassword);

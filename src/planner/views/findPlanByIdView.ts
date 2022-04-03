@@ -14,9 +14,9 @@ export class FindPlanByIdView {
     this.planRepository = planRepository;
   }
 
-  public interact(message: FindPlanByIdMessage): Plan | null {
-    const plan_id =  new Identifier(new ObjectId(message.id));
-    const plan = this.planRepository.find(plan_id);
+  public async interact(message: FindPlanByIdMessage): Promise<Plan | null> {
+    const plan_id = new Identifier(new ObjectId(message.id));
+    const plan = await this.planRepository.find(plan_id);
     return plan;
   }
 }
