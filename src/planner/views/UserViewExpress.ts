@@ -16,6 +16,7 @@ import { CreateUserMessage, CreateUserView } from "./CreateUserView";
 import { MongoUserRepository } from "../utils/repositories/MongoUserRepository";
 import { Identifier } from "../models/Identifier";
 import { ObjectId } from "bson";
+import { loginUserMessage, LoginUserView } from "./LoginUserView";
 
 // I don't understand, why here we have UserViewExpress which contains all other views?
 // All the future views will be included in `UserViewExpress` later?
@@ -39,6 +40,7 @@ export class UserViewExpress {
   private findPlanByIdView: FindPlanByIdView;
 
   private createUserView: CreateUserView;
+  private loginUserView: LoginUserView;
 
   constructor(async_param) {
     // User doing the call
@@ -84,6 +86,7 @@ export class UserViewExpress {
 
     const mongoUserRepository = new MongoUserRepository(mongoDBClient);
     userViewExpress.createUserView = new CreateUserView(mongoUserRepository);
+    userViewExpress.loginUserView = new LoginUserView(mongoUserRepository);
 
     return userViewExpress;
   }
@@ -122,6 +125,23 @@ export class UserViewExpress {
       const userId = await this.createUserView.interact(message);
       console.debug(`user '${userId.toString()} has been created!`);
       res.status(201).send({ success: true, userId: userId.toString() });
+    } catch (e) {
+      console.error(e);
+      res.status(500).send({ message: "internal-error" });
+    }
+  }
+
+  public async loginUser(req: Request, res: Response): Promise<void> {
+    console.debug(`req.body: ${JSON.stringify(req.body)}`);
+    const message: loginUserMessage = {
+      username: req.body.username,
+      password: req.body.password,
+    };
+    try {
+      const token = await this.loginUserView.interact(message);
+      // console.debug(`user '${userId.toString()} has been created!`);
+      // TODO: implement token part
+      res.status(201).send({ success: true, token: token });
     } catch (e) {
       console.error(e);
       res.status(500).send({ message: "internal-error" });

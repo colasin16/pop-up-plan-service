@@ -55,6 +55,10 @@ export class PlannerExpress {
       this.view.createUser(req, res)
     );
 
+    this.app.post("/login", (req: Request, res: Response) =>
+      this.view.loginUser(req, res)
+    );
+
     return this;
   }
 

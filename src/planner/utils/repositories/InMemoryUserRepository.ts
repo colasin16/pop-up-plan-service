@@ -8,6 +8,9 @@ export class InMemoryUserRepository implements UserRepository {
   constructor() {
     this.map = new Map<string, User>();
   }
+  findByEmail(email: string): Promise<User | null> {
+    throw new Error("Method not implemented.");
+  }
 
   public create(user: User): void {
     this.map.set(user.getId().toString(), user);

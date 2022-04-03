@@ -51,17 +51,18 @@ export class User {
     lastName?: string,
     email?: string,
     phoneNumber?: string,
-    password?: string
+    password?: string,
+    hashPassword?: string
   ): Promise<User> {
     const nameThis = name ?? "";
     const lastNameThis = lastName ?? "";
     const emailThis = email ?? "";
     const phoneNumberThis = phoneNumber ?? "";
-    const encryptedPassword = password
-      ? await PasswordEncryptor.encryptPassword(password)
-      : "";
+    const encryptedPassword = hashPassword
+      ? hashPassword
+      : await PasswordEncryptor.encryptPassword(password);
 
-    const passwordThis = password ? encryptedPassword : "";
+    const passwordThis = encryptedPassword ? encryptedPassword : "";
     const idThis = id ? id : new Identifier();
 
     // var async_result = await doSomeAsyncStuff();
