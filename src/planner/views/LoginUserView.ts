@@ -1,3 +1,4 @@
+import { Logger } from "mongodb";
 import { UserRepository } from "../models/UserRepository";
 import { PasswordEncryptor } from "../utils/PasswordEcryptor";
 
@@ -25,13 +26,16 @@ export class LoginUserView {
       );
 
       if (loggedIn) {
-        console.log(`user: ${message.username}, Logged in successfully`);
+        console.debug(`user: ${message.username}, Logged in successfully`);
         // TODO: implement token part
         return "fakeToken";
       } else {
-        console.log(`user:${message.username}, Login failed`);
+        console.debug(`user:${message.username}, Login failed`);
       }
     }
+    console.debug(
+      `cannot authenticate because user '${message.username}' has not been found`
+    );
     return null;
   }
 }

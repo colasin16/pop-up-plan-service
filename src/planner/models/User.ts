@@ -1,13 +1,12 @@
 import { ObjectId } from "bson";
-import { userInfo } from "os";
+import { FullName } from "../types/FullName";
 import { PasswordEncryptor } from "../utils/PasswordEcryptor";
 import { UserDocument } from "./documents/UserDocument";
 import { Identifier } from "./Identifier";
 
 export class User {
   private id: Identifier;
-  private name: string;
-  private lastName: string;
+  private name: FullName;
   private email: string;
   private phoneNumber: string;
   private password: string;
@@ -16,7 +15,6 @@ export class User {
     return this.build(
       new Identifier(new ObjectId(document.id)),
       document.name,
-      document.lastName,
       document.email,
       document.phoneNumber,
       document.password
@@ -47,15 +45,13 @@ export class User {
 
   static async build(
     id?: Identifier,
-    name?: string,
-    lastName?: string,
+    name?: FullName,
     email?: string,
     phoneNumber?: string,
     password?: string,
     hashPassword?: string
   ): Promise<User> {
-    const nameThis = name ?? "";
-    const lastNameThis = lastName ?? "";
+    const nameThis = name ?? new FullName();
     const emailThis = email ?? "";
     const phoneNumberThis = phoneNumber ?? "";
     const encryptedPassword = hashPassword
@@ -68,7 +64,6 @@ export class User {
     // var async_result = await doSomeAsyncStuff();
     let tmpUser = new User(encryptedPassword);
     tmpUser.name = nameThis;
-    tmpUser.lastName = lastNameThis;
     tmpUser.email = emailThis;
     tmpUser.phoneNumber = phoneNumberThis;
     tmpUser.password = passwordThis;
@@ -85,7 +80,6 @@ export class User {
     return {
       id: this.id.toString(),
       name: this.name,
-      lastName: this.lastName,
       email: this.email,
       phoneNumber: this.phoneNumber,
       password: this.password,

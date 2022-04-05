@@ -30,7 +30,6 @@ export class MongoUserRepository implements UserRepository {
     const user = User.build(
       new Identifier(new ObjectId(userDocument.id._value)),
       userDocument.name,
-      userDocument.lastName,
       userDocument.email,
       userDocument.phoneNumber,
       "",

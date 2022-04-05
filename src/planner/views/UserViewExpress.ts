@@ -54,8 +54,7 @@ export class UserViewExpress {
     //TODO: check this
     const user = await User.build(
       new Identifier(new ObjectId("624880125f84a6b5fe84e485")),
-      "Random",
-      "Random",
+      { firstName: "Random", lastName: "Random" },
       "random@random.com",
       "+1111111111",
       "mypassword"
@@ -117,7 +116,6 @@ export class UserViewExpress {
       email: req.body.email,
       id: req.body.id,
       name: req.body.name,
-      lastName: req.body.lastName,
       phoneNumber: req.body.phoneNumber,
       password: req.body.password,
     };
@@ -131,9 +129,11 @@ export class UserViewExpress {
     }
   }
 
-  public async loginUser(req: Request, res: Response): Promise<void> {
+  public async authenticateUser(req: Request, res: Response): Promise<void> {
     console.debug(`req.body: ${JSON.stringify(req.body)}`);
     const message: loginUserMessage = {
+      // Currently we accept email as username, maybe in future we implement username
+      // TODO: check emails uniqueness when create a new user
       username: req.body.username,
       password: req.body.password,
     };
@@ -141,6 +141,10 @@ export class UserViewExpress {
       const token = await this.loginUserView.interact(message);
       // console.debug(`user '${userId.toString()} has been created!`);
       // TODO: implement token part
+      if (!token) {
+        res.status(403).send({ success: false, token: token });
+        return;
+      }
       res.status(201).send({ success: true, token: token });
     } catch (e) {
       console.error(e);

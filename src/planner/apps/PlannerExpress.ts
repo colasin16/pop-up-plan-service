@@ -56,7 +56,7 @@ export class PlannerExpress {
     );
 
     this.app.post("/login", (req: Request, res: Response) =>
-      this.view.loginUser(req, res)
+      this.view.authenticateUser(req, res)
     );
 
     return this;
