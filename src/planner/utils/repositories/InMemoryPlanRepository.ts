@@ -2,16 +2,17 @@ import { PlanRepository } from "../../models/PlanRepository";
 import { Plan } from "../../models/Plan";
 import { Identifier } from "../../models/Identifier";
 import { Category } from "../../types/Category";
+import { PlanPrimitives } from "../../models/primitives/PlanPrimitives";
 
 export class InMemoryPlanRepository implements PlanRepository {
-  private map: Map<string, Plan>;
+  private map: Map<string, PlanPrimitives>;
 
   constructor() {
-    this.map = new Map<string, Plan>();
+    this.map = new Map<string, PlanPrimitives>();
   }
 
   public create(plan: Plan): void {
-    this.map.set(plan.getId().toString(), plan);
+    this.map.set(plan.getId().toString(), plan.serialize());
     console.log("Plan created!! ", plan.getId().toString());
   }
 
@@ -23,8 +24,8 @@ export class InMemoryPlanRepository implements PlanRepository {
     return plan;
   }
 
-  public async findAll(): Promise<Plan[]> {
-    const plans = new Array<Plan>();
+  public async findAll(): Promise<PlanPrimitives[]> {
+    const plans = new Array<PlanPrimitives>();
     this.map.forEach((plan) => plans.push(plan));
     return plans;
   }
