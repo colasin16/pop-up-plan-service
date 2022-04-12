@@ -4,19 +4,20 @@ import { Request, Response } from "express";
 import { User } from "../models/User";
 import { CreatePlanMessage, CreatePlanView } from "./CreatePlanView";
 import { FindPlanView } from "./FindPlanView";
-import { InMemoryPlanRepository } from "../utils/repositories/InMemoryPlanRepository";
 import {
   FindPlanByCategoryMessage,
   FindPlanByCategoryView,
 } from "./FindPlanByCategoryView";
 import { FindPlanByIdMessage, FindPlanByIdView } from "./findPlanByIdView";
-import { MongoPlanRepository } from "../utils/repositories/MongoPlanRepository";
+import { MongoPlanRepository } from "../infrastructure/mongo-db/MongoPlanRepository";
 import { MongoDBClient } from "../apps/PlannerMongo";
 import { CreateUserMessage, CreateUserView } from "./CreateUserView";
-import { MongoUserRepository } from "../utils/repositories/MongoUserRepository";
+
 import { Identifier } from "../models/Identifier";
 import { ObjectId } from "bson";
 import { loginUserMessage, LoginUserView } from "./LoginUserView";
+import { MongoUserRepository } from "../infrastructure/mongo-db/MongoUserRepository";
+import { PlanRepository } from "../models/PlanRepository";
 
 // I don't understand, why here we have UserViewExpress which contains all other views?
 // All the future views will be included in `UserViewExpress` later?
@@ -62,7 +63,9 @@ export class UserViewExpress {
     const mongoDBClient = container.resolve(MongoDBClient);
 
     // TODO: change InMemoryPlanRepository to MongoPlanRepository
-    const mongoPlanRepository = new MongoPlanRepository(mongoDBClient);
+    const mongoPlanRepository: PlanRepository = new MongoPlanRepository(
+      mongoDBClient
+    );
     // const planRepository = new InMemoryPlanRepository();
 
     const userViewExpress: UserViewExpress = new UserViewExpress(user);
@@ -161,6 +164,7 @@ export class UserViewExpress {
           return {
             ...plan.serialize(),
             owner: {
+              // @ts-ignore
               id: plan.serialize().owner.id,
               name: {
                 firstName: "Deivasss",
@@ -189,6 +193,7 @@ export class UserViewExpress {
           return {
             ...plan.serialize(),
             owner: {
+              // @ts-ignore
               id: plan.serialize().owner.id,
               name: {
                 firstName: "Deivasss",
@@ -222,6 +227,7 @@ export class UserViewExpress {
           // TODO: The reason behind this is we don't have coded anything related with plan owners.
           // Once everything with plans is working kind of properly we can introduce the owner concept/idea and fix this
           owner: {
+            // @ts-ignore
             id: plan.serialize().owner.id,
             name: {
               firstName: "Deivasss",

@@ -1,7 +1,7 @@
 import { ObjectId } from "bson";
 import { FullName } from "../types/FullName";
 import { PasswordEncryptor } from "../utils/PasswordEcryptor";
-import { UserDocument } from "./documents/UserDocument";
+import { UserPrimitives } from "./primitives/UserPrimitives";
 import { Identifier } from "./Identifier";
 
 export class User {
@@ -11,7 +11,7 @@ export class User {
   private phoneNumber: string;
   private password: string;
 
-  public static deserialize(document: UserDocument): Promise<User> {
+  public static deserialize(document: UserPrimitives): Promise<User> {
     return this.build(
       new Identifier(new ObjectId(document.id)),
       document.name,
@@ -61,6 +61,7 @@ export class User {
     const passwordThis = encryptedPassword ? encryptedPassword : "";
     const idThis = id ? id : new Identifier();
 
+    // Here we should check that the email is not duplicated / or the phone number
     // var async_result = await doSomeAsyncStuff();
     let tmpUser = new User(encryptedPassword);
     tmpUser.name = nameThis;
@@ -76,7 +77,7 @@ export class User {
     return this.id;
   }
 
-  public serialize(): UserDocument {
+  public serialize(): UserPrimitives {
     return {
       id: this.id.toString(),
       name: this.name,

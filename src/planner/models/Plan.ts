@@ -1,6 +1,6 @@
-import { Identifier } from "./Identifier";
 import { ObjectId } from "bson";
-import { PlanDocument } from "./documents/PlanDocument";
+import { Identifier } from "./Identifier";
+import { PlanPrimitives } from "./primitives/PlanPrimitives";
 import { Category, ECategory } from "../types/Category";
 import { EPrivacy, Privacy } from "../types/Privacy";
 import { User } from "./User";
@@ -13,24 +13,25 @@ export class Plan {
   private time: number;
   private privacy: Privacy;
   private category: Category;
-  private atendees: User[];
+  private attendees: User[];
   private description?: string;
 
-  public static async deserialize(document: PlanDocument): Promise<Plan> {
+  public static async deserialize(primitives: PlanPrimitives): Promise<Plan> {
     const plan = new Plan(
-      document.title,
-      document.location,
-      document.time,
-      document.privacy,
-      document.category,
-      document.description
+      primitives.title,
+      primitives.location,
+      primitives.time,
+      new Privacy(primitives.privacy).value,
+      new Category(primitives.category).value,
+      primitives.description
     );
-    plan.setOwner(await User.deserialize(document.owner));
-    plan.id = new Identifier(new ObjectId(document.id));
-    let userPromises: Promise<User>[] = document.atendees.map(
+
+    plan.setOwner(await User.deserialize(primitives.owner));
+    plan.id = new Identifier(new ObjectId(primitives.id));
+    let userPromises: Promise<User>[] = primitives.attendees.map(
       async (atendee) => await User.deserialize(atendee)
     );
-    plan.atendees = await Promise.all(userPromises);
+    plan.attendees = await Promise.all(userPromises);
     return plan;
   }
 
@@ -49,7 +50,7 @@ export class Plan {
     this.description = description;
     this.privacy = new Privacy(privacy);
     this.category = new Category(category);
-    this.atendees = new Array<User>();
+    this.attendees = new Array<User>();
   }
 
   public getId(): Identifier {
@@ -64,21 +65,21 @@ export class Plan {
     return category.equals(this.category);
   }
 
-  public addAtendees(atendees: User[]) {
-    this.atendees.push(...atendees);
+  public addAttendees(attendees: User[]) {
+    this.attendees.push(...attendees);
   }
 
-  public serialize(): PlanDocument {
+  public serialize(): PlanPrimitives {
     return {
       id: this.id.toString(),
-      owner: this.owner.serialize(),
+      owner: this.owner.serialize().id,
       title: this.title,
       description: this.description,
       location: this.location,
       time: this.time,
-      privacy: this.privacy.value,
-      category: this.category.value,
-      atendees: this.atendees.map((atendee) => atendee.serialize()),
+      privacy: this.privacy.value.toString(),
+      category: this.category.value.toString(),
+      attendees: this.attendees.map((attendee) => attendee.serialize().id),
     };
   }
 }
