@@ -20,7 +20,7 @@ export class PlannerExpress {
   }
 
   public static async build(): Promise<PlannerExpress> {
-    const view = await UserViewExpress.build();
+    const view = new UserViewExpress();
     const planner = new PlannerExpress(view);
 
     planner.app = express();
@@ -39,13 +39,13 @@ export class PlannerExpress {
 
     // TODO: Support query parameters -> https://stackabuse.com/get-query-strings-and-parameters-in-express-js/
     // e.g, GET /plans/?id=62212a4479c1c54757a32283&category=RUN
-    this.app.get("/plans/id/:id", (req: Request, res: Response) =>
-      this.view.findById(req, res)
-    );
+    // this.app.get("/plans/id/:id", (req: Request, res: Response) =>
+    //   this.view.findById(req, res)
+    // );
 
-    this.app.get("/plans/:category", (req: Request, res: Response) =>
-      this.view.findByCategory(req, res)
-    );
+    // this.app.get("/plans/:category", (req: Request, res: Response) =>
+    //   this.view.findByCategory(req, res)
+    // );
 
     this.app.post("/plan", (req: Request, res: Response) =>
       this.view.createPlan(req, res)

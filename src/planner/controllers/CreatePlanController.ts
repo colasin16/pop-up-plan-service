@@ -1,10 +1,12 @@
 import { ObjectID } from "bson";
+import { container } from "tsyringe";
+import { MongoDBClient } from "../apps/PlannerMongo";
+import { MongoPlanRepository } from "../infrastructure/mongo-db/MongoPlanRepository";
+import { Identifier } from "../models/Identifier";
 import { Plan } from "../models/Plan";
-import { User } from "../models/User";
+import { PlanRepository } from "../models/PlanRepository";
 import { Category } from "../types/Category";
 import { Privacy } from "../types/Privacy";
-import { PlanRepository } from "../models/PlanRepository";
-import { Identifier } from "../models/Identifier";
 
 export interface CreatePlanMessage {
   ownerId: string;
@@ -14,19 +16,14 @@ export interface CreatePlanMessage {
   category: string;
   privacy: string;
   description?: string;
-  capacity?: number;
 }
 
-export class CreatePlanView {
-  private user: User;
-  private planRepository: PlanRepository;
+export class CreatePlanController {
+  public async control(message: CreatePlanMessage): Promise<Identifier> {
+    const planRepository: PlanRepository = new MongoPlanRepository(
+      container.resolve(MongoDBClient)
+    );
 
-  constructor(user: User, planRepository: PlanRepository) {
-    this.user = user;
-    this.planRepository = planRepository;
-  }
-
-  public async interact(message: CreatePlanMessage): Promise<Identifier> {
     const plan = new Plan(
       message.title,
       message.location,
@@ -37,6 +34,6 @@ export class CreatePlanView {
     );
 
     plan.setOwner(new Identifier(new ObjectID(message.ownerId)));
-    return await this.planRepository.create(plan);
+    return await planRepository.create(plan);
   }
 }

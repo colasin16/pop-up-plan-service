@@ -1,5 +1,5 @@
 import { ObjectID, ObjectId } from "bson";
-import { Collection, WithId } from "mongodb";
+import { Collection } from "mongodb";
 import { MongoDBClient } from "../../apps/PlannerMongo";
 import { Identifier } from "../../models/Identifier";
 import { User } from "../../models/User";
@@ -26,7 +26,7 @@ export class MongoUserRepository implements UserRepository {
 
     const userDocument = foundPlan;
 
-    const user = User.build(
+    const user = User.buildWithIdentifier(
       new Identifier(new ObjectId(userDocument._id)),
       userDocument.name,
       userDocument.email,
