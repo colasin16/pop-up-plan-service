@@ -16,7 +16,7 @@ export class InMemoryPlanRepository implements PlanRepository {
     console.log("Plan created!! ", plan.getId().toString());
   }
 
-  public async find(id: Identifier): Promise<Plan | null> {
+  public async find(id: Identifier): Promise<PlanPrimitives | null> {
     const plan = this.map.get(id.toString());
     if (!plan) {
       return null;
@@ -30,10 +30,11 @@ export class InMemoryPlanRepository implements PlanRepository {
     return plans;
   }
 
-  public async findByCategory(category: Category): Promise<Plan[]> {
-    const plans = new Array<Plan>();
-    this.map.forEach((plan) => {
-      if (plan.hasCategory(category)) {
+  public async findByCategory(category: Category): Promise<PlanPrimitives[]> {
+    const plans = new Array<PlanPrimitives>();
+    this.map.forEach(async (plan) => {
+      const planInstance = await Plan.deserialize(plan);
+      if (planInstance.hasCategory(category)) {
         plans.push(plan);
       }
     });
@@ -41,7 +42,7 @@ export class InMemoryPlanRepository implements PlanRepository {
   }
 
   public update(plan: Plan): void {
-    this.map.set(plan.getId().toString(), plan);
+    this.map.set(plan.getId().toString(), plan.serialize());
   }
 
   public async delete(id: Identifier): Promise<void> {

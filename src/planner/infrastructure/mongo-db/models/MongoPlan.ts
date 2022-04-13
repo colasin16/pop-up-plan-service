@@ -1,7 +1,6 @@
 import { ObjectId } from "mongodb";
 
 export interface MongoPlan {
-  _id: ObjectId;
   owner: ObjectId;
   title: string;
   location: string;

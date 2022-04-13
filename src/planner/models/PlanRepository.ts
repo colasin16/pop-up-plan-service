@@ -5,9 +5,9 @@ import { PlanPrimitives } from "./primitives/PlanPrimitives";
 
 export interface PlanRepository {
   create(plan: Plan): void;
-  find(id: Identifier): Promise<Plan | null>;
+  find(id: Identifier): Promise<PlanPrimitives | null>;
   findAll(): Promise<PlanPrimitives[]>;
-  findByCategory(category: Category): Promise<Plan[]>;
+  findByCategory(category: Category): Promise<PlanPrimitives[]>;
   update(plan: Plan): void;
   delete(id: Identifier): void;
 }

@@ -33,7 +33,7 @@ describe("Unit test", () => {
         inMemoryPlanRepository.create(planEntity);
 
         const plans = await inMemoryPlanRepository.findAll();
-        const plan = plans.find((p) => p.getId() === planId);
+        const plan = plans.find((p) => p.id === planId.toString());
 
         expect(plan).to.not.be.eq(undefined);
         // expect(planId).should.be.eq(plan.getId());

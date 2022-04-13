@@ -6,6 +6,7 @@ import { Plan } from "../../models/Plan";
 import { PlanRepository } from "../../models/PlanRepository";
 import { Category } from "../../types/Category";
 import { MongoPlan } from "./models/MongoPlan";
+import { MongoPlanConverter } from "./converters/PlanConverter";
 
 export class MongoPlanRepository implements PlanRepository {
   private collection: Collection<MongoPlan>;
@@ -16,44 +17,39 @@ export class MongoPlanRepository implements PlanRepository {
       .collection<MongoPlan>("Plans");
   }
 
-  public async find(id: Identifier): Promise<Plan | null> {
+  public async find(id: Identifier): Promise<PlanPrimitives | null> {
     const foundPlan = await this.collection.findOne({
       id: id,
     });
-    // @ts-ignore
-    return foundPlan;
+
+    if (foundPlan) {
+      return MongoPlanConverter.mongoPlanToPlanPrimitives(foundPlan);
+    }
+
+    return null;
   }
 
   public async findAll(): Promise<PlanPrimitives[]> {
     const mongoPlanList = await this.collection.find().toArray();
 
-    const plansPrimitives = mongoPlanList.map<PlanPrimitives>(
-      (planDocument) => ({
-        id: planDocument._id.id.toString(),
-        owner: planDocument.owner.id.toString(),
-        title: planDocument.title,
-        location: planDocument.location,
-        time: planDocument.time,
-        privacy: planDocument.privacy,
-        category: planDocument.category,
-        attendees: planDocument.attendees.map((_id) => _id.id.toString()),
-        description: planDocument.description,
-      })
+    const plansPrimitives = mongoPlanList.map<PlanPrimitives>((planDocument) =>
+      MongoPlanConverter.mongoPlanToPlanPrimitives(planDocument)
     );
 
     return plansPrimitives;
   }
 
-  public async findByCategory(category: Category): Promise<Plan[]> {
-    const plans = new Array<Plan>();
+  public async findByCategory(category: Category): Promise<PlanPrimitives[]> {
+    const plans = new Array<PlanPrimitives>();
     const plansPrimitives = await this.findAll();
 
     plansPrimitives.forEach(async (plan) => {
       const planInstance = await Plan.deserialize(plansPrimitives[0]);
       if (planInstance.hasCategory(category)) {
-        plans.push(planInstance);
+        plans.push(plan);
       }
     });
+
     return plans;
   }
 
@@ -66,8 +62,7 @@ export class MongoPlanRepository implements PlanRepository {
   }
 
   public async create(plan: Plan): Promise<void> {
-    // @ts-ignore
-    await this.collection.insertOne(plan);
+    await this.collection.insertOne(MongoPlanConverter.planToMongoPlan(plan));
     console.log("Plan created!! ");
   }
 }

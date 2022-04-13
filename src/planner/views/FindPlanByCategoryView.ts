@@ -18,9 +18,16 @@ export class FindPlanByCategoryView {
   }
 
   public async interact(message: FindPlanByCategoryMessage): Promise<Plan[]> {
-    const plans = await this.planRepository.findByCategory(
+    const planPrimitivesList = await this.planRepository.findByCategory(
       new Category(message.category)
     );
+
+    const plans = await Promise.all(
+      planPrimitivesList.map(
+        async (planPrimitives) => await Plan.deserialize(planPrimitives)
+      )
+    );
+
     return plans;
   }
 }

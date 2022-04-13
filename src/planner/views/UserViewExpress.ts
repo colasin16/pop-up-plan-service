@@ -164,8 +164,7 @@ export class UserViewExpress {
           return {
             ...plan.serialize(),
             owner: {
-              // @ts-ignore
-              id: plan.serialize().owner.id,
+              id: plan.serialize().owner,
               name: {
                 firstName: "Deivasss",
                 lastName: "Cuellaar",
@@ -193,8 +192,7 @@ export class UserViewExpress {
           return {
             ...plan.serialize(),
             owner: {
-              // @ts-ignore
-              id: plan.serialize().owner.id,
+              id: plan.serialize().owner,
               name: {
                 firstName: "Deivasss",
                 lastName: "Cuellaar",
@@ -227,8 +225,7 @@ export class UserViewExpress {
           // TODO: The reason behind this is we don't have coded anything related with plan owners.
           // Once everything with plans is working kind of properly we can introduce the owner concept/idea and fix this
           owner: {
-            // @ts-ignore
-            id: plan.serialize().owner.id,
+            id: plan.serialize().owner,
             name: {
               firstName: "Deivasss",
               lastName: "Cuellaar",
