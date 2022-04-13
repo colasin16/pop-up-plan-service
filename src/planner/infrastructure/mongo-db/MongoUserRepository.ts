@@ -1,9 +1,11 @@
-import { ObjectID, ObjectId } from "bson";
+import { ObjectID } from "bson";
 import { Collection } from "mongodb";
 import { MongoDBClient } from "../../apps/PlannerMongo";
 import { Identifier } from "../../models/Identifier";
+import { UserPrimitives } from "../../models/primitives/UserPrimitives";
 import { User } from "../../models/User";
 import { UserRepository } from "../../models/UserRepository";
+import { MongoUserConverter } from "./converters/UserConverter";
 import { MongoUser } from "./models/MongoUser";
 
 export class MongoUserRepository implements UserRepository {
@@ -15,25 +17,14 @@ export class MongoUserRepository implements UserRepository {
       .collection("Users");
   }
 
-  public async findByEmail(email: string): Promise<User | null> {
+  public async findByEmail(email: string): Promise<UserPrimitives | null> {
     const foundPlan = await this.collection.findOne({
       email,
     });
 
-    if (!foundPlan) {
-      return null;
-    }
-
-    const userDocument = foundPlan;
-
-    const user = User.buildWithIdentifier(
-      new Identifier(new ObjectId(userDocument._id)),
-      userDocument.name,
-      userDocument.email,
-      userDocument.phoneNumber,
-      ""
-    );
-    return user;
+    return foundPlan
+      ? MongoUserConverter.mongoUserToUserPrimitives(foundPlan)
+      : null;
   }
 
   find(id: Identifier): User | null {

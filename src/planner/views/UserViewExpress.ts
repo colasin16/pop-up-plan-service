@@ -6,7 +6,7 @@ import {
   FindPlanByCategoryView,
 } from "./FindPlanByCategoryView";
 import { FindPlanByIdMessage, FindPlanByIdView } from "./findPlanByIdView";
-import { loginUserMessage, LoginUserView } from "./express/LoginUserView";
+import { LoginUserView } from "./express/LoginUserView";
 import { CreatePlanView } from "./express/CreatePlanView";
 import { CreateUserView } from "./express/CreateUserView";
 
