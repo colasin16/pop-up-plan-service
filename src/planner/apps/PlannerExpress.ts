@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 import * as bodyParser from "body-parser";
 import { UserViewExpress } from "../views/UserViewExpress";
 
-const SERVER_PORT = Number(process.env.SERVER_PORT)
+const SERVER_PORT = Number(process.env.SERVER_PORT);
 
 // TODO: deberia ser una implementacion de una abstracta pura (interface) HttpServer o se podria montar jerarquia de API pero hacer los contratos
 export class PlannerExpress {
@@ -12,10 +12,22 @@ export class PlannerExpress {
   private port: number;
   private view: UserViewExpress;
 
-  constructor() {
-    this.app = express();
-    this.port = SERVER_PORT||8080;
-    this.view = new UserViewExpress();
+  constructor(async_param) {
+    //ref: https://stackoverflow.com/a/43433773/5377615
+    if (typeof async_param === "undefined") {
+      throw new Error("Cannot be called directly");
+    }
+  }
+
+  public static async build(): Promise<PlannerExpress> {
+    const view = await UserViewExpress.build();
+    const planner = new PlannerExpress(view);
+
+    planner.app = express();
+    planner.port = SERVER_PORT || 8080;
+    planner.view = view;
+
+    return planner;
   }
 
   public setup(): PlannerExpress {
@@ -38,6 +50,15 @@ export class PlannerExpress {
     this.app.post("/plan", (req: Request, res: Response) =>
       this.view.createPlan(req, res)
     );
+
+    this.app.post("/user", (req: Request, res: Response) =>
+      this.view.createUser(req, res)
+    );
+
+    this.app.post("/login", (req: Request, res: Response) =>
+      this.view.authenticateUser(req, res)
+    );
+
     return this;
   }
 

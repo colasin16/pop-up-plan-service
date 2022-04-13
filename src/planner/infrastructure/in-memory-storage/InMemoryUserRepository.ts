@@ -9,8 +9,13 @@ export class InMemoryUserRepository implements UserRepository {
     this.map = new Map<string, User>();
   }
 
-  public create(user: User): void {
-    this.map.set(user.getId().toString(), user);
+  findByEmail(email: string): Promise<User | null> {
+    throw new Error("Method not implemented.");
+  }
+
+  public async create(user: User): Promise<Identifier> {
+    await Promise.resolve(this.map.set(user.getId().toString(), user));
+    return user.getId();
   }
 
   public find(id: Identifier): User | null {

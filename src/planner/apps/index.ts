@@ -1,10 +1,18 @@
+import "reflect-metadata";
+import { DependencyInjectionManager } from "../utils/DI/container";
 import { PlannerExpress } from "./PlannerExpress";
 
-try {
-  // prettier-ignore
-  new PlannerExpress()
-    .setup()
-    .listen();
-} catch (e) {
-  console.error(e);
+async function main() {
+  try {
+    const DIManager = new DependencyInjectionManager();
+    await DIManager.setup();
+
+    // prettier-ignore
+    const plannerExpress = await PlannerExpress.build()
+    plannerExpress.setup().listen();
+  } catch (e) {
+    console.error(e);
+  }
 }
+
+main();

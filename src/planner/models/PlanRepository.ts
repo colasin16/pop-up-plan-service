@@ -1,13 +1,13 @@
 import { Identifier } from "./Identifier";
 import { Plan } from "./Plan";
 import { Category } from "../types/Category";
+import { PlanPrimitives } from "./primitives/PlanPrimitives";
 
 export interface PlanRepository {
-  create(plan: Plan): void;
-  find(id: Identifier): Plan | null;
-  findAll(): Plan[];
-  // README: que no se haga la lista muy grande de findByNske findByNscuantos findBySkibidi... [igual que en el UserViewExpress!!]
-  findByCategory(category: Category): Plan[];
+  create(plan: Plan): Promise<Identifier>;
+  find(id: Identifier): Promise<PlanPrimitives | null>;
+  findAll(): Promise<PlanPrimitives[]>;
+  findByCategory(category: Category): Promise<PlanPrimitives[]>;
   update(plan: Plan): void;
   delete(id: Identifier): void;
 }

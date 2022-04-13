@@ -1,3 +1,4 @@
+import { ObjectID } from "bson";
 import { Plan } from "../models/Plan";
 import { User } from "../models/User";
 import { Category } from "../types/Category";
@@ -6,7 +7,7 @@ import { PlanRepository } from "../models/PlanRepository";
 import { Identifier } from "../models/Identifier";
 
 export interface CreatePlanMessage {
-  owner: string;
+  ownerId: string;
   title: string;
   location: string;
   time: number;
@@ -25,7 +26,7 @@ export class CreatePlanView {
     this.planRepository = planRepository;
   }
 
-  public interact(message: CreatePlanMessage): Identifier {
+  public async interact(message: CreatePlanMessage): Promise<Identifier> {
     const plan = new Plan(
       message.title,
       message.location,
@@ -34,8 +35,8 @@ export class CreatePlanView {
       new Category(message.category).value,
       message.description
     );
-    plan.setOwner(new User(message.owner));
-    this.planRepository.create(plan);
-    return plan.getId();
+
+    plan.setOwner(new Identifier(new ObjectID(message.ownerId)));
+    return await this.planRepository.create(plan);
   }
 }

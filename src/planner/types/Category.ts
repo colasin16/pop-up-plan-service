@@ -1,8 +1,8 @@
 import { EnumValueObject } from "../utils/EnumValueObject";
 
 export enum ECategory {
-  RUN,
-  WALK,
+  RUN = "run",
+  WALK = "walk",
 }
 
 export class Category extends EnumValueObject<ECategory> {
