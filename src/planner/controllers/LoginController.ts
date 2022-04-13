@@ -1,21 +1,21 @@
-import { Logger } from "mongodb";
+import { container } from "tsyringe";
+import { MongoDBClient } from "../apps/PlannerMongo";
+import { MongoUserRepository } from "../infrastructure/mongo-db/MongoUserRepository";
 import { UserRepository } from "../models/UserRepository";
 import { PasswordEncryptor } from "../utils/PasswordEcryptor";
 
-export interface loginUserMessage {
+export interface LoginMessage {
   username: string;
   password: string;
 }
 
-export class LoginUserView {
-  private userRepository: UserRepository;
+export class LoginController {
+  public async control(message: LoginMessage): Promise<String | null> {
+    const userRepository: UserRepository = new MongoUserRepository(
+      container.resolve(MongoDBClient)
+    );
 
-  constructor(userRepository: UserRepository) {
-    this.userRepository = userRepository;
-  }
-
-  public async interact(message: loginUserMessage): Promise<String | null> {
-    const user = await this.userRepository.findByEmail(message.username);
+    const user = await userRepository.findByEmail(message.username);
 
     if (user) {
       const hashPassword = user.serialize().password;

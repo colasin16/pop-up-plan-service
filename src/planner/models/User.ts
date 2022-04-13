@@ -12,7 +12,7 @@ export class User {
   private password: string;
 
   public static deserialize(document: UserPrimitives): Promise<User> {
-    return this.build(
+    return this.buildWithIdentifier(
       new Identifier(new ObjectId(document.id)),
       document.name,
       document.email,
@@ -21,22 +21,6 @@ export class User {
     );
   }
 
-  // constructor(
-  //   name?: string,
-  //   lastName?: string,
-  //   email?: string,
-  //   phoneNumber?: string,
-  //   password?: string,
-  //   id?: string
-  // ) {
-  //   this.name = name ?? "";
-  //   this.lastName = lastName ?? "";
-  //   this.email = email ?? "";
-  //   this.phoneNumber = phoneNumber ?? "";
-  //   this.password = password ? await PasswordEncryptor(password) : "";
-  //   this.id = id ? new Identifier(new ObjectId(id)) : new Identifier();
-  // }
-
   constructor(async_param) {
     if (typeof async_param === "undefined") {
       throw new Error("Cannot be called directly, use build method instead");
@@ -44,7 +28,7 @@ export class User {
   }
 
   static async build(
-    id: Identifier,
+    // id: Identifier,
     name: FullName,
     email: string,
     phoneNumber: string,
@@ -62,9 +46,21 @@ export class User {
     tmpUser.email = emailThis;
     tmpUser.phoneNumber = phoneNumberThis;
     tmpUser.password = encryptedPassword;
-    tmpUser.id = id;
+    // tmpUser.id = id;
 
     return tmpUser;
+  }
+
+  static async buildWithIdentifier(
+    id: Identifier,
+    name: FullName,
+    email: string,
+    phoneNumber: string,
+    password: string
+  ): Promise<User> {
+    const user = await this.build(name, email, phoneNumber, password);
+    user.id = id;
+    return user;
   }
 
   public getId() {

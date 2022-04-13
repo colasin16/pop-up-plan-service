@@ -4,15 +4,16 @@ import { Plan } from "../../src/planner/models/Plan";
 import { Category } from "../../src/planner/types/Category";
 import { Privacy } from "../../src/planner/types/Privacy";
 import { InMemoryPlanRepository } from "../../src/planner/infrastructure/in-memory-storage/InMemoryPlanRepository";
-import { CreatePlanMessage } from "../../src/planner/views/CreatePlanView";
+
 import { User } from "../../src/planner/models/User";
 import { Identifier } from "../../src/planner/models/Identifier";
+import { CreatePlanMessage } from "../../src/planner/controllers/CreatePlanController";
 
 describe("Unit test", () => {
   describe("Plan", () => {
     describe(".addAtendees", () => {
       before(async () => {
-        const ownerUser = await User.build(
+        const ownerUser = await User.buildWithIdentifier(
           new Identifier(),
           { firstName: "Jhon", lastName: "Doe" },
           "jhondoe@owner.pic",
