@@ -113,17 +113,14 @@ export class UserViewExpress {
   }
 
   public async createUser(req: Request, res: Response): Promise<void> {
-    console.debug(`req.body: ${JSON.stringify(req.body)}`);
     const message: CreateUserMessage = {
       email: req.body.email,
-      id: req.body.id,
       name: req.body.name,
       phoneNumber: req.body.phoneNumber,
       password: req.body.password,
     };
     try {
       const userId = await this.createUserView.interact(message);
-      console.debug(`user '${userId.toString()} has been created!`);
       res.status(201).send({ success: true, userId: userId.toString() });
     } catch (e) {
       console.error(e);

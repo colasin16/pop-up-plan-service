@@ -55,7 +55,15 @@ export class MongoUserRepository implements UserRepository {
 
   public async create(user: User): Promise<void> {
     const serializedUser = user.serialize();
-    const operationResult = await this.collection.insertOne(serializedUser);
+    const operationResult = await this.collection.insertOne({
+      name: {
+        firstName: serializedUser.name.firstName,
+        lastName: serializedUser.name.lastName,
+      },
+      email: serializedUser.email,
+      phoneNumber: serializedUser.phoneNumber,
+      password: serializedUser.password,
+    });
     console.log("User created with id " + operationResult.insertedId);
   }
 }

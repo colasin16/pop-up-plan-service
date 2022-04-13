@@ -1,11 +1,9 @@
 import { User } from "../models/User";
 import { Identifier } from "../models/Identifier";
 import { UserRepository } from "../models/UserRepository";
-import { ObjectId } from "bson";
 import { FullName } from "../types/FullName";
 
 export interface CreateUserMessage {
-  id?: string;
   name: FullName;
   email: string;
   phoneNumber: string;
@@ -21,7 +19,7 @@ export class CreateUserView {
 
   public async interact(message: CreateUserMessage): Promise<Identifier> {
     const user = await User.build(
-      new Identifier(new ObjectId(message.id)),
+      new Identifier(),
       message.name,
       message.email,
       message.phoneNumber,

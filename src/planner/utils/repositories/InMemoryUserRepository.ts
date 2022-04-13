@@ -12,8 +12,8 @@ export class InMemoryUserRepository implements UserRepository {
     throw new Error("Method not implemented.");
   }
 
-  public create(user: User): void {
-    this.map.set(user.getId().toString(), user);
+  public async create(user: User): Promise<void> {
+    await Promise.resolve(this.map.set(user.getId().toString(), user));
   }
 
   public find(id: Identifier): User | null {
