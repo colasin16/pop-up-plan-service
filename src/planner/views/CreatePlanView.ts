@@ -36,9 +36,8 @@ export class CreatePlanView {
       message.description
     );
 
-    // TODO: check input arguments of method build
     const userId: Identifier = new Identifier(new ObjectId(message.ownerId));
-    plan.setOwner(await User.build(userId));
+    plan.setOwner(userId);
     this.planRepository.create(plan);
     return plan.getId();
   }

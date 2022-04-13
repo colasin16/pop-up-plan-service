@@ -22,12 +22,8 @@ export class FindPlanByCategoryView {
       new Category(message.category)
     );
 
-    const plans = await Promise.all(
-      planPrimitivesList.map(
-        async (planPrimitives) => await Plan.deserialize(planPrimitives)
-      )
+    return planPrimitivesList.map((planPrimitives) =>
+      Plan.deserialize(planPrimitives)
     );
-
-    return plans;
   }
 }

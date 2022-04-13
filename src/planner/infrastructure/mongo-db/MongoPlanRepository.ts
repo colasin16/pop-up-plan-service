@@ -32,8 +32,15 @@ export class MongoPlanRepository implements PlanRepository {
   public async findAll(): Promise<PlanPrimitives[]> {
     const mongoPlanList = await this.collection.find().toArray();
 
-    const plansPrimitives = mongoPlanList.map<PlanPrimitives>((planDocument) =>
-      MongoPlanConverter.mongoPlanToPlanPrimitives(planDocument)
+    const plansPrimitives = mongoPlanList.map<PlanPrimitives>(
+      (planDocument) => {
+        console.log(
+          "🚀 ~ file: MongoPlanRepository.ts ~ line 36 ~ MongoPlanRepository ~ findAll ~ planDocument.attendees",
+          planDocument.attendees
+        );
+
+        return MongoPlanConverter.mongoPlanToPlanPrimitives(planDocument);
+      }
     );
 
     return plansPrimitives;
@@ -43,8 +50,8 @@ export class MongoPlanRepository implements PlanRepository {
     const plans = new Array<PlanPrimitives>();
     const plansPrimitives = await this.findAll();
 
-    plansPrimitives.forEach(async (plan) => {
-      const planInstance = await Plan.deserialize(plansPrimitives[0]);
+    plansPrimitives.forEach((plan) => {
+      const planInstance = Plan.deserialize(plan);
       if (planInstance.hasCategory(category)) {
         plans.push(plan);
       }

@@ -32,8 +32,8 @@ export class InMemoryPlanRepository implements PlanRepository {
 
   public async findByCategory(category: Category): Promise<PlanPrimitives[]> {
     const plans = new Array<PlanPrimitives>();
-    this.map.forEach(async (plan) => {
-      const planInstance = await Plan.deserialize(plan);
+    this.map.forEach((plan) => {
+      const planInstance = Plan.deserialize(plan);
       if (planInstance.hasCategory(category)) {
         plans.push(plan);
       }

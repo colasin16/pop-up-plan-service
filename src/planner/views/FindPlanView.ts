@@ -14,11 +14,8 @@ export class FindPlanView {
   public async interact(): Promise<Plan[]> {
     const planPrimitivesList = await this.planRepository.findAll();
 
-    const plans = await Promise.all(
-      planPrimitivesList.map(
-        async (planPrimitives) => await Plan.deserialize(planPrimitives)
-      )
+    return planPrimitivesList.map((planPrimitives) =>
+      Plan.deserialize(planPrimitives)
     );
-    return plans;
   }
 }

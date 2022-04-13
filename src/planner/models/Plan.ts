@@ -7,16 +7,16 @@ import { User } from "./User";
 
 export class Plan {
   private id: Identifier;
-  private owner: User;
+  private owner: Identifier;
   private title: string;
   private location: string;
   private time: number;
   private privacy: Privacy;
   private category: Category;
-  private attendees: User[];
+  private attendees: Identifier[];
   private description?: string;
 
-  public static async deserialize(primitives: PlanPrimitives): Promise<Plan> {
+  public static deserialize(primitives: PlanPrimitives): Plan {
     const plan = new Plan(
       primitives.title,
       primitives.location,
@@ -26,12 +26,11 @@ export class Plan {
       primitives.description
     );
 
-    plan.setOwner(await User.deserialize(primitives.owner));
+    plan.setOwner(new Identifier(new ObjectId(primitives.owner)));
     plan.id = new Identifier(new ObjectId(primitives.id));
-    let userPromises: Promise<User>[] = primitives.attendees.map(
-      async (atendee) => await User.deserialize(atendee)
+    plan.attendees = primitives.attendees.map(
+      (attendee) => new Identifier(new ObjectId(attendee))
     );
-    plan.attendees = await Promise.all(userPromises);
     return plan;
   }
 
@@ -50,36 +49,36 @@ export class Plan {
     this.description = description;
     this.privacy = new Privacy(privacy);
     this.category = new Category(category);
-    this.attendees = new Array<User>();
+    this.attendees = new Array<Identifier>();
   }
 
   public getId(): Identifier {
     return this.id;
   }
 
-  public setOwner(user: User) {
-    this.owner = user;
+  public setOwner(userId: Identifier) {
+    this.owner = userId;
   }
 
   public hasCategory(category: Category) {
     return category.equals(this.category);
   }
 
-  public addAttendees(attendees: User[]) {
+  public addAttendees(attendees: Identifier[]) {
     this.attendees.push(...attendees);
   }
 
   public serialize(): PlanPrimitives {
     return {
       id: this.id.toString(),
-      owner: this.owner.serialize().id,
+      owner: this.owner.toString(),
       title: this.title,
       description: this.description,
       location: this.location,
       time: this.time,
       privacy: this.privacy.value.toString(),
       category: this.category.value.toString(),
-      attendees: this.attendees.map((attendee) => attendee.serialize().id),
+      attendees: this.attendees.map((attendee) => attendee.toString()),
     };
   }
 }

@@ -1,8 +1,8 @@
 import { EnumValueObject } from "../utils/EnumValueObject";
 
 export enum EPrivacy {
-  PRIVATE,
-  PUBLIC,
+  PRIVATE = "private",
+  PUBLIC = "public",
 }
 
 export class Privacy extends EnumValueObject<EPrivacy> {
