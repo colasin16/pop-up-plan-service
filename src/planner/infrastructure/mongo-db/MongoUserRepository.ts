@@ -1,4 +1,4 @@
-import { ObjectId } from "bson";
+import { ObjectID, ObjectId } from "bson";
 import { Collection, WithId } from "mongodb";
 import { MongoDBClient } from "../../apps/PlannerMongo";
 import { Identifier } from "../../models/Identifier";
@@ -24,19 +24,14 @@ export class MongoUserRepository implements UserRepository {
       return null;
     }
 
-    // console.debug(`typeof foundPlan: ${typeof foundPlan}`);
-    console.debug(`found plan: ${JSON.stringify(foundPlan)}`);
-    console.debug(`found plan id: ${JSON.stringify(foundPlan._id)}`);
     const userDocument = foundPlan;
-    const hashPassword = userDocument.password; //password which is saved on db is hashed password
 
     const user = User.build(
       new Identifier(new ObjectId(userDocument._id)),
       userDocument.name,
       userDocument.email,
       userDocument.phoneNumber,
-      "",
-      hashPassword
+      ""
     );
     return user;
   }
@@ -53,9 +48,9 @@ export class MongoUserRepository implements UserRepository {
     throw new Error("Method not implemented.");
   }
 
-  public async create(user: User): Promise<void> {
+  public async create(user: User): Promise<Identifier> {
     const serializedUser = user.serialize();
-    const operationResult = await this.collection.insertOne({
+    const result = await this.collection.insertOne({
       name: {
         firstName: serializedUser.name.firstName,
         lastName: serializedUser.name.lastName,
@@ -64,6 +59,7 @@ export class MongoUserRepository implements UserRepository {
       phoneNumber: serializedUser.phoneNumber,
       password: serializedUser.password,
     });
-    console.log("User created with id " + operationResult.insertedId);
+    console.log("User created with id " + result.insertedId);
+    return new Identifier(new ObjectID(result.insertedId.toString()));
   }
 }

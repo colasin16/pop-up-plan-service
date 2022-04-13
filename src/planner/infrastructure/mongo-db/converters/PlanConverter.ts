@@ -24,14 +24,14 @@ export class MongoPlanConverter {
     mongoPlan: WithId<MongoPlan>
   ): PlanPrimitives {
     return {
-      id: mongoPlan._id.id.toString(),
-      owner: mongoPlan.owner.id.toString(),
+      id: mongoPlan._id.toString(),
+      owner: mongoPlan.owner.toString(),
       title: mongoPlan.title,
       location: mongoPlan.location,
       time: mongoPlan.time,
       privacy: mongoPlan.privacy,
       category: mongoPlan.category,
-      attendees: mongoPlan.attendees.map((_id) => _id.id.toString()),
+      attendees: mongoPlan.attendees.map((_id) => _id.toString()),
       description: mongoPlan.description,
     };
   }

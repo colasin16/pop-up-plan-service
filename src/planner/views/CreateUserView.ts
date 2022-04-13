@@ -25,7 +25,7 @@ export class CreateUserView {
       message.phoneNumber,
       message.password
     );
-    this.userRepository.create(user);
-    return user.getId();
+
+    return await this.userRepository.create(user);
   }
 }

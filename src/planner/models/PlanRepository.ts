@@ -4,7 +4,7 @@ import { Category } from "../types/Category";
 import { PlanPrimitives } from "./primitives/PlanPrimitives";
 
 export interface PlanRepository {
-  create(plan: Plan): void;
+  create(plan: Plan): Promise<Identifier>;
   find(id: Identifier): Promise<PlanPrimitives | null>;
   findAll(): Promise<PlanPrimitives[]>;
   findByCategory(category: Category): Promise<PlanPrimitives[]>;

@@ -44,22 +44,16 @@ export class User {
   }
 
   static async build(
-    id?: Identifier,
-    name?: FullName,
-    email?: string,
-    phoneNumber?: string,
-    password?: string,
-    hashPassword?: string
+    id: Identifier,
+    name: FullName,
+    email: string,
+    phoneNumber: string,
+    password: string
   ): Promise<User> {
-    const nameThis = name ?? new FullName();
-    const emailThis = email ?? "";
-    const phoneNumberThis = phoneNumber ?? "";
-    const encryptedPassword = hashPassword
-      ? hashPassword
-      : await PasswordEncryptor.encryptPassword(password);
-
-    const passwordThis = encryptedPassword ? encryptedPassword : "";
-    const idThis = id ? id : new Identifier();
+    const nameThis = name;
+    const emailThis = email;
+    const phoneNumberThis = phoneNumber;
+    const encryptedPassword = await PasswordEncryptor.encryptPassword(password);
 
     // Here we should check that the email is not duplicated / or the phone number
     // var async_result = await doSomeAsyncStuff();
@@ -67,8 +61,8 @@ export class User {
     tmpUser.name = nameThis;
     tmpUser.email = emailThis;
     tmpUser.phoneNumber = phoneNumberThis;
-    tmpUser.password = passwordThis;
-    tmpUser.id = idThis;
+    tmpUser.password = encryptedPassword;
+    tmpUser.id = id;
 
     return tmpUser;
   }

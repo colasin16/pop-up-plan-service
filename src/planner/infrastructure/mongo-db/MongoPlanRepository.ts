@@ -1,4 +1,5 @@
 import { Collection } from "mongodb";
+import { ObjectID } from "bson";
 import { MongoDBClient } from "../../apps/PlannerMongo";
 import { PlanPrimitives } from "../../models/primitives/PlanPrimitives";
 import { Identifier } from "../../models/Identifier";
@@ -59,8 +60,11 @@ export class MongoPlanRepository implements PlanRepository {
     throw new Error("Method not implemented.");
   }
 
-  public async create(plan: Plan): Promise<void> {
-    await this.collection.insertOne(MongoPlanConverter.planToMongoPlan(plan));
+  public async create(plan: Plan): Promise<Identifier> {
+    const result = await this.collection.insertOne(
+      MongoPlanConverter.planToMongoPlan(plan)
+    );
     console.log("Plan created!! ");
+    return new Identifier(new ObjectID(result.insertedId.toString()));
   }
 }

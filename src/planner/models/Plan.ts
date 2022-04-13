@@ -1,9 +1,8 @@
-import { ObjectId } from "bson";
+import { ObjectID } from "bson";
 import { Identifier } from "./Identifier";
 import { PlanPrimitives } from "./primitives/PlanPrimitives";
 import { Category, ECategory } from "../types/Category";
 import { EPrivacy, Privacy } from "../types/Privacy";
-import { User } from "./User";
 
 export class Plan {
   private id: Identifier;
@@ -26,10 +25,10 @@ export class Plan {
       primitives.description
     );
 
-    plan.setOwner(new Identifier(new ObjectId(primitives.owner)));
-    plan.id = new Identifier(new ObjectId(primitives.id));
+    plan.setOwner(new Identifier(new ObjectID(primitives.owner)));
+    plan.id = new Identifier(new ObjectID(primitives.id));
     plan.attendees = primitives.attendees.map(
-      (attendee) => new Identifier(new ObjectId(attendee))
+      (attendee) => new Identifier(new ObjectID(attendee))
     );
     return plan;
   }

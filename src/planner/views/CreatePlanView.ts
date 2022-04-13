@@ -37,7 +37,6 @@ export class CreatePlanView {
     );
 
     plan.setOwner(new Identifier(new ObjectID(message.ownerId)));
-    this.planRepository.create(plan);
-    return plan.getId();
+    return await this.planRepository.create(plan);
   }
 }
