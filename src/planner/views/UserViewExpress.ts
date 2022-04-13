@@ -93,19 +93,18 @@ export class UserViewExpress {
     return userViewExpress;
   }
 
-  public createPlan(req: Request, res: Response): void {
+  public async createPlan(req: Request, res: Response): Promise<void> {
     const message: CreatePlanMessage = {
-      ownerId: req.body.owner.id,
+      ownerId: req.body.owner,
       title: req.body.title,
       location: req.body.location,
       time: req.body.time,
       category: req.body.category,
       privacy: req.body.privacy,
-      capacity: req.body.capacity,
       description: req.body.description,
     };
     try {
-      const planId = this.createPlanView.interact(message);
+      const planId = await this.createPlanView.interact(message);
       res.status(201).send({ success: true, planId: planId.toString() });
     } catch (e) {
       console.error(e);

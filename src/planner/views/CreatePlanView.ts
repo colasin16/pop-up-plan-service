@@ -1,10 +1,10 @@
+import { ObjectID } from "bson";
 import { Plan } from "../models/Plan";
 import { User } from "../models/User";
 import { Category } from "../types/Category";
 import { Privacy } from "../types/Privacy";
 import { PlanRepository } from "../models/PlanRepository";
 import { Identifier } from "../models/Identifier";
-import { ObjectId } from "bson";
 
 export interface CreatePlanMessage {
   ownerId: string;
@@ -36,8 +36,7 @@ export class CreatePlanView {
       message.description
     );
 
-    const userId: Identifier = new Identifier(new ObjectId(message.ownerId));
-    plan.setOwner(userId);
+    plan.setOwner(new Identifier(new ObjectID(message.ownerId)));
     this.planRepository.create(plan);
     return plan.getId();
   }

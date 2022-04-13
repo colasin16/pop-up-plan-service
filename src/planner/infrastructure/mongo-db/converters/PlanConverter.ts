@@ -23,11 +23,6 @@ export class MongoPlanConverter {
   static mongoPlanToPlanPrimitives(
     mongoPlan: WithId<MongoPlan>
   ): PlanPrimitives {
-    console.log(
-      "🚀 ~ file: PlanConverter.ts ~ line 36 ~ MongoPlanConverter ~ mongoPlan.attendees",
-      mongoPlan.attendees
-    );
-
     return {
       id: mongoPlan._id.id.toString(),
       owner: mongoPlan.owner.id.toString(),
