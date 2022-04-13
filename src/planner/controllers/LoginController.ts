@@ -10,19 +10,18 @@ export interface LoginMessage {
 }
 
 export class LoginController {
-  public async control(message: LoginMessage): Promise<String | null> {
+  public async control(message: LoginMessage): Promise<String | void> {
     const userRepository: UserRepository = new MongoUserRepository(
       container.resolve(MongoDBClient)
     );
 
-    const user = await userRepository.findByEmail(message.username);
+    const userPrimitives = await userRepository.findByEmail(message.username);
 
-    if (user) {
-      const hashPassword = user.serialize().password;
+    if (userPrimitives) {
       const plainPassword = message.password;
       const loggedIn = await PasswordEncryptor.comparePassword(
         plainPassword,
-        hashPassword
+        userPrimitives.password
       );
 
       if (loggedIn) {
@@ -31,11 +30,11 @@ export class LoginController {
         return "fakeToken";
       } else {
         console.debug(`user:${message.username}, Login failed`);
+        return;
       }
     }
     console.debug(
       `cannot authenticate because user '${message.username}' has not been found`
     );
-    return null;
   }
 }

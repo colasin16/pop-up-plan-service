@@ -1,4 +1,5 @@
 import { Identifier } from "../../models/Identifier";
+import { UserPrimitives } from "../../models/primitives/UserPrimitives";
 import { User } from "../../models/User";
 import { UserRepository } from "../../models/UserRepository";
 
@@ -9,7 +10,7 @@ export class InMemoryUserRepository implements UserRepository {
     this.map = new Map<string, User>();
   }
 
-  findByEmail(email: string): Promise<User | null> {
+  async findByEmail(email: string): Promise<UserPrimitives | null> {
     throw new Error("Method not implemented.");
   }
 
