@@ -1,16 +1,9 @@
 import * as bodyParser from "body-parser";
-// import compress from 'compression';
-// import errorHandler from 'errorhandler';
-// const express = require("express");
 import express from "express";
 import Router from "express-promise-router";
-// import helmet from 'helmet';
 import * as http from "http";
 import cors from "cors";
-// import Logger from "../../contexts/_core/domain/Logger";
-// import { container } from "./ioc/installer";
 import { registerRoutes } from "./routes";
-// import { coreTypes } from "../_core/ioc/coreTypes";
 
 export class Server {
   private express: express.Express;
@@ -21,15 +14,8 @@ export class Server {
     this.port = port;
     this.express = express();
     this.express.use(bodyParser.json());
-    // this.express.use(bodyParser.urlencoded({ extended: true }));
     this.express.use(cors());
-    // // this.express.use(helmet.xssFilter());
-    // this.express.use(helmet.noSniff());
-    // this.express.use(helmet.hidePoweredBy());
-    // this.express.use(helmet.frameguard({ action: 'deny' }));
-    // this.express.use(compress());
     const router = Router();
-    // router.use(errorHandler());
     this.express.use(router);
     registerRoutes(router);
   }
