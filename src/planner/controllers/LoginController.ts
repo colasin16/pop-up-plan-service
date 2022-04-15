@@ -1,6 +1,6 @@
 import { container } from "tsyringe";
-import { MongoDBClient } from "../apps/PlannerMongo";
-import { MongoUserRepository } from "../infrastructure/mongo-db/MongoUserRepository";
+import { MongoDBClient } from "../infrastructure/mongo-db/MongoDBClient";
+import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
 import { UserRepository } from "../models/UserRepository";
 import { PasswordEncryptor } from "../utils/PasswordEcryptor";
 

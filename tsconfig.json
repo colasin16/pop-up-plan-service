@@ -5,9 +5,11 @@
     "noImplicitAny": false,
     "strictNullChecks": true,
     "preserveConstEnums": true,
+    "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "sourceMap": true,
+    // "sourceMap": true,
+    "esModuleInterop": true,
     "declaration": true,
     "moduleResolution": "node",
     "stripInternal": true,
@@ -15,9 +17,10 @@
     "allowJs": false,
     "lib": ["es2016", "dom"],
     "typeRoots": ["node_modules/@types"],
-    "noStrictGenericChecks": true
+    "noStrictGenericChecks": true,
+    "skipLibCheck": true
   },
-  "files": ["src/planner/apps/index.ts"],
+  "files": ["src/planner/apps/partner-in-crime/index.ts"],
   "exclude": ["node_modules", "dist"],
   "include": ["test/**/*.test.ts", "src/**/*.ts", "scripts/**/*.ts"]
 }

@@ -1,12 +1,12 @@
 import { ObjectID } from "bson";
 import { Collection } from "mongodb";
-import { MongoDBClient } from "../../apps/PlannerMongo";
-import { Identifier } from "../../models/Identifier";
-import { UserPrimitives } from "../../models/primitives/UserPrimitives";
-import { User } from "../../models/User";
-import { UserRepository } from "../../models/UserRepository";
-import { MongoUserConverter } from "./converters/UserConverter";
-import { MongoUser } from "./models/MongoUser";
+import { MongoDBClient } from "../MongoDBClient";
+import { Identifier } from "../../../models/Identifier";
+import { UserPrimitives } from "../../../models/primitives/UserPrimitives";
+import { User } from "../../../models/User";
+import { UserRepository } from "../../../models/UserRepository";
+import { MongoUserConverter } from "../converters/UserConverter";
+import { MongoUser } from "../models/MongoUser";
 
 export class MongoUserRepository implements UserRepository {
   private collection: Collection<MongoUser>;

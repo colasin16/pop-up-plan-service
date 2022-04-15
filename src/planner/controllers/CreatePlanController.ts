@@ -1,7 +1,7 @@
 import { ObjectID } from "bson";
 import { container } from "tsyringe";
-import { MongoDBClient } from "../apps/PlannerMongo";
-import { MongoPlanRepository } from "../infrastructure/mongo-db/MongoPlanRepository";
+import { MongoDBClient } from "../infrastructure/mongo-db/MongoDBClient";
+import { MongoPlanRepository } from "../infrastructure/mongo-db/repositories/MongoPlanRepository";
 import { Identifier } from "../models/Identifier";
 import { Plan } from "../models/Plan";
 import { PlanRepository } from "../models/PlanRepository";

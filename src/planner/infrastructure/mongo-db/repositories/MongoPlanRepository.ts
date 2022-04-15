@@ -1,13 +1,13 @@
 import { Collection } from "mongodb";
 import { ObjectID } from "bson";
-import { MongoDBClient } from "../../apps/PlannerMongo";
-import { PlanPrimitives } from "../../models/primitives/PlanPrimitives";
-import { Identifier } from "../../models/Identifier";
-import { Plan } from "../../models/Plan";
-import { PlanRepository } from "../../models/PlanRepository";
-import { Category } from "../../types/Category";
-import { MongoPlan } from "./models/MongoPlan";
-import { MongoPlanConverter } from "./converters/PlanConverter";
+import { MongoDBClient } from "../MongoDBClient";
+import { PlanPrimitives } from "../../../models/primitives/PlanPrimitives";
+import { Identifier } from "../../../models/Identifier";
+import { Plan } from "../../../models/Plan";
+import { PlanRepository } from "../../../models/PlanRepository";
+import { Category } from "../../../types/Category";
+import { MongoPlan } from "../models/MongoPlan";
+import { MongoPlanConverter } from "../converters/PlanConverter";
 
 export class MongoPlanRepository implements PlanRepository {
   private collection: Collection<MongoPlan>;
