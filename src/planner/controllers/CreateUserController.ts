@@ -1,10 +1,8 @@
-import { container } from "tsyringe";
-import { MongoDBClient } from "../infrastructure/mongo-db/MongoDBClient";
 import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
-import { Identifier } from "../models/Identifier";
-import { User } from "../models/User";
 import { UserRepository } from "../models/UserRepository";
+import { Identifier } from "../models/Identifier";
 import { FullName } from "../types/FullName";
+import { User } from "../models/User";
 
 export interface CreateUserMessage {
   name: FullName;
@@ -15,9 +13,7 @@ export interface CreateUserMessage {
 
 export class CreateUserController {
   public async control(message: CreateUserMessage): Promise<Identifier> {
-    const userRepository: UserRepository = new MongoUserRepository(
-      container.resolve(MongoDBClient)
-    );
+    const userRepository: UserRepository = new MongoUserRepository();
 
     const user = await User.build(
       message.name,

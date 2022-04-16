@@ -8,7 +8,10 @@ export class MongoDBClient {
   private readonly uri = `mongodb+srv://be-service:${"ficbe-service"}@cluster0.whnkw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
   public async setup() {
-    const client = new MongoClient(this.uri);
+    const client = new MongoClient(this.uri, {
+      ignoreUndefined: true,
+      serverSelectionTimeoutMS: 1000,
+    });
 
     try {
       await client.connect();
