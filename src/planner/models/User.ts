@@ -46,7 +46,7 @@ export class User {
     tmpUser.email = emailThis;
     tmpUser.phoneNumber = phoneNumberThis;
     tmpUser.password = encryptedPassword;
-    // tmpUser.id = id;
+    tmpUser.id = new Identifier();
 
     return tmpUser;
   }
@@ -63,13 +63,13 @@ export class User {
     return user;
   }
 
-  public getId() {
+  public getId(): Identifier {
     return this.id;
   }
 
   public serialize(): UserPrimitives {
     return {
-      id: this.id.toString(),
+      id: this.id?.toString(),
       name: this.name,
       email: this.email,
       phoneNumber: this.phoneNumber,
