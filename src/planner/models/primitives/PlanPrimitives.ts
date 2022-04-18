@@ -1,11 +1,11 @@
 export interface PlanPrimitives {
   id: string;
-  owner: string;
+  ownerId: string;
   title: string;
   description?: string;
   location: string;
   time: number;
   privacy: string;
   category: string;
-  attendees: string[];
+  attendeesId: string[];
 }

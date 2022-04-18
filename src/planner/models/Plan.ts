@@ -6,13 +6,13 @@ import { EPrivacy, Privacy } from "../types/Privacy";
 
 export class Plan {
   private id: Identifier;
-  private owner: Identifier;
+  private ownerId: Identifier;
   private title: string;
   private location: string;
   private time: number;
   private privacy: Privacy;
   private category: Category;
-  private attendees: Identifier[];
+  private attendeesId: Identifier[];
   private description?: string;
 
   public static deserialize(primitives: PlanPrimitives): Plan {
@@ -25,9 +25,9 @@ export class Plan {
       primitives.description
     );
 
-    plan.setOwner(new Identifier(new ObjectID(primitives.owner)));
+    plan.setOwner(new Identifier(new ObjectID(primitives.ownerId)));
     plan.id = new Identifier(new ObjectID(primitives.id));
-    plan.attendees = primitives.attendees.map(
+    plan.attendeesId = primitives.attendeesId.map(
       (attendee) => new Identifier(new ObjectID(attendee))
     );
     return plan;
@@ -48,7 +48,7 @@ export class Plan {
     this.description = description;
     this.privacy = new Privacy(privacy);
     this.category = new Category(category);
-    this.attendees = new Array<Identifier>();
+    this.attendeesId = new Array<Identifier>();
   }
 
   public getId(): Identifier {
@@ -56,7 +56,7 @@ export class Plan {
   }
 
   public setOwner(userId: Identifier) {
-    this.owner = userId;
+    this.ownerId = userId;
   }
 
   public hasCategory(category: Category) {
@@ -64,20 +64,20 @@ export class Plan {
   }
 
   public addAttendees(attendees: Identifier[]) {
-    this.attendees.push(...attendees);
+    this.attendeesId.push(...attendees);
   }
 
   public serialize(): PlanPrimitives {
     return {
       id: this.id.toString(),
-      owner: this.owner.toString(),
+      ownerId: this.ownerId.toString(),
       title: this.title,
       description: this.description,
       location: this.location,
       time: this.time,
       privacy: this.privacy.value.toString(),
       category: this.category.value.toString(),
-      attendees: this.attendees.map((attendee) => attendee.toString()),
+      attendeesId: this.attendeesId.map((attendee) => attendee.toString()),
     };
   }
 }

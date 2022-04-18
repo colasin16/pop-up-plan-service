@@ -1,5 +1,5 @@
 import { ObjectID } from "bson";
-import { Collection } from "mongodb";
+import { Collection, Condition, ObjectId } from "mongodb";
 import { MongoDBClient } from "../../apps/PlannerMongo";
 import { Identifier } from "../../models/Identifier";
 import { UserPrimitives } from "../../models/primitives/UserPrimitives";
@@ -18,17 +18,29 @@ export class MongoUserRepository implements UserRepository {
   }
 
   public async findByEmail(email: string): Promise<UserPrimitives | null> {
-    const foundPlan = await this.collection.findOne({
+    const foundUser = await this.collection.findOne({
       email,
     });
 
-    return foundPlan
-      ? MongoUserConverter.mongoUserToUserPrimitives(foundPlan)
+    return foundUser
+      ? MongoUserConverter.mongoUserToUserPrimitives(foundUser)
       : null;
   }
 
-  find(id: Identifier): User | null {
-    throw new Error("Method not implemented.");
+  public async find(id: Identifier): Promise<UserPrimitives | null> {
+    const id_oj = new ObjectId(id.toString());
+
+    const data = {
+      _id: id_oj,
+    };
+
+    const foundItem = await this.collection.findOne(data);
+
+    console.debug(`foundedItem: ${foundItem}`);
+
+    return foundItem
+      ? MongoUserConverter.mongoUserToUserPrimitives(foundItem)
+      : null;
   }
 
   update(user: User): void {
@@ -39,7 +51,7 @@ export class MongoUserRepository implements UserRepository {
     throw new Error("Method not implemented.");
   }
 
-  public async create(user: User): Promise<Identifier> {
+  public async create(user: User): Promise<UserPrimitives | null> {
     const serializedUser = user.serialize();
     const result = await this.collection.insertOne({
       name: {
@@ -51,6 +63,13 @@ export class MongoUserRepository implements UserRepository {
       password: serializedUser.password,
     });
     console.log("User created with id " + result.insertedId);
-    return new Identifier(new ObjectID(result.insertedId.toString()));
+
+    const identifier = new Identifier(
+      new ObjectID(result.insertedId.toString())
+    );
+    // return new Identifier(new ObjectID(result.insertedId.toString()));
+    const newUser = await this.find(identifier);
+
+    return newUser;
   }
 }

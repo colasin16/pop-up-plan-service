@@ -12,7 +12,7 @@ export class CreatePlanView {
 
   public async render(req: Request, res: Response): Promise<void> {
     const message: CreatePlanMessage = {
-      ownerId: req.body.owner,
+      ownerId: req.body.ownerId,
       title: req.body.title,
       location: req.body.location,
       time: req.body.time,

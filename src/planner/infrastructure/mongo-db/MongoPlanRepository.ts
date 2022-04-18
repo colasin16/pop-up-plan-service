@@ -1,4 +1,4 @@
-import { Collection } from "mongodb";
+import { Collection, ObjectId } from "mongodb";
 import { ObjectID } from "bson";
 import { MongoDBClient } from "../../apps/PlannerMongo";
 import { PlanPrimitives } from "../../models/primitives/PlanPrimitives";
@@ -19,15 +19,16 @@ export class MongoPlanRepository implements PlanRepository {
   }
 
   public async find(id: Identifier): Promise<PlanPrimitives | null> {
-    const foundPlan = await this.collection.findOne({
-      id: id,
+    const _id = new ObjectId(id.toString());
+    const foundItem = await this.collection.findOne({
+      _id,
     });
 
-    if (foundPlan) {
-      return MongoPlanConverter.mongoPlanToPlanPrimitives(foundPlan);
-    }
+    console.debug(`foundedItem: ${foundItem}`);
 
-    return null;
+    return foundItem
+      ? MongoPlanConverter.mongoPlanToPlanPrimitives(foundItem)
+      : null;
   }
 
   public async findAll(): Promise<PlanPrimitives[]> {
