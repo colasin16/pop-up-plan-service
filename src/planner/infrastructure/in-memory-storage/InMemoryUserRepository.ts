@@ -15,20 +15,16 @@ export class InMemoryUserRepository implements UserRepository {
   }
 
   public async create(user: User): Promise<UserPrimitives | null> {
-    throw new Error("Method not implemented.");
-
-    // await Promise.resolve(this.map.set(user.getId().toString(), user));
-    // return user.getId();
+    await Promise.resolve(this.map.set(user.getId().toString(), user));
+    return user.serialize();
   }
 
   public async find(id: Identifier): Promise<UserPrimitives | null> {
-    throw new Error("Method not implemented.");
-
-    // const user = this.map.get(id.toString());
-    // if (!user) {
-    //   return null;
-    // }
-    // return user;
+    const user = this.map.get(id.toString());
+    if (!user) {
+      return null;
+    }
+    return user.serialize();
   }
 
   public update(user: User): void {
