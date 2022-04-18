@@ -12,6 +12,6 @@ export class Identifier {
   }
 
   public toString(): string {
-    return this._value ? this._value.toHexString() : "";
+    return this._value.toHexString();
   }
 }
