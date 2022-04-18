@@ -61,11 +61,17 @@ export class MongoPlanRepository implements PlanRepository {
     throw new Error("Method not implemented.");
   }
 
-  public async create(plan: Plan): Promise<Identifier> {
+  public async create(plan: Plan): Promise<PlanPrimitives | null> {
     const result = await this.collection.insertOne(
       MongoPlanConverter.planToMongoPlan(plan)
     );
     console.log("Plan created!! ");
-    return new Identifier(new ObjectID(result.insertedId.toString()));
+    const identifier = new Identifier(
+      new ObjectID(result.insertedId.toString())
+    );
+
+    const createdItem = await this.find(identifier);
+
+    return createdItem;
   }
 }

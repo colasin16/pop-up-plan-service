@@ -21,8 +21,8 @@ export class CreatePlanView {
       description: req.body.description,
     };
     try {
-      const planId = await this.createPlanController.control(message);
-      res.status(201).send({ success: true, planId: planId.toString() });
+      const plan = await this.createPlanController.control(message);
+      res.status(201).send({ success: true, planId: plan });
     } catch (e) {
       console.error(e);
       res.status(500).send({ message: "internal-error" });

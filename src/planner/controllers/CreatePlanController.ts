@@ -5,6 +5,7 @@ import { MongoPlanRepository } from "../infrastructure/mongo-db/MongoPlanReposit
 import { Identifier } from "../models/Identifier";
 import { Plan } from "../models/Plan";
 import { PlanRepository } from "../models/PlanRepository";
+import { PlanPrimitives } from "../models/primitives/PlanPrimitives";
 import { Category } from "../types/Category";
 import { Privacy } from "../types/Privacy";
 
@@ -19,7 +20,9 @@ export interface CreatePlanMessage {
 }
 
 export class CreatePlanController {
-  public async control(message: CreatePlanMessage): Promise<Identifier> {
+  public async control(
+    message: CreatePlanMessage
+  ): Promise<PlanPrimitives | null> {
     const planRepository: PlanRepository = new MongoPlanRepository(
       container.resolve(MongoDBClient)
     );
