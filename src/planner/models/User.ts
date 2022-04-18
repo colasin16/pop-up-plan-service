@@ -69,7 +69,7 @@ export class User {
 
   public serialize(): UserPrimitives {
     return {
-      id: this.id?.toString(),
+      id: this.id.toString(),
       name: this.name,
       email: this.email,
       phoneNumber: this.phoneNumber,
