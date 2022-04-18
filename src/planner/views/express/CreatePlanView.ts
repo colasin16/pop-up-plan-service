@@ -19,6 +19,7 @@ export class CreatePlanView {
       category: req.body.category,
       privacy: req.body.privacy,
       description: req.body.description,
+      image: req.body.image,
     };
     try {
       const plan = await this.createPlanController.control(message);

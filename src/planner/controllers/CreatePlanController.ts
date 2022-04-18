@@ -17,6 +17,7 @@ export interface CreatePlanMessage {
   category: string;
   privacy: string;
   description?: string;
+  image?: string;
 }
 
 export class CreatePlanController {

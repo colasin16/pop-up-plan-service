@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import { GetUserByIdController } from "../../controllers/GetUserByIdController";
+import { GetUserController } from "../../controllers/GetUserController";
 import { SearchPlanController } from "../../controllers/SearchPlanController";
 
 export class FindPlanView {
   private searchPlanController: SearchPlanController;
-  private getUserByIdController: GetUserByIdController;
+  private getUserByIdController: GetUserController;
   constructor() {
     this.searchPlanController = new SearchPlanController();
-    this.getUserByIdController = new GetUserByIdController();
+    this.getUserByIdController = new GetUserController();
   }
 
   public async render(req: Request, res: Response): Promise<void> {

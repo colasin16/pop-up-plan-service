@@ -9,6 +9,7 @@ import { FindPlanByIdMessage, FindPlanByIdView } from "./findPlanByIdView";
 import { LoginUserView } from "./express/LoginUserView";
 import { CreatePlanView } from "./express/CreatePlanView";
 import { CreateUserView } from "./express/CreateUserView";
+import { GetUserView } from "./express/GetUserView";
 
 export class UserViewExpress {
   private createPlanView: CreatePlanView;
@@ -17,12 +18,15 @@ export class UserViewExpress {
   // private findPlanByIdView: FindPlanByIdView;
 
   private createUserView: CreateUserView;
+  private getUserView: GetUserView;
   private loginUserView: LoginUserView;
 
   constructor() {
     this.createPlanView = new CreatePlanView();
     this.findPlanView = new FindPlanView();
     this.createUserView = new CreateUserView();
+    this.getUserView = new GetUserView();
+
     this.loginUserView = new LoginUserView();
   }
 
@@ -32,6 +36,10 @@ export class UserViewExpress {
 
   public async createUser(req: Request, res: Response): Promise<void> {
     await this.createUserView.render(req, res);
+  }
+
+  public async getUser(req: Request, res: Response): Promise<void> {
+    await this.getUserView.render(req, res);
   }
 
   public async authenticateUser(req: Request, res: Response): Promise<void> {

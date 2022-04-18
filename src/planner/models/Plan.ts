@@ -14,6 +14,7 @@ export class Plan {
   private category: Category;
   private attendeesId: Identifier[];
   private description?: string;
+  private image?: string;
 
   public static deserialize(primitives: PlanPrimitives): Plan {
     const plan = new Plan(
@@ -22,7 +23,8 @@ export class Plan {
       primitives.time,
       new Privacy(primitives.privacy).value,
       new Category(primitives.category).value,
-      primitives.description
+      primitives.description,
+      primitives.image
     );
 
     plan.setOwner(new Identifier(new ObjectID(primitives.ownerId)));
@@ -39,7 +41,8 @@ export class Plan {
     time: number,
     privacy: EPrivacy,
     category: ECategory,
-    description?: string
+    description?: string,
+    image?: string
   ) {
     this.id = new Identifier();
     this.title = title;
@@ -49,6 +52,7 @@ export class Plan {
     this.privacy = new Privacy(privacy);
     this.category = new Category(category);
     this.attendeesId = new Array<Identifier>();
+    this.image = image;
   }
 
   public getId(): Identifier {
@@ -78,6 +82,7 @@ export class Plan {
       privacy: this.privacy.value.toString(),
       category: this.category.value.toString(),
       attendeesId: this.attendeesId.map((attendee) => attendee.toString()),
+      image: this.image,
     };
   }
 }

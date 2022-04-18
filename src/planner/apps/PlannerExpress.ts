@@ -51,8 +51,12 @@ export class PlannerExpress {
       this.view.createPlan(req, res)
     );
 
-    this.app.post("/user", (req: Request, res: Response) =>
+    this.app.post("/users", (req: Request, res: Response) =>
       this.view.createUser(req, res)
+    );
+
+    this.app.post("/users:userId", (req: Request, res: Response) =>
+      this.view.getUser(req, res)
     );
 
     this.app.post("/login", (req: Request, res: Response) =>

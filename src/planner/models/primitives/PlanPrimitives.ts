@@ -8,4 +8,5 @@ export interface PlanPrimitives {
   privacy: string;
   category: string;
   attendeesId: string[];
+  image?: string;
 }

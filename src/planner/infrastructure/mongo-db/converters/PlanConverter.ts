@@ -17,6 +17,7 @@ export class MongoPlanConverter {
         (attendeeId) => new ObjectId(attendeeId)
       ),
       description: planPrimitives.description,
+      image: planPrimitives.description,
     };
   }
 
@@ -33,6 +34,7 @@ export class MongoPlanConverter {
       category: mongoPlan.category,
       attendeesId: mongoPlan.attendeesId.map((_id) => _id.toString()),
       description: mongoPlan.description,
+      image: mongoPlan.image,
     };
   }
 }
