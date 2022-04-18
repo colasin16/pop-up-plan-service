@@ -47,7 +47,7 @@ export class PlannerExpress {
     //   this.view.findByCategory(req, res)
     // );
 
-    this.app.post("/plan", (req: Request, res: Response) =>
+    this.app.post("/plans", (req: Request, res: Response) =>
       this.view.createPlan(req, res)
     );
 
