@@ -33,7 +33,10 @@ export class CreatePlanController {
       message.description
     );
 
-    plan.setOwner(new Identifier(new ObjectID(message.ownerId)));
+    if (message.ownerId) {
+      plan.setOwner(new Identifier(new ObjectID(message.ownerId)));
+    }
+
     return await planRepository.create(plan);
   }
 }
