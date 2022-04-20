@@ -1,18 +1,21 @@
-import { ObjectID } from "bson";
+import { autoInjectable } from "tsyringe";
 import { Collection } from "mongodb";
-import { MongoDBClient } from "../../apps/PlannerMongo";
-import { Identifier } from "../../models/Identifier";
-import { UserPrimitives } from "../../models/primitives/UserPrimitives";
-import { User } from "../../models/User";
-import { UserRepository } from "../../models/UserRepository";
-import { MongoUserConverter } from "./converters/UserConverter";
-import { MongoUser } from "./models/MongoUser";
+import { ObjectID } from "bson";
 
+import { UserPrimitives } from "../../../models/primitives/UserPrimitives";
+import { MongoUserConverter } from "../converters/UserConverter";
+import { UserRepository } from "../../../models/UserRepository";
+import { Identifier } from "../../../models/Identifier";
+import { MongoDBClient } from "../MongoDBClient";
+import { MongoUser } from "../models/MongoUser";
+import { User } from "../../../models/User";
+
+@autoInjectable()
 export class MongoUserRepository implements UserRepository {
   private collection: Collection<MongoUser>;
 
-  constructor(mongoClient: MongoDBClient) {
-    this.collection = mongoClient.client
+  constructor(mongoClient?: MongoDBClient) {
+    this.collection = mongoClient!.client
       .db("FriendInCrime")
       .collection("Users");
   }

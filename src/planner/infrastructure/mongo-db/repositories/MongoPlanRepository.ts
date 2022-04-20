@@ -1,19 +1,22 @@
+import { autoInjectable } from "tsyringe";
 import { Collection } from "mongodb";
 import { ObjectID } from "bson";
-import { MongoDBClient } from "../../apps/PlannerMongo";
-import { PlanPrimitives } from "../../models/primitives/PlanPrimitives";
-import { Identifier } from "../../models/Identifier";
-import { Plan } from "../../models/Plan";
-import { PlanRepository } from "../../models/PlanRepository";
-import { Category } from "../../types/Category";
-import { MongoPlan } from "./models/MongoPlan";
-import { MongoPlanConverter } from "./converters/PlanConverter";
 
+import { PlanPrimitives } from "../../../models/primitives/PlanPrimitives";
+import { MongoPlanConverter } from "../converters/PlanConverter";
+import { PlanRepository } from "../../../models/PlanRepository";
+import { Identifier } from "../../../models/Identifier";
+import { Category } from "../../../types/Category";
+import { MongoDBClient } from "../MongoDBClient";
+import { MongoPlan } from "../models/MongoPlan";
+import { Plan } from "../../../models/Plan";
+
+@autoInjectable()
 export class MongoPlanRepository implements PlanRepository {
   private collection: Collection<MongoPlan>;
 
-  constructor(mongoClient: MongoDBClient) {
-    this.collection = mongoClient.client
+  constructor(mongoDBClient?: MongoDBClient) {
+    this.collection = mongoDBClient!.client
       .db("FriendInCrime")
       .collection<MongoPlan>("Plans");
   }

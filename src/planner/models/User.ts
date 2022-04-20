@@ -1,8 +1,11 @@
 import { ObjectId } from "bson";
+import { container } from "tsyringe";
 import { FullName } from "../types/FullName";
 import { PasswordEncryptor } from "../utils/PasswordEcryptor";
 import { UserPrimitives } from "./primitives/UserPrimitives";
 import { Identifier } from "./Identifier";
+import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
+import { MongoDBClient } from "../infrastructure/mongo-db/MongoDBClient";
 
 export class User {
   private id: Identifier;
@@ -34,21 +37,26 @@ export class User {
     phoneNumber: string,
     password: string
   ): Promise<User> {
-    const nameThis = name;
+    const userWithSameEmail = await new MongoUserRepository(
+      container.resolve(MongoDBClient)
+    ).findByEmail(email);
+
+    if (userWithSameEmail) {
+      throw new Error("User with that email already exists");
+    }
+
     const emailThis = email;
+    const nameThis = name;
     const phoneNumberThis = phoneNumber;
     const encryptedPassword = await PasswordEncryptor.encryptPassword(password);
 
-    // Here we should check that the email is not duplicated / or the phone number
-    // var async_result = await doSomeAsyncStuff();
-    let tmpUser = new User(encryptedPassword);
-    tmpUser.name = nameThis;
-    tmpUser.email = emailThis;
-    tmpUser.phoneNumber = phoneNumberThis;
-    tmpUser.password = encryptedPassword;
-    // tmpUser.id = id;
+    const user = new User(encryptedPassword);
+    user.name = nameThis;
+    user.email = emailThis;
+    user.phoneNumber = phoneNumberThis;
+    user.password = encryptedPassword;
 
-    return tmpUser;
+    return user;
   }
 
   static async buildWithIdentifier(

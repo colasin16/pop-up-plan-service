@@ -1,8 +1,6 @@
-import { container } from "tsyringe";
-import { MongoDBClient } from "../apps/PlannerMongo";
-import { MongoUserRepository } from "../infrastructure/mongo-db/MongoUserRepository";
-import { UserRepository } from "../models/UserRepository";
+import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
 import { PasswordEncryptor } from "../utils/PasswordEcryptor";
+import { UserRepository } from "../models/UserRepository";
 
 export interface LoginMessage {
   username: string;
@@ -11,9 +9,7 @@ export interface LoginMessage {
 
 export class LoginController {
   public async control(message: LoginMessage): Promise<String | void> {
-    const userRepository: UserRepository = new MongoUserRepository(
-      container.resolve(MongoDBClient)
-    );
+    const userRepository: UserRepository = new MongoUserRepository();
 
     const userPrimitives = await userRepository.findByEmail(message.username);
 

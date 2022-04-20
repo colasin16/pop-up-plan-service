@@ -1,12 +1,11 @@
 import { ObjectID } from "bson";
-import { container } from "tsyringe";
-import { MongoDBClient } from "../apps/PlannerMongo";
-import { MongoPlanRepository } from "../infrastructure/mongo-db/MongoPlanRepository";
-import { Identifier } from "../models/Identifier";
-import { Plan } from "../models/Plan";
+
+import { MongoPlanRepository } from "../infrastructure/mongo-db/repositories/MongoPlanRepository";
 import { PlanRepository } from "../models/PlanRepository";
+import { Identifier } from "../models/Identifier";
 import { Category } from "../types/Category";
 import { Privacy } from "../types/Privacy";
+import { Plan } from "../models/Plan";
 
 export interface CreatePlanMessage {
   ownerId: string;
@@ -20,9 +19,7 @@ export interface CreatePlanMessage {
 
 export class CreatePlanController {
   public async control(message: CreatePlanMessage): Promise<Identifier> {
-    const planRepository: PlanRepository = new MongoPlanRepository(
-      container.resolve(MongoDBClient)
-    );
+    const planRepository: PlanRepository = new MongoPlanRepository();
 
     const plan = new Plan(
       message.title,
