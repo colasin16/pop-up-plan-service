@@ -7,16 +7,17 @@ export class MongoPlanConverter {
   static planToMongoPlan(plan: Plan): MongoPlan {
     const planPrimitives = plan.serialize();
     return {
-      owner: new ObjectId(planPrimitives.owner),
+      ownerId: new ObjectId(planPrimitives.ownerId),
       title: planPrimitives.title,
       location: planPrimitives.location,
       time: planPrimitives.time,
       privacy: planPrimitives.privacy,
       category: planPrimitives.category,
-      attendees: planPrimitives.attendees.map(
+      attendeesId: planPrimitives.attendeesId.map(
         (attendeeId) => new ObjectId(attendeeId)
       ),
       description: planPrimitives.description,
+      image: planPrimitives.description,
     };
   }
 
@@ -25,14 +26,15 @@ export class MongoPlanConverter {
   ): PlanPrimitives {
     return {
       id: mongoPlan._id.toString(),
-      owner: mongoPlan.owner.toString(),
+      ownerId: mongoPlan.ownerId.toString(),
       title: mongoPlan.title,
       location: mongoPlan.location,
       time: mongoPlan.time,
       privacy: mongoPlan.privacy,
       category: mongoPlan.category,
-      attendees: mongoPlan.attendees.map((_id) => _id.toString()),
+      attendeesId: mongoPlan.attendeesId.map((_id) => _id.toString()),
       description: mongoPlan.description,
+      image: mongoPlan.image,
     };
   }
 }

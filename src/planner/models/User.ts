@@ -1,11 +1,12 @@
-import { ObjectId } from "bson";
 import { container } from "tsyringe";
-import { FullName } from "../types/FullName";
-import { PasswordEncryptor } from "../utils/PasswordEcryptor";
-import { UserPrimitives } from "./primitives/UserPrimitives";
-import { Identifier } from "./Identifier";
+import { ObjectId } from "bson";
+
 import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
 import { MongoDBClient } from "../infrastructure/mongo-db/MongoDBClient";
+import { PasswordEncryptor } from "../utils/PasswordEcryptor";
+import { UserPrimitives } from "./primitives/UserPrimitives";
+import { FullName } from "../types/FullName";
+import { Identifier } from "./Identifier";
 
 export class User {
   private id: Identifier;
@@ -31,7 +32,6 @@ export class User {
   }
 
   static async build(
-    // id: Identifier,
     name: FullName,
     email: string,
     phoneNumber: string,
@@ -71,7 +71,7 @@ export class User {
     return user;
   }
 
-  public getId() {
+  public getId(): Identifier {
     return this.id;
   }
 

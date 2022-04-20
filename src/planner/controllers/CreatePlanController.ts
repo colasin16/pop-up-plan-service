@@ -1,6 +1,7 @@
 import { ObjectID } from "bson";
 
 import { MongoPlanRepository } from "../infrastructure/mongo-db/repositories/MongoPlanRepository";
+import { PlanPrimitives } from "../models/primitives/PlanPrimitives";
 import { PlanRepository } from "../models/PlanRepository";
 import { Identifier } from "../models/Identifier";
 import { Category } from "../types/Category";
@@ -15,10 +16,13 @@ export interface CreatePlanMessage {
   category: string;
   privacy: string;
   description?: string;
+  image?: string;
 }
 
 export class CreatePlanController {
-  public async control(message: CreatePlanMessage): Promise<Identifier> {
+  public async control(
+    message: CreatePlanMessage
+  ): Promise<PlanPrimitives | null> {
     const planRepository: PlanRepository = new MongoPlanRepository();
 
     const plan = new Plan(
@@ -30,7 +34,10 @@ export class CreatePlanController {
       message.description
     );
 
-    plan.setOwner(new Identifier(new ObjectID(message.ownerId)));
+    if (message.ownerId) {
+      plan.setOwner(new Identifier(new ObjectID(message.ownerId)));
+    }
+
     return await planRepository.create(plan);
   }
 }

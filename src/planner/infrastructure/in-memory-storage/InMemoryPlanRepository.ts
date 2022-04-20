@@ -11,11 +11,11 @@ export class InMemoryPlanRepository implements PlanRepository {
     this.map = new Map<string, PlanPrimitives>();
   }
 
-  public async create(plan: Plan): Promise<Identifier> {
+  public async create(plan: Plan): Promise<PlanPrimitives | null> {
     await Promise.resolve(
       this.map.set(plan.getId().toString(), plan.serialize())
     );
-    return plan.getId();
+    return plan.serialize();
   }
 
   public async find(id: Identifier): Promise<PlanPrimitives | null> {

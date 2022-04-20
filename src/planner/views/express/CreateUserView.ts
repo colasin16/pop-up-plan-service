@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { CreateUserController } from "../../controllers/CreateUserController";
+import { UserPrimitives } from "../../models/primitives/UserPrimitives";
 import { FullName } from "../../types/FullName";
 
 export interface CreateUserMessage {
@@ -23,8 +24,9 @@ export class CreateUserView {
       password: req.body.password,
     };
     try {
-      const userId = await this.createUserController.control(message);
-      res.status(201).send({ success: true, userId: userId.toString() });
+      const user: UserPrimitives | null =
+        await this.createUserController.control(message);
+      res.status(201).send({ success: true, user: user });
     } catch (e) {
       console.error(e);
       res.status(500).send({ message: "internal-error" });

@@ -14,4 +14,8 @@ export class Identifier {
   public toString(): string {
     return this._value.toHexString();
   }
+
+  public static fromString(id: string): Identifier {
+    return new Identifier(new ObjectID(id));
+  }
 }

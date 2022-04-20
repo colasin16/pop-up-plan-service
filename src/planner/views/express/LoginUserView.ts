@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
-import { LoginController } from "../../controllers/LoginController";
+import {
+  LoginController,
+  LoginResponseMessage,
+} from "../../controllers/LoginController";
 
 export interface loginUserMessage {
   username: string;
@@ -18,13 +21,19 @@ export class LoginUserView {
       password: req.body.password,
     };
     try {
-      const token = await this.loginController.control(message);
-      // TODO: implement token part
-      if (!token) {
-        res.status(403).send({ success: false, token: token });
+      const responseMessage: LoginResponseMessage | undefined =
+        await this.loginController.control(message);
+
+      if (!responseMessage) {
+        res.status(403).send({ success: false, token: "" });
         return;
       }
-      res.status(201).send({ success: true, token: token });
+
+      res.status(201).send({
+        success: true,
+        token: responseMessage.token,
+        user: responseMessage.user,
+      });
     } catch (e) {
       console.error(e);
       res.status(500).send({ message: "internal-error" });

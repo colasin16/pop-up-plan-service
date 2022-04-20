@@ -1,12 +1,13 @@
 import { ObjectId } from "mongodb";
 
 export interface MongoPlan {
-  owner: ObjectId;
+  ownerId: ObjectId;
   title: string;
   location: string;
   time: number;
   privacy: string;
   category: string;
-  attendees: ObjectId[];
+  attendeesId: ObjectId[];
   description?: string;
+  image?: string;
 }

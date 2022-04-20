@@ -1,6 +1,6 @@
 import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
+import { UserPrimitives } from "../models/primitives/UserPrimitives";
 import { UserRepository } from "../models/UserRepository";
-import { Identifier } from "../models/Identifier";
 import { FullName } from "../types/FullName";
 import { User } from "../models/User";
 
@@ -12,7 +12,9 @@ export interface CreateUserMessage {
 }
 
 export class CreateUserController {
-  public async control(message: CreateUserMessage): Promise<Identifier> {
+  public async control(
+    message: CreateUserMessage
+  ): Promise<UserPrimitives | null> {
     const userRepository: UserRepository = new MongoUserRepository();
 
     const user = await User.build(

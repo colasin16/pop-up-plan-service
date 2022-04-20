@@ -4,6 +4,12 @@ All changes are be kept here.
 
 ## [0.3.0]
 
+## [0.3.0] - 2022-04-18
+
+### Fixed
+
+- Fix issue related to usr id while creating a new user.
+
 ## [0.3.0] - 2022-03-31
 
 ### Added
