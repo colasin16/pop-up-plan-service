@@ -7,5 +7,7 @@ export const register = (app: any) => {
   const view = container.resolve(UserViewExpress);
 
   app.get("/plans", (req: Request, res: Response) => view.findAll(req, res));
-  app.post("/plan", (req: Request, res: Response) => view.createPlan(req, res));
+  app.post("/plans", (req: Request, res: Response) =>
+    view.createPlan(req, res)
+  );
 };
