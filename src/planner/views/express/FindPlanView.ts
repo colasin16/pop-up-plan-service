@@ -19,10 +19,6 @@ export class FindPlanView {
         plans: planPrimitivesList.map((plan) => {
           const ownerId = plan.serialize().ownerId;
 
-          // const owner = await this.getUserByIdController.control({
-          //   id: new Identifier(new ObjectID(ownerId)),
-          // });
-
           return {
             ...plan.serialize(),
             ownerId: ownerId,

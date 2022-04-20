@@ -20,9 +20,7 @@ export class MongoPlanRepository implements PlanRepository {
 
   public async find(id: Identifier): Promise<PlanPrimitives | null> {
     const _id = new ObjectId(id.toString());
-    const foundItem = await this.collection.findOne({
-      _id,
-    });
+    const foundItem = await this.collection.findOne({ _id });
 
     console.debug(`foundedItem: ${foundItem}`);
 

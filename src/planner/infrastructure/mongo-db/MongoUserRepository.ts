@@ -28,13 +28,8 @@ export class MongoUserRepository implements UserRepository {
   }
 
   public async find(id: Identifier): Promise<UserPrimitives | null> {
-    const id_oj = new ObjectId(id.toString());
-
-    const data = {
-      _id: id_oj,
-    };
-
-    const foundItem = await this.collection.findOne(data);
+    const _id = new ObjectId(id.toString());
+    const foundItem = await this.collection.findOne({ _id });
 
     console.debug(`foundedItem: ${foundItem}`);
 
