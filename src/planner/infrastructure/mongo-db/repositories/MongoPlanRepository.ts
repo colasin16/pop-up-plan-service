@@ -56,10 +56,6 @@ export class MongoPlanRepository implements PlanRepository {
       { _id: new ObjectId(plan.getId().toString()) },
       { $set: MongoPlanConverter.planToMongoPlan(plan) }
     );
-    console.debug(
-      "MongoPlanConverter.planToMongoPlan(plan).attendeesId[0]:",
-      MongoPlanConverter.planToMongoPlan(plan).attendeesId[0]
-    );
     // throw new Error("Method not implemented.");
   }
 

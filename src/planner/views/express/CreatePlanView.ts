@@ -3,11 +3,14 @@ import {
   CreatePlanController,
   CreatePlanMessage,
 } from "../../controllers/CreatePlanController";
+import { Plan } from "../../models/Plan";
+import { View } from "../View";
 
-export class CreatePlanView {
-  private createPlanController: CreatePlanController;
-  constructor() {
-    this.createPlanController = new CreatePlanController();
+export class CreatePlanView extends View {
+  protected controllerClass = CreatePlanController;
+
+  public constructor() {
+    super();
   }
 
   public async render(req: Request, res: Response): Promise<void> {
@@ -22,8 +25,10 @@ export class CreatePlanView {
       image: req.body.image,
     };
     try {
-      const plan = await this.createPlanController.control(message);
-      res.status(201).send({ success: true, planId: plan });
+      const controllerResponseMessage = await this.control(message);
+      res
+        .status(201)
+        .send({ success: true, data: controllerResponseMessage.data });
     } catch (e) {
       console.error(e);
       res.status(500).send({ message: "internal-error" });

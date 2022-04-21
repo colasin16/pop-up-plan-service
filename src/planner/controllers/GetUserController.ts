@@ -1,17 +1,21 @@
 import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
-import { UserRepository } from "../models/UserRepository";
 import { Identifier } from "../models/Identifier";
-import { User } from "../models/User";
+import { UserPrimitives } from "../models/primitives/UserPrimitives";
+import { UserRepository } from "../models/UserRepository";
+import { ControllerReturnMessage } from "./types";
 
 export interface GetUserMessage {
   id: Identifier;
 }
 
+export class GetUserResponse extends ControllerReturnMessage {
+  data: UserPrimitives | null;
+}
 export class GetUserController {
-  public async control(message: GetUserMessage): Promise<User | null> {
+  public async control(message: GetUserMessage): Promise<GetUserResponse> {
     const userRepository: UserRepository = new MongoUserRepository();
-    const userPrimitive = await userRepository.find(message.id);
+    const user = await userRepository.find(message.id);
 
-    return userPrimitive ? User.deserialize(userPrimitive) : null;
+    return user ? { data: user } : { data: null };
   }
 }

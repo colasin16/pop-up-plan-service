@@ -1,29 +1,18 @@
 import { Request, Response } from "express";
-import { GetUserController } from "../../controllers/GetUserController";
 import { SearchPlanController } from "../../controllers/SearchPlanController";
+import { Plan } from "../../models/Plan";
+import { View } from "../View";
 
-export class FindPlanView {
-  private searchPlanController: SearchPlanController;
-  private getUserByIdController: GetUserController;
-  constructor() {
-    this.searchPlanController = new SearchPlanController();
-    this.getUserByIdController = new GetUserController();
-  }
+export class FindPlanView extends View {
+  protected controllerClass = SearchPlanController;
 
   public async render(req: Request, res: Response): Promise<void> {
     try {
-      const planPrimitivesList = await this.searchPlanController.control();
+      const { data } = await this.control({});
 
       res.status(200).send({
         success: true,
-        plans: planPrimitivesList.map((plan) => {
-          const ownerId = plan.serialize().ownerId;
-
-          return {
-            ...plan.serialize(),
-            ownerId: ownerId,
-          };
-        }),
+        data,
       });
     } catch (e) {
       console.error(e);

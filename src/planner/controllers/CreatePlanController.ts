@@ -5,6 +5,7 @@ import { Plan } from "../models/Plan";
 import { PlanRepository } from "../models/PlanRepository";
 import { Category } from "../types/Category";
 import { Privacy } from "../types/Privacy";
+import { ControllerReturnMessage } from "./types";
 
 export interface CreatePlanMessage {
   ownerId: string;
@@ -18,7 +19,9 @@ export interface CreatePlanMessage {
 }
 
 export class CreatePlanController {
-  public async control(message: CreatePlanMessage): Promise<Plan | null> {
+  public async control(
+    message: CreatePlanMessage
+  ): Promise<ControllerReturnMessage> {
     const planRepository: PlanRepository = new MongoPlanRepository();
 
     const plan = new Plan(
@@ -34,6 +37,6 @@ export class CreatePlanController {
       plan.setOwner(Identifier.fromString(message.ownerId.toString()));
     }
 
-    return await planRepository.create(plan);
+    return { data: await planRepository.create(plan) };
   }
 }

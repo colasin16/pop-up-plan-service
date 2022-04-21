@@ -3,36 +3,32 @@ import {
   LoginController,
   LoginResponseMessage,
 } from "../../controllers/LoginController";
+import { View } from "../View";
 
 export interface loginUserMessage {
   username: string;
   password: string;
 }
 
-export class LoginUserView {
-  private loginController: LoginController;
-  constructor() {
-    this.loginController = new LoginController();
-  }
+export class LoginUserView extends View {
+  protected controllerClass = LoginController;
 
-  public async render(req: Request, res: Response): Promise<void> {
+  protected async doRender(req: Request, res: Response): Promise<void> {
     const message: loginUserMessage = {
       username: req.body.username,
       password: req.body.password,
     };
     try {
-      const responseMessage: LoginResponseMessage | undefined =
-        await this.loginController.control(message);
+      const { data } = await this.control(message);
 
-      if (!responseMessage) {
+      if (!data) {
         res.status(403).send({ success: false, token: "" });
         return;
       }
 
       res.status(201).send({
         success: true,
-        token: responseMessage.token,
-        user: responseMessage.user,
+        data,
       });
     } catch (e) {
       console.error(e);

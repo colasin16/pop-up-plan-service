@@ -28,12 +28,12 @@ export class UserViewExpress {
     this.loginUserView = new LoginUserView();
   }
 
-  public async createPlan(req: Request, res: Response): Promise<void> {
-    await this.createPlanView.render(req, res);
-  }
-
   public async joinPlanRequest(req: Request, res: Response): Promise<void> {
     await this.joinPlanRequestView.render(req, res);
+  }
+
+  public async createPlan(req: Request, res: Response): Promise<void> {
+    await this.createPlanView.render(req, res);
   }
 
   public async createUser(req: Request, res: Response): Promise<void> {
