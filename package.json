@@ -5,9 +5,9 @@
   "license": "MIT",
   "scripts": {
     "build:only": "tsc -p tsconfig.json --pretty",
-    "start": "ts-node dist/src/planner/apps/index.js",
+    "start": "ts-node dist/src/planner/apps/partner-in-crime/index.js",
     "test": "NODE_ENV=test mocha",
-    "start:dev": "nodemon src/planner/index.ts"
+    "start:dev": "nodemon src/planner/apps/partner-in-crime/index.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
