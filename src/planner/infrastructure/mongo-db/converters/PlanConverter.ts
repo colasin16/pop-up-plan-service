@@ -1,6 +1,8 @@
 import { ObjectId, WithId } from "mongodb";
 import { Plan } from "../../../models/Plan";
 import { PlanPrimitives } from "../../../models/primitives/PlanPrimitives";
+import { ECategory } from "../../../types/Category";
+import { EPrivacy } from "../../../types/Privacy";
 import { MongoPlan } from "../models/MongoPlan";
 
 export class MongoPlanConverter {
@@ -36,5 +38,17 @@ export class MongoPlanConverter {
       description: mongoPlan.description,
       image: mongoPlan.image,
     };
+  }
+
+  static mongoPlanToPlan(mongoPlan: WithId<MongoPlan>): Plan {
+    return new Plan(
+      mongoPlan.title,
+      mongoPlan.location,
+      mongoPlan.time,
+      mongoPlan.privacy as EPrivacy,
+      mongoPlan.category as ECategory,
+      mongoPlan.description,
+      mongoPlan.image
+    );
   }
 }

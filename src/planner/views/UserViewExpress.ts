@@ -1,18 +1,14 @@
 import { Request, Response } from "express";
-
-import { FindPlanView } from "./express/FindPlanView";
-import {
-  FindPlanByCategoryMessage,
-  FindPlanByCategoryView,
-} from "./FindPlanByCategoryView";
-import { FindPlanByIdMessage, FindPlanByIdView } from "./findPlanByIdView";
-import { LoginUserView } from "./express/LoginUserView";
 import { CreatePlanView } from "./express/CreatePlanView";
 import { CreateUserView } from "./express/CreateUserView";
+import { FindPlanView } from "./express/FindPlanView";
 import { GetUserView } from "./express/GetUserView";
+import { JoinPlanRequestView } from "./express/JoinPlanRequestView";
+import { LoginUserView } from "./express/LoginUserView";
 
 export class UserViewExpress {
   private createPlanView: CreatePlanView;
+  private joinPlanRequestView: JoinPlanRequestView;
   private findPlanView: FindPlanView;
   // private findPlanByCategoryView: FindPlanByCategoryView;
   // private findPlanByIdView: FindPlanByIdView;
@@ -23,6 +19,8 @@ export class UserViewExpress {
 
   constructor() {
     this.createPlanView = new CreatePlanView();
+    this.joinPlanRequestView = new JoinPlanRequestView();
+
     this.findPlanView = new FindPlanView();
     this.createUserView = new CreateUserView();
     this.getUserView = new GetUserView();
@@ -32,6 +30,10 @@ export class UserViewExpress {
 
   public async createPlan(req: Request, res: Response): Promise<void> {
     await this.createPlanView.render(req, res);
+  }
+
+  public async joinPlanRequest(req: Request, res: Response): Promise<void> {
+    await this.joinPlanRequestView.render(req, res);
   }
 
   public async createUser(req: Request, res: Response): Promise<void> {
