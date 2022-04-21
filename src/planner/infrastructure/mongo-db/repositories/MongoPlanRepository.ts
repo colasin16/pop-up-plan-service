@@ -21,32 +21,29 @@ export class MongoPlanRepository implements PlanRepository {
       .collection<MongoPlan>("Plans");
   }
 
-  public async find(id: Identifier): Promise<PlanPrimitives | null> {
+  public async find(id: Identifier): Promise<Plan | null> {
     const _id = new ObjectId(id.toString());
     const foundItem = await this.collection.findOne({ _id });
 
     console.debug(`foundedItem: ${foundItem}`);
 
-    return foundItem
-      ? MongoPlanConverter.mongoPlanToPlanPrimitives(foundItem)
-      : null;
+    return foundItem ? MongoPlanConverter.mongoPlanToPlan(foundItem) : null;
   }
 
-  public async findAll(): Promise<PlanPrimitives[]> {
+  public async findAll(): Promise<Plan[]> {
     const mongoPlanList = await this.collection.find().toArray();
 
-    return mongoPlanList.map<PlanPrimitives>((planDocument) =>
-      MongoPlanConverter.mongoPlanToPlanPrimitives(planDocument)
+    return mongoPlanList.map<Plan>((planDocument) =>
+      MongoPlanConverter.mongoPlanToPlan(planDocument)
     );
   }
 
-  public async findByCategory(category: Category): Promise<PlanPrimitives[]> {
-    const plans = new Array<PlanPrimitives>();
+  public async findByCategory(category: Category): Promise<Plan[]> {
+    const plans = new Array<Plan>();
     const plansPrimitives = await this.findAll();
 
     plansPrimitives.forEach((plan) => {
-      const planInstance = Plan.deserialize(plan);
-      if (planInstance.hasCategory(category)) {
+      if (plan.hasCategory(category)) {
         plans.push(plan);
       }
     });
@@ -55,21 +52,27 @@ export class MongoPlanRepository implements PlanRepository {
   }
 
   update(plan: Plan): void {
-    throw new Error("Method not implemented.");
+    this.collection.findOneAndUpdate(
+      { _id: new ObjectId(plan.getId().toString()) },
+      { $set: MongoPlanConverter.planToMongoPlan(plan) }
+    );
+    console.debug(
+      "MongoPlanConverter.planToMongoPlan(plan).attendeesId[0]:",
+      MongoPlanConverter.planToMongoPlan(plan).attendeesId[0]
+    );
+    // throw new Error("Method not implemented.");
   }
 
   delete(id: Identifier): void {
     throw new Error("Method not implemented.");
   }
 
-  public async create(plan: Plan): Promise<PlanPrimitives | null> {
+  public async create(plan: Plan): Promise<Plan | null> {
     const result = await this.collection.insertOne(
       MongoPlanConverter.planToMongoPlan(plan)
     );
 
-    const identifier = new Identifier(
-      new ObjectID(result.insertedId.toString())
-    );
+    const identifier = Identifier.fromString(result.insertedId.toString());
 
     const createdItem = await this.find(identifier);
 

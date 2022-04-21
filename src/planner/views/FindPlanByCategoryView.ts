@@ -18,12 +18,10 @@ export class FindPlanByCategoryView {
   }
 
   public async interact(message: FindPlanByCategoryMessage): Promise<Plan[]> {
-    const planPrimitivesList = await this.planRepository.findByCategory(
+    const planList = await this.planRepository.findByCategory(
       new Category(message.category)
     );
 
-    return planPrimitivesList.map((planPrimitives) =>
-      Plan.deserialize(planPrimitives)
-    );
+    return planList;
   }
 }

@@ -5,20 +5,18 @@ import { Category } from "../../types/Category";
 import { PlanPrimitives } from "../../models/primitives/PlanPrimitives";
 
 export class InMemoryPlanRepository implements PlanRepository {
-  private map: Map<string, PlanPrimitives>;
+  private map: Map<string, Plan>;
 
   constructor() {
-    this.map = new Map<string, PlanPrimitives>();
+    this.map = new Map<string, Plan>();
   }
 
-  public async create(plan: Plan): Promise<PlanPrimitives | null> {
-    await Promise.resolve(
-      this.map.set(plan.getId().toString(), plan.serialize())
-    );
-    return plan.serialize();
+  public async create(plan: Plan): Promise<Plan | null> {
+    await Promise.resolve(this.map.set(plan.getId().toString(), plan));
+    return plan;
   }
 
-  public async find(id: Identifier): Promise<PlanPrimitives | null> {
+  public async find(id: Identifier): Promise<Plan | null> {
     const plan = this.map.get(id.toString());
     if (!plan) {
       return null;
@@ -26,17 +24,16 @@ export class InMemoryPlanRepository implements PlanRepository {
     return plan;
   }
 
-  public async findAll(): Promise<PlanPrimitives[]> {
-    const plans = new Array<PlanPrimitives>();
+  public async findAll(): Promise<Plan[]> {
+    const plans = new Array<Plan>();
     this.map.forEach((plan) => plans.push(plan));
     return plans;
   }
 
-  public async findByCategory(category: Category): Promise<PlanPrimitives[]> {
-    const plans = new Array<PlanPrimitives>();
+  public async findByCategory(category: Category): Promise<Plan[]> {
+    const plans = new Array<Plan>();
     this.map.forEach((plan) => {
-      const planInstance = Plan.deserialize(plan);
-      if (planInstance.hasCategory(category)) {
+      if (plan.hasCategory(category)) {
         plans.push(plan);
       }
     });
@@ -44,7 +41,7 @@ export class InMemoryPlanRepository implements PlanRepository {
   }
 
   public update(plan: Plan): void {
-    this.map.set(plan.getId().toString(), plan.serialize());
+    this.map.set(plan.getId().toString(), plan);
   }
 
   public async delete(id: Identifier): Promise<void> {

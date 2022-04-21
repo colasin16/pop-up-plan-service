@@ -27,10 +27,10 @@ export class Plan {
       primitives.image
     );
 
-    plan.setOwner(new Identifier(new ObjectID(primitives.ownerId)));
-    plan.id = new Identifier(new ObjectID(primitives.id));
-    plan.attendeesId = primitives.attendeesId.map(
-      (attendee) => new Identifier(new ObjectID(attendee))
+    plan.setOwner(Identifier.fromString(primitives.ownerId));
+    plan.id = Identifier.fromString(primitives.id);
+    plan.attendeesId = primitives.attendeesId.map((attendee) =>
+      Identifier.fromString(attendee)
     );
     return plan;
   }
@@ -44,7 +44,7 @@ export class Plan {
     description?: string,
     image?: string
   ) {
-    this.id = new Identifier();
+    // this.id = new Identifier();
     this.title = title;
     this.location = location;
     this.time = time;
@@ -57,6 +57,10 @@ export class Plan {
 
   public getId(): Identifier {
     return this.id;
+  }
+
+  public setId(id: Identifier) {
+    this.id = id;
   }
 
   public setOwner(userId: Identifier) {
@@ -74,7 +78,7 @@ export class Plan {
   public serialize(): PlanPrimitives {
     return {
       id: this.id.toString(),
-      ownerId: this.ownerId.toString(),
+      ownerId: this.ownerId?.toString(),
       title: this.title,
       description: this.description,
       location: this.location,

@@ -41,10 +41,10 @@ describe("Unit test", () => {
         planEntity.setOwner(ownerUser.getId());
 
         const inMemoryPlanRepository = new InMemoryPlanRepository();
-        const planId = inMemoryPlanRepository.create(planEntity);
+        const createdPlan = await inMemoryPlanRepository.create(planEntity);
 
         const plans = await inMemoryPlanRepository.findAll();
-        const plan = plans.find((p) => p.id === planId.toString());
+        const plan = plans.find((p) => p.getId() === createdPlan?.getId());
 
         expect(plan).to.not.be.eq(undefined);
         // expect(planId).should.be.eq(plan.getId());

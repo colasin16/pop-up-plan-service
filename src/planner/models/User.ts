@@ -17,7 +17,7 @@ export class User {
 
   public static deserialize(document: UserPrimitives): Promise<User> {
     return this.buildWithIdentifier(
-      new Identifier(new ObjectId(document.id)),
+      Identifier.fromString(document.id),
       document.name,
       document.email,
       document.phoneNumber,

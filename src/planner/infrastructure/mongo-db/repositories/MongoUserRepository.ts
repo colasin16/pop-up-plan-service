@@ -60,10 +60,7 @@ export class MongoUserRepository implements UserRepository {
     });
     console.log("User created with id " + result.insertedId);
 
-    const identifier = new Identifier(
-      new ObjectID(result.insertedId.toString())
-    );
-
+    const identifier = Identifier.fromString(result.insertedId.toString());
     const newUser = await this.find(identifier);
 
     return newUser;

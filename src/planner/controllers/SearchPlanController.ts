@@ -5,10 +5,8 @@ import { Plan } from "../models/Plan";
 export class SearchPlanController {
   public async control(): Promise<Plan[]> {
     const planRepository: PlanRepository = new MongoPlanRepository();
-    const planPrimitivesList = await planRepository.findAll();
+    const planList = await planRepository.findAll();
 
-    return planPrimitivesList.map((planPrimitives) =>
-      Plan.deserialize(planPrimitives)
-    );
+    return planList;
   }
 }

@@ -1,4 +1,5 @@
 import { ObjectId, WithId } from "mongodb";
+import { Identifier } from "../../../models/Identifier";
 import { Plan } from "../../../models/Plan";
 import { PlanPrimitives } from "../../../models/primitives/PlanPrimitives";
 import { ECategory } from "../../../types/Category";
@@ -41,7 +42,7 @@ export class MongoPlanConverter {
   }
 
   static mongoPlanToPlan(mongoPlan: WithId<MongoPlan>): Plan {
-    return new Plan(
+    const plan = new Plan(
       mongoPlan.title,
       mongoPlan.location,
       mongoPlan.time,
@@ -50,5 +51,9 @@ export class MongoPlanConverter {
       mongoPlan.description,
       mongoPlan.image
     );
+
+    plan.setId(Identifier.fromString(mongoPlan._id.toString()));
+    plan.setOwner(Identifier.fromString(mongoPlan.ownerId.toString()));
+    return plan;
   }
 }
