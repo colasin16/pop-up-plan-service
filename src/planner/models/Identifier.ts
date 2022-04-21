@@ -16,6 +16,6 @@ export class Identifier {
   }
 
   public static fromString(id: string): Identifier {
-    return Identifier.fromString(id);
+    return new Identifier(new ObjectID(id));
   }
 }
