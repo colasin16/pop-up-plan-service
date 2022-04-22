@@ -7,6 +7,7 @@ import { PasswordEncryptor } from "../utils/PasswordEcryptor";
 import { UserPrimitives } from "./primitives/UserPrimitives";
 import { FullName } from "../types/FullName";
 import { Identifier } from "./Identifier";
+import { AlreadyExistsError, BadRequestError } from "../core/ResponseErrors";
 
 export class User {
   private id: Identifier;
@@ -37,14 +38,6 @@ export class User {
     phoneNumber: string,
     password: string
   ): Promise<User> {
-    const userWithSameEmail = await new MongoUserRepository(
-      container.resolve(MongoDBClient)
-    ).findByEmail(email);
-
-    if (userWithSameEmail) {
-      throw new Error("User with that email already exists");
-    }
-
     const emailThis = email;
     const nameThis = name;
     const phoneNumberThis = phoneNumber;
@@ -77,7 +70,7 @@ export class User {
 
   public serialize(): UserPrimitives {
     return {
-      id: this.id.toString(),
+      id: this.id?.toString(),
       name: this.name,
       email: this.email,
       phoneNumber: this.phoneNumber,

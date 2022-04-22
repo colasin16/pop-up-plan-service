@@ -3,6 +3,10 @@ import { UserPrimitives } from "../models/primitives/UserPrimitives";
 import { UserRepository } from "../models/UserRepository";
 import { FullName } from "../types/FullName";
 import { User } from "../models/User";
+import { container } from "tsyringe";
+import { MongoDBClient } from "../infrastructure/mongo-db/MongoDBClient";
+import { AlreadyExistsError } from "../core/ResponseErrors";
+import { Controller } from "../core/Controller";
 
 export interface CreateUserMessage {
   name: FullName;
@@ -11,8 +15,8 @@ export interface CreateUserMessage {
   password: string;
 }
 
-export class CreateUserController {
-  public async control(
+export class CreateUserController extends Controller {
+  protected async doControl(
     message: CreateUserMessage
   ): Promise<UserPrimitives | null> {
     const userRepository: UserRepository = new MongoUserRepository();
@@ -23,6 +27,15 @@ export class CreateUserController {
       message.phoneNumber,
       message.password
     );
+
+    //validation
+    const userWithSameEmail = await new MongoUserRepository(
+      container.resolve(MongoDBClient)
+    ).findByEmail(message.email);
+
+    if (userWithSameEmail) {
+      throw new AlreadyExistsError();
+    }
 
     return await userRepository.create(user);
   }

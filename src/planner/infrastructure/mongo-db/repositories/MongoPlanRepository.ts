@@ -25,8 +25,6 @@ export class MongoPlanRepository implements PlanRepository {
     const _id = new ObjectId(id.toString());
     const foundItem = await this.collection.findOne({ _id });
 
-    console.debug(`foundedItem: ${foundItem}`);
-
     return foundItem ? MongoPlanConverter.mongoPlanToPlan(foundItem) : null;
   }
 

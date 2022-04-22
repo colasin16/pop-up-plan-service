@@ -1,9 +1,6 @@
 import { Request, Response } from "express";
-import {
-  LoginController,
-  LoginResponseMessage,
-} from "../../controllers/LoginController";
-import { View } from "../View";
+import { LoginController } from "../../controllers/LoginController";
+import { View } from "../../core/View";
 
 export interface loginUserMessage {
   username: string;
@@ -18,21 +15,17 @@ export class LoginUserView extends View {
       username: req.body.username,
       password: req.body.password,
     };
-    try {
-      const { data } = await this.control(message);
 
-      if (!data) {
-        res.status(403).send({ success: false, token: "" });
-        return;
-      }
+    const { data } = await this.control(message);
 
-      res.status(201).send({
-        success: true,
-        data,
-      });
-    } catch (e) {
-      console.error(e);
-      res.status(500).send({ message: "internal-error" });
+    if (!data) {
+      res.status(403).send({ success: false, token: "" });
+      return;
     }
+
+    res.status(201).send({
+      success: true,
+      data,
+    });
   }
 }

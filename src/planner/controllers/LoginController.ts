@@ -3,6 +3,7 @@ import { UserPrimitives } from "../models/primitives/UserPrimitives";
 import { PasswordEncryptor } from "../utils/PasswordEcryptor";
 import { UserRepository } from "../models/UserRepository";
 import { ControllerReturnMessage } from "./types";
+import { Controller } from "../core/Controller";
 
 export interface LoginMessage {
   username: string;
@@ -20,8 +21,8 @@ export interface LoginResponseMessage extends ControllerReturnMessage {
   };
 }
 
-export class LoginController {
-  public async control(
+export class LoginController extends Controller {
+  protected async doControl(
     message: LoginMessage
   ): Promise<ControllerReturnMessage> {
     const userRepository: UserRepository = new MongoUserRepository();

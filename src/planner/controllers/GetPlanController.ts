@@ -1,3 +1,4 @@
+import { Controller } from "../core/Controller";
 import { MongoPlanRepository } from "../infrastructure/mongo-db/repositories/MongoPlanRepository";
 import { Identifier } from "../models/Identifier";
 import { PlanRepository } from "../models/PlanRepository";
@@ -7,8 +8,8 @@ export interface GetPlanMessage {
   id: string;
 }
 
-export class GetPlanController {
-  public async control(
+export class GetPlanController extends Controller {
+  protected async doControl(
     message: GetPlanMessage
   ): Promise<ControllerReturnMessage> {
     const planRepository: PlanRepository = new MongoPlanRepository();

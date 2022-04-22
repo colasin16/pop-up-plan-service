@@ -57,7 +57,6 @@ export class UserViewExpress {
   //   const message: FindPlanByCategoryMessage = {
   //     category: req.params.category,
   //   };
-  //   try {
   //     const plans = await this.findPlanByCategoryView.interact(message);
   //     res.status(200).send({
   //       success: true,
@@ -74,17 +73,12 @@ export class UserViewExpress {
   //         };
   //       }),
   //     });
-  //   } catch (e) {
-  //     console.error(e);
-  //     res.status(500).send({ message: "internal-error" });
-  //   }
   // }
 
   // public async findById(req: Request, res: Response): Promise<void> {
   //   const message: FindPlanByIdMessage = {
   //     id: req.params.id,
   //   };
-  //   try {
   //     const plan = await this.findPlanByIdView.interact(message);
 
   //     if (!plan) {
@@ -106,9 +100,5 @@ export class UserViewExpress {
   //         },
   //       },
   //     });
-  //   } catch (e) {
-  //     console.error(e);
-  //     res.status(500).send({ message: "internal-error" });
-  //   }
   // }
 }

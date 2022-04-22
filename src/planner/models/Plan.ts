@@ -77,7 +77,7 @@ export class Plan {
 
   public serialize(): PlanPrimitives {
     return {
-      id: this.id.toString(),
+      id: this.id?.toString(),
       ownerId: this.ownerId?.toString(),
       title: this.title,
       description: this.description,

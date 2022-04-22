@@ -1,4 +1,5 @@
 import { ObjectID } from "bson";
+import { Controller } from "../core/Controller";
 import { MongoPlanRepository } from "../infrastructure/mongo-db/repositories/MongoPlanRepository";
 import { Identifier } from "../models/Identifier";
 import { Plan } from "../models/Plan";
@@ -18,8 +19,8 @@ export interface CreatePlanMessage {
   image?: string;
 }
 
-export class CreatePlanController {
-  public async control(
+export class CreatePlanController extends Controller {
+  protected async doControl(
     message: CreatePlanMessage
   ): Promise<ControllerReturnMessage> {
     const planRepository: PlanRepository = new MongoPlanRepository();

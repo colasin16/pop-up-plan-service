@@ -1,3 +1,4 @@
+import { Controller } from "../core/Controller";
 import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
 import { Identifier } from "../models/Identifier";
 import { UserPrimitives } from "../models/primitives/UserPrimitives";
@@ -11,8 +12,8 @@ export interface GetUserMessage {
 export class GetUserResponse extends ControllerReturnMessage {
   data: UserPrimitives | null;
 }
-export class GetUserController {
-  public async control(message: GetUserMessage): Promise<GetUserResponse> {
+export class GetUserController extends Controller {
+  protected async doControl(message: GetUserMessage): Promise<GetUserResponse> {
     const userRepository: UserRepository = new MongoUserRepository();
     const user = await userRepository.find(message.id);
 
