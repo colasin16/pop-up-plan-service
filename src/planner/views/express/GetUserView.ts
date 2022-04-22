@@ -6,10 +6,6 @@ import {
 import { Identifier } from "../../models/Identifier";
 import { View } from "../View";
 
-// export interface GetUserMessage {
-//   userId: Identifier;
-// }
-
 export class GetUserView extends View {
   protected controllerClass = GetUserController;
 
