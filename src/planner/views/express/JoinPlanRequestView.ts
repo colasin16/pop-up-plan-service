@@ -10,7 +10,6 @@ export class JoinPlanRequestView extends View {
 
   public async doRender(req: Request, res: Response): Promise<void> {
     const planId = req.params.planId;
-    console.debug(`planId: ${planId}`);
 
     const userId = req.body.userId;
 
