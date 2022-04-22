@@ -8,3 +8,7 @@ export class Controller {
     throw Error("not implemented");
   }
 }
+
+export class ControllerReturnMessage {
+  data: object | null;
+}

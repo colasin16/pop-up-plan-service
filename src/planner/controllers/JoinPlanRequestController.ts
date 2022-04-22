@@ -2,8 +2,7 @@ import { MongoPlanRepository } from "../infrastructure/mongo-db/repositories/Mon
 import { Identifier } from "../models/Identifier";
 import { PlanRepository } from "../models/PlanRepository";
 import { NotFoundError } from "../core/ResponseErrors";
-import { ControllerReturnMessage } from "../core/types";
-import { Controller } from "../core/Controller";
+import { Controller, ControllerReturnMessage } from "../core/Controller";
 
 export interface JoinPlanRequestMessage {
   userId: string;

@@ -52,15 +52,36 @@ export class User {
     return user;
   }
 
+  /**
+   * We have id here, which means user is already created and we have a encrypted password
+   * @param id
+   * @param name
+   * @param email
+   * @param phoneNumber
+   * @param encryptedPassword
+   * @returns
+   */
   static async buildWithIdentifier(
     id: Identifier,
     name: FullName,
     email: string,
     phoneNumber: string,
-    password: string
+    encryptedPassword: string
   ): Promise<User> {
-    const user = await this.build(name, email, phoneNumber, password);
+    const emailThis = email;
+    const nameThis = name;
+    const phoneNumberThis = phoneNumber;
+    // const encryptedPassword = await PasswordEncryptor.encryptPassword(password);
+
+    const user = new User(true);
+    user.name = nameThis;
+    user.email = emailThis;
+    user.phoneNumber = phoneNumberThis;
     user.id = id;
+
+    // TODO: change user.password to user.encryptedPassword
+    user.password = encryptedPassword;
+
     return user;
   }
 

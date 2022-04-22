@@ -3,7 +3,7 @@ import {
   JoinPlanRequestController,
   JoinPlanRequestMessage,
 } from "../../controllers/JoinPlanRequestController";
-import { StatusCode } from "../../core/statusCodes";
+import { StatusCode } from "../../core/StatusCodes";
 import { View } from "../../core/View";
 
 export class JoinPlanRequestView extends View {

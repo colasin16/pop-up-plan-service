@@ -3,7 +3,7 @@ import {
   GetUserController,
   GetUserMessage,
 } from "../../controllers/GetUserController";
-import { StatusCode } from "../../core/statusCodes";
+import { StatusCode } from "../../core/StatusCodes";
 import { View } from "../../core/View";
 import { Identifier } from "../../models/Identifier";
 

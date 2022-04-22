@@ -5,8 +5,8 @@ import {
   ForbiddenError,
   NotFoundError,
 } from "../core/ResponseErrors";
-import { StatusCode } from "./statusCodes";
-import { ControllerReturnMessage } from "./types";
+import { ControllerReturnMessage } from "./Controller";
+import { StatusCode } from "./StatusCodes";
 
 export class View {
   protected controllerClass;

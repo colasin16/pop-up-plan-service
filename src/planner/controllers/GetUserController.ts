@@ -1,9 +1,8 @@
-import { Controller } from "../core/Controller";
+import { Controller, ControllerReturnMessage } from "../core/Controller";
 import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
 import { Identifier } from "../models/Identifier";
 import { UserPrimitives } from "../models/primitives/UserPrimitives";
 import { UserRepository } from "../models/UserRepository";
-import { ControllerReturnMessage } from "../core/types";
 
 export interface GetUserMessage {
   id: Identifier;
@@ -17,6 +16,6 @@ export class GetUserController extends Controller {
     const userRepository: UserRepository = new MongoUserRepository();
     const user = await userRepository.find(message.id);
 
-    return user ? { data: user } : { data: null };
+    return user ? { data: user.serialize() } : { data: null };
   }
 }

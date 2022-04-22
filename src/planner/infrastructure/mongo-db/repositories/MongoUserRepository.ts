@@ -1,14 +1,11 @@
 import { Collection, ObjectId } from "mongodb";
 import { autoInjectable } from "tsyringe";
-import { ObjectID } from "bson";
-
-import { UserPrimitives } from "../../../models/primitives/UserPrimitives";
-import { MongoUserConverter } from "../converters/UserConverter";
-import { UserRepository } from "../../../models/UserRepository";
 import { Identifier } from "../../../models/Identifier";
-import { MongoDBClient } from "../MongoDBClient";
-import { MongoUser } from "../models/MongoUser";
 import { User } from "../../../models/User";
+import { UserRepository } from "../../../models/UserRepository";
+import { MongoUserConverter } from "../converters/UserConverter";
+import { MongoUser } from "../models/MongoUser";
+import { MongoDBClient } from "../MongoDBClient";
 
 @autoInjectable()
 export class MongoUserRepository implements UserRepository {
@@ -20,23 +17,19 @@ export class MongoUserRepository implements UserRepository {
       .collection("Users");
   }
 
-  public async findByEmail(email: string): Promise<UserPrimitives | null> {
+  public async findByEmail(email: string): Promise<User | null> {
     const foundUser = await this.collection.findOne({
       email,
     });
 
-    return foundUser
-      ? MongoUserConverter.mongoUserToUserPrimitives(foundUser)
-      : null;
+    return foundUser ? MongoUserConverter.mongoUserToUser(foundUser) : null;
   }
 
-  public async find(id: Identifier): Promise<UserPrimitives | null> {
+  public async find(id: Identifier): Promise<User | null> {
     const _id = new ObjectId(id.toString());
     const foundItem = await this.collection.findOne({ _id });
 
-    return foundItem
-      ? MongoUserConverter.mongoUserToUserPrimitives(foundItem)
-      : null;
+    return foundItem ? MongoUserConverter.mongoUserToUser(foundItem) : null;
   }
 
   update(user: User): void {
@@ -47,7 +40,7 @@ export class MongoUserRepository implements UserRepository {
     throw new Error("Method not implemented.");
   }
 
-  public async create(user: User): Promise<UserPrimitives | null> {
+  public async create(user: User): Promise<User | null> {
     const serializedUser = user.serialize();
     const result = await this.collection.insertOne({
       name: {

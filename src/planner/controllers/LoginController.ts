@@ -2,8 +2,7 @@ import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/Mon
 import { UserPrimitives } from "../models/primitives/UserPrimitives";
 import { PasswordEncryptor } from "../utils/PasswordEcryptor";
 import { UserRepository } from "../models/UserRepository";
-import { ControllerReturnMessage } from "../core/types";
-import { Controller } from "../core/Controller";
+import { Controller, ControllerReturnMessage } from "../core/Controller";
 import { ForbiddenError } from "../core/ResponseErrors";
 
 export interface LoginMessage {
@@ -28,15 +27,15 @@ export class LoginController extends Controller {
   ): Promise<ControllerReturnMessage> {
     const userRepository: UserRepository = new MongoUserRepository();
 
-    const userPrimitives = await userRepository.findByEmail(message.username);
-    console.debug(`userPrimitives: ${JSON.stringify(userPrimitives)}`);
+    const user = await userRepository.findByEmail(message.username);
 
-    if (userPrimitives) {
+    if (user) {
       const plainPassword = message.password;
-      console.log(`plainPassword: ${plainPassword}`);
+      const hashedPassword = user.serialize().password;
+
       const loggedIn = await PasswordEncryptor.comparePassword(
         plainPassword,
-        userPrimitives.password
+        hashedPassword
       );
 
       if (loggedIn) {
@@ -46,7 +45,7 @@ export class LoginController extends Controller {
         return {
           data: {
             token: "fakeToken",
-            user: userPrimitives,
+            user: user.serialize(),
           },
         };
       } else {

@@ -1,5 +1,4 @@
-import { Controller } from "../core/Controller";
-import { ControllerReturnMessage } from "../core/types";
+import { Controller, ControllerReturnMessage } from "../core/Controller";
 import { MongoPlanRepository } from "../infrastructure/mongo-db/repositories/MongoPlanRepository";
 import { Identifier } from "../models/Identifier";
 import { Plan } from "../models/Plan";

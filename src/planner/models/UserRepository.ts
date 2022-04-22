@@ -1,11 +1,10 @@
 import { Identifier } from "./Identifier";
-import { UserPrimitives } from "./primitives/UserPrimitives";
 import { User } from "./User";
 
 export interface UserRepository {
-  create(user: User): Promise<UserPrimitives | null>;
-  find(id: Identifier): Promise<UserPrimitives | null>;
-  findByEmail(email: string): Promise<UserPrimitives | null>;
+  create(user: User): Promise<User | null>;
+  find(id: Identifier): Promise<User | null>;
+  findByEmail(email: string): Promise<User | null>;
   update(user: User): void;
   delete(id: Identifier): void;
 }

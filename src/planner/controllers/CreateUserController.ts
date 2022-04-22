@@ -28,11 +28,11 @@ export class CreateUserController extends Controller {
       message.password
     );
 
-    return await userRepository.create(user);
+    const createUser = await userRepository.create(user);
+    return createUser ? createUser.serialize() : null;
   }
 
   protected async validate(message): Promise<void> {
-    //validation
     const userWithSameEmail = await new MongoUserRepository(
       container.resolve(MongoDBClient)
     ).findByEmail(message.email);

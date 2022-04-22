@@ -1,4 +1,4 @@
-import { StatusCode } from "./statusCodes";
+import { StatusCode } from "./StatusCodes";
 
 export class ResponseError extends Error {
   public statusCode: StatusCode;
