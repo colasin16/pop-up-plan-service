@@ -29,20 +29,5 @@ export class JoinPlanRequestController extends Controller {
     planRepository.update(plan);
 
     return { data: null };
-
-    // const plan = new Plan(
-    //   message.title,
-    //   message.location,
-    //   message.time,
-    //   new Privacy(message.privacy).value,
-    //   new Category(message.category).value,
-    //   message.description
-    // );
-
-    // if (message.ownerId) {
-    //   plan.setOwner(new Identifier(new ObjectID(message.ownerId)));
-    // }
-
-    // return await planRepository.create(plan);
   }
 }

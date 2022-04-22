@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import {
   AlreadyExistsError,
   BadRequestError,
+  ForbiddenError,
   NotFoundError,
 } from "../core/ResponseErrors";
 import { StatusCode } from "./statusCodes";
@@ -19,7 +20,8 @@ export class View {
       if (
         e instanceof NotFoundError ||
         e instanceof BadRequestError ||
-        e instanceof AlreadyExistsError
+        e instanceof AlreadyExistsError ||
+        e instanceof ForbiddenError
       ) {
         res.status(e.statusCode.valueOf()).send(`${e.errorName}: ${e.message}`);
         return;
@@ -30,7 +32,12 @@ export class View {
   }
 
   protected async doRender(req: Request, res: Response): Promise<void> {
-    throw new Error("Method not implemented.");
+    const message = req.body;
+    const controllerResponseMessage = await this.control(message);
+    res
+      //TODO: get response status code from controller?
+      .status(StatusCode.CREATED_201)
+      .send({ success: true, data: controllerResponseMessage.data });
   }
 
   protected control(message): ControllerReturnMessage {

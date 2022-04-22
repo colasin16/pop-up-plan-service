@@ -1,6 +1,7 @@
 export class Controller {
-  public validate() {}
+  protected validate(message) {}
   public async control(message): Promise<any> {
+    await this.validate(message);
     return await this.doControl(message);
   }
   protected async doControl(message): Promise<any> {

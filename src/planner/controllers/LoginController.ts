@@ -4,6 +4,7 @@ import { PasswordEncryptor } from "../utils/PasswordEcryptor";
 import { UserRepository } from "../models/UserRepository";
 import { ControllerReturnMessage } from "../core/types";
 import { Controller } from "../core/Controller";
+import { ForbiddenError } from "../core/ResponseErrors";
 
 export interface LoginMessage {
   username: string;
@@ -50,12 +51,12 @@ export class LoginController extends Controller {
         };
       } else {
         console.debug(`user:${message.username}, Login failed`);
-        return { data: null };
+        throw new ForbiddenError();
       }
     }
     console.debug(
       `cannot authenticate because user '${message.username}' has not been found`
     );
-    return { data: null };
+    throw new ForbiddenError();
   }
 }

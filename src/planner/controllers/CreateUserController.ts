@@ -28,6 +28,10 @@ export class CreateUserController extends Controller {
       message.password
     );
 
+    return await userRepository.create(user);
+  }
+
+  protected async validate(message): Promise<void> {
     //validation
     const userWithSameEmail = await new MongoUserRepository(
       container.resolve(MongoDBClient)
@@ -36,7 +40,5 @@ export class CreateUserController extends Controller {
     if (userWithSameEmail) {
       throw new AlreadyExistsError();
     }
-
-    return await userRepository.create(user);
   }
 }

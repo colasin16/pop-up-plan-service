@@ -33,3 +33,10 @@ export class AlreadyExistsError extends BadRequestError {
     super(msg);
   }
 }
+
+export class ForbiddenError extends ResponseError {
+  public constructor(msg: string = "forbidden") {
+    super(msg);
+    this.statusCode = StatusCode.FORBIDDEN_403;
+  }
+}
