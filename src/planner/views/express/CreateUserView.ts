@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { CreateUserController } from "../../controllers/CreateUserController";
+import { StatusCode } from "../../core/statusCodes";
 import { View } from "../../core/View";
 import { FullName } from "../../types/FullName";
 
@@ -22,7 +23,7 @@ export class CreateUserView extends View {
     };
     const controllerResponseMessage = await this.control(message);
     res
-      .status(201)
+      .status(StatusCode.CREATED_201)
       .send({ success: true, data: controllerResponseMessage.data });
   }
 }

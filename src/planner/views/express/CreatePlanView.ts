@@ -3,6 +3,7 @@ import {
   CreatePlanController,
   CreatePlanMessage,
 } from "../../controllers/CreatePlanController";
+import { StatusCode } from "../../core/statusCodes";
 import { View } from "../../core/View";
 
 export class CreatePlanView extends View {
@@ -21,7 +22,7 @@ export class CreatePlanView extends View {
     };
     const controllerResponseMessage = await this.control(message);
     res
-      .status(201)
+      .status(StatusCode.CREATED_201)
       .send({ success: true, data: controllerResponseMessage.data });
   }
 }

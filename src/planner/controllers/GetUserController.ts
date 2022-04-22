@@ -3,7 +3,7 @@ import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/Mon
 import { Identifier } from "../models/Identifier";
 import { UserPrimitives } from "../models/primitives/UserPrimitives";
 import { UserRepository } from "../models/UserRepository";
-import { ControllerReturnMessage } from "./types";
+import { ControllerReturnMessage } from "../core/types";
 
 export interface GetUserMessage {
   id: Identifier;

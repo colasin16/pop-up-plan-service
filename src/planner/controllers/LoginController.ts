@@ -2,7 +2,7 @@ import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/Mon
 import { UserPrimitives } from "../models/primitives/UserPrimitives";
 import { PasswordEncryptor } from "../utils/PasswordEcryptor";
 import { UserRepository } from "../models/UserRepository";
-import { ControllerReturnMessage } from "./types";
+import { ControllerReturnMessage } from "../core/types";
 import { Controller } from "../core/Controller";
 
 export interface LoginMessage {

@@ -3,6 +3,7 @@ import {
   GetUserController,
   GetUserMessage,
 } from "../../controllers/GetUserController";
+import { StatusCode } from "../../core/statusCodes";
 import { View } from "../../core/View";
 import { Identifier } from "../../models/Identifier";
 
@@ -14,6 +15,6 @@ export class GetUserView extends View {
       id: Identifier.fromString(req.params.userId),
     };
     const { data } = await this.control(message);
-    res.status(201).send({ success: true, data });
+    res.status(StatusCode.OK_200).send({ success: true, data });
   }
 }

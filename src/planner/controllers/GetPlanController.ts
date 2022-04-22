@@ -2,7 +2,7 @@ import { Controller } from "../core/Controller";
 import { MongoPlanRepository } from "../infrastructure/mongo-db/repositories/MongoPlanRepository";
 import { Identifier } from "../models/Identifier";
 import { PlanRepository } from "../models/PlanRepository";
-import { ControllerReturnMessage } from "./types";
+import { ControllerReturnMessage } from "../core/types";
 
 export interface GetPlanMessage {
   id: string;

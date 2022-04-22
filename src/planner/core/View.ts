@@ -4,8 +4,8 @@ import {
   BadRequestError,
   NotFoundError,
 } from "../core/ResponseErrors";
-import { StatusCode } from "../controllers/statusCodes";
-import { ControllerReturnMessage } from "../controllers/types";
+import { StatusCode } from "./statusCodes";
+import { ControllerReturnMessage } from "./types";
 
 export class View {
   protected controllerClass;

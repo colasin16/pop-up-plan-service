@@ -6,7 +6,7 @@ import { Plan } from "../models/Plan";
 import { PlanRepository } from "../models/PlanRepository";
 import { Category } from "../types/Category";
 import { Privacy } from "../types/Privacy";
-import { ControllerReturnMessage } from "./types";
+import { ControllerReturnMessage } from "../core/types";
 
 export interface CreatePlanMessage {
   ownerId: string;

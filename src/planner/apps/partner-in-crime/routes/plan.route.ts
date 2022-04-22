@@ -10,7 +10,7 @@ export const register = (app: any) => {
   app.post("/plans", (req: Request, res: Response) =>
     view.createPlan(req, res)
   );
-  app.post("/plans/:planId/join-request", (req: Request, res: Response) =>
+  app.patch("/plans/:planId/join-request", (req: Request, res: Response) =>
     view.joinPlanRequest(req, res)
   );
 };

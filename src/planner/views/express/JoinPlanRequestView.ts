@@ -3,6 +3,7 @@ import {
   JoinPlanRequestController,
   JoinPlanRequestMessage,
 } from "../../controllers/JoinPlanRequestController";
+import { StatusCode } from "../../core/statusCodes";
 import { View } from "../../core/View";
 
 export class JoinPlanRequestView extends View {
@@ -19,6 +20,6 @@ export class JoinPlanRequestView extends View {
     };
 
     const { data } = await this.control(message);
-    res.status(201).send({ success: true, data });
+    res.status(StatusCode.OK_200).send({ success: true, data });
   }
 }
