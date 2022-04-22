@@ -40,8 +40,9 @@ export class InMemoryPlanRepository implements PlanRepository {
     return plans;
   }
 
-  public update(plan: Plan): void {
+  public update(plan: Plan): Promise<Plan | null> {
     this.map.set(plan.getId().toString(), plan);
+    return Promise.resolve(plan);
   }
 
   public async delete(id: Identifier): Promise<void> {

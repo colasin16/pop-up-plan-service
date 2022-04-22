@@ -19,6 +19,9 @@ export class MongoPlanConverter {
       attendeesId: planPrimitives.attendeesId.map(
         (attendeeId) => new ObjectId(attendeeId)
       ),
+      pendingAttendeesId: planPrimitives.pendingAttendeesId.map(
+        (pendingAttendeeId) => new ObjectId(pendingAttendeeId)
+      ),
       description: planPrimitives.description,
       image: planPrimitives.description,
     };
@@ -36,6 +39,9 @@ export class MongoPlanConverter {
       privacy: mongoPlan.privacy,
       category: mongoPlan.category,
       attendeesId: mongoPlan.attendeesId.map((_id) => _id.toString()),
+      pendingAttendeesId: mongoPlan.pendingAttendeesId.map((_id) =>
+        _id.toString()
+      ),
       description: mongoPlan.description,
       image: mongoPlan.image,
     };
@@ -44,6 +50,7 @@ export class MongoPlanConverter {
   static mongoPlanToPlan(mongoPlan: WithId<MongoPlan>): Plan {
     const plan = new Plan(
       mongoPlan.title,
+      Identifier.fromString(mongoPlan.ownerId.toString()),
       mongoPlan.location,
       mongoPlan.time,
       mongoPlan.privacy as EPrivacy,
@@ -53,7 +60,13 @@ export class MongoPlanConverter {
     );
 
     plan.setId(Identifier.fromString(mongoPlan._id.toString()));
-    plan.setOwner(Identifier.fromString(mongoPlan.ownerId.toString()));
+    mongoPlan.attendeesId.forEach((id) =>
+      plan.addAttendees(Identifier.fromString(id.toString()))
+    );
+    mongoPlan.pendingAttendeesId.forEach((id) =>
+      plan.addPendingAttendees(Identifier.fromString(id.toString()))
+    );
+
     return plan;
   }
 }

@@ -1,7 +1,7 @@
 import { ResponseData } from "./types";
 
 export class Controller {
-  protected validate(message) {}
+  protected async validate(message) {}
   public async control(message): Promise<any> {
     await this.validate(message);
     return await this.doControl(message);

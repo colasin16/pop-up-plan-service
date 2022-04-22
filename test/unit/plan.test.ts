@@ -32,13 +32,13 @@ describe("Unit test", () => {
 
         const planEntity = new Plan(
           createPlanMessage.title,
+          Identifier.fromString(createPlanMessage.ownerId),
           createPlanMessage.location,
           createPlanMessage.time,
           new Privacy(createPlanMessage.privacy).value,
           new Category(createPlanMessage.category).value,
           createPlanMessage.description
         );
-        planEntity.setOwner(ownerUser.getId());
 
         const inMemoryPlanRepository = new InMemoryPlanRepository();
         const createdPlan = await inMemoryPlanRepository.create(planEntity);

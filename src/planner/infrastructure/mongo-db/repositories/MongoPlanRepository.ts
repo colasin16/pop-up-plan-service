@@ -49,12 +49,17 @@ export class MongoPlanRepository implements PlanRepository {
     return plans;
   }
 
-  update(plan: Plan): void {
-    this.collection.findOneAndUpdate(
+  public async update(plan: Plan): Promise<Plan | null> {
+    const updatedItem = await this.collection.findOneAndUpdate(
       { _id: new ObjectId(plan.getId().toString()) },
       { $set: MongoPlanConverter.planToMongoPlan(plan) }
     );
-    // throw new Error("Method not implemented.");
+
+    if (!updatedItem.value) {
+      return null;
+    }
+
+    return MongoPlanConverter.mongoPlanToPlan(updatedItem.value);
   }
 
   delete(id: Identifier): void {
