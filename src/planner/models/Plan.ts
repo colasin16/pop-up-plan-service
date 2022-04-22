@@ -86,6 +86,7 @@ export class Plan {
       privacy: this.privacy.value.toString(),
       category: this.category.value.toString(),
       attendeesId: this.attendeesId.map((attendee) => attendee.toString()),
+      // pendingAttendessId: this.attendeesId.map((attendee) => attendee.toString()),
       image: this.image,
     };
   }

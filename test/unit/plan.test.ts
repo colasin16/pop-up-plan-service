@@ -7,7 +7,7 @@ import { InMemoryPlanRepository } from "../../src/planner/infrastructure/in-memo
 
 import { User } from "../../src/planner/models/User";
 import { Identifier } from "../../src/planner/models/Identifier";
-import { CreatePlanMessage } from "../../src/planner/controllers/CreatePlanController";
+import { CreatePlanMessage } from "../../src/planner/controllers/plan-controllers/CreatePlanController";
 
 describe("Unit test", () => {
   describe("Plan", () => {

@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { CreatePlanView } from "./express/CreatePlanView";
-import { CreateUserView } from "./express/CreateUserView";
-import { FindPlanView } from "./express/FindPlanView";
-import { GetUserView } from "./express/GetUserView";
-import { JoinPlanRequestView } from "./express/JoinPlanRequestView";
-import { LoginUserView } from "./express/LoginUserView";
+import { CreatePlanView } from "./plan-views/CreatePlanView";
+import { FindPlanView } from "./plan-views/FindPlanView";
+import { JoinPlanRequestView } from "./plan-views/JoinPlanRequestView";
+import { CreateUserView } from "./user-views/CreateUserView";
+import { GetUserView } from "./user-views/GetUserView";
+import { LoginUserView } from "./user-views/LoginUserView";
 
 export class UserViewExpress {
   private createPlanView: CreatePlanView;

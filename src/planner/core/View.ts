@@ -5,8 +5,9 @@ import {
   ForbiddenError,
   NotFoundError,
 } from "../core/ResponseErrors";
-import { ControllerReturnMessage } from "./Controller";
+import { ExpressResponseAdapter } from "./ExpressResponseAdapter";
 import { StatusCode } from "./StatusCodes";
+import { ResponseData } from "./types";
 
 export class View {
   protected controllerClass;
@@ -23,24 +24,43 @@ export class View {
         e instanceof AlreadyExistsError ||
         e instanceof ForbiddenError
       ) {
-        res.status(e.statusCode.valueOf()).send(`${e.errorName}: ${e.message}`);
+        const errorMessage = `${e.errorName}: ${e.message}`;
+        const responseData: ResponseData = {
+          errors: [errorMessage],
+          data: null,
+          success: false,
+        };
+
+        const statusCode = e.statusCode.valueOf();
+
+        const constExpresResponseAdapter = new ExpressResponseAdapter(res);
+        constExpresResponseAdapter.sendResponse(statusCode, responseData);
         return;
       }
-      res.status(StatusCode.INTERNAL_ERROR_500).send("internal server error");
+
+      const constExpresResponseAdapter = new ExpressResponseAdapter(res);
+      constExpresResponseAdapter.sendResponse(StatusCode.INTERNAL_ERROR_500, {
+        success: false,
+        data: null,
+        errors: ["internal server error"],
+      });
       throw e;
     }
   }
 
   protected async doRender(req: Request, res: Response): Promise<void> {
     const message = req.body;
-    const controllerResponseMessage = await this.control(message);
-    res
-      //TODO: get response status code from controller?
-      .status(StatusCode.CREATED_201)
-      .send({ success: true, data: controllerResponseMessage.data });
+    const responseData = await this.control(message);
+
+    //TODO: get response status code from controller?
+    const constExpresResponseAdapter = new ExpressResponseAdapter(res);
+    constExpresResponseAdapter.sendResponse(
+      StatusCode.CREATED_201,
+      responseData
+    );
   }
 
-  protected control(message): ControllerReturnMessage {
+  protected control(message): ResponseData {
     return this.controllerInstance.control(message);
   }
 
