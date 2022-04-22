@@ -52,6 +52,14 @@ export class JoinPlanRequestController extends Controller {
 
     pendingAttendees.forEach((attendee) => {
       if (message.userId === attendee) {
+        throw new BadRequestError("you already requested to joint");
+      }
+    });
+
+    const attendees = plan.serialize().attendeesId;
+
+    attendees.forEach((attendee) => {
+      if (message.userId === attendee) {
         throw new BadRequestError("you already joint");
       }
     });
