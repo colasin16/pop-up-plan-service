@@ -61,10 +61,10 @@ export class MongoPlanConverter {
 
     plan.setId(Identifier.fromString(mongoPlan._id.toString()));
     mongoPlan.attendeesId.forEach((id) =>
-      plan.addAttendees(Identifier.fromString(id.toString()))
+      plan.addAttendee(Identifier.fromString(id.toString()))
     );
     mongoPlan.pendingAttendeesId.forEach((id) =>
-      plan.addPendingAttendees(Identifier.fromString(id.toString()))
+      plan.addPendingAttendee(Identifier.fromString(id.toString()))
     );
 
     return plan;

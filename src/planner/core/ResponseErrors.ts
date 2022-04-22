@@ -40,3 +40,10 @@ export class ForbiddenError extends ResponseError {
     this.statusCode = StatusCode.FORBIDDEN_403;
   }
 }
+
+export class InternalServerError extends ResponseError {
+  public constructor(msg: string = "internal server error") {
+    super(msg);
+    this.statusCode = StatusCode.INTERNAL_ERROR_500;
+  }
+}

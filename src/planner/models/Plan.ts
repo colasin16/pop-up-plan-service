@@ -73,7 +73,7 @@ export class Plan {
     return category.equals(this.category);
   }
 
-  public addAttendees(attendee: Identifier) {
+  public addAttendee(attendee: Identifier) {
     if (attendee.toString() in this.attendeesId.map((id) => id.toString())) {
       // already added to the list
       return;
@@ -81,7 +81,7 @@ export class Plan {
     this.attendeesId.push(attendee);
   }
 
-  public addPendingAttendees(pendingAttendee: Identifier) {
+  public addPendingAttendee(pendingAttendee: Identifier) {
     if (
       pendingAttendee.toString() in
       this.pendingAttendeesId.map((id) => id.toString())
@@ -91,6 +91,21 @@ export class Plan {
     }
 
     this.pendingAttendeesId.push(pendingAttendee);
+  }
+
+  public remotePendingAttendee(pendingAttendee: Identifier) {
+    if (
+      pendingAttendee.toString() in
+      this.pendingAttendeesId.map((id) => id.toString())
+    ) {
+      // already added to pending the list
+      return;
+    }
+
+    // TODO: how can we optimise this?
+    this.pendingAttendeesId = this.pendingAttendeesId.filter(
+      (attendee) => attendee.toString() !== pendingAttendee.toString()
+    );
   }
 
   public serialize(): PlanPrimitives {

@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { AcceptJoinPlanRequestView } from "./plan-views/AcceptJoinPlanRequestView";
 import { CreatePlanView } from "./plan-views/CreatePlanView";
 import { FindPlanView } from "./plan-views/FindPlanView";
 import { JoinPlanRequestView } from "./plan-views/JoinPlanRequestView";
@@ -9,6 +10,8 @@ import { LoginUserView } from "./user-views/LoginUserView";
 export class UserViewExpress {
   private createPlanView: CreatePlanView;
   private joinPlanRequestView: JoinPlanRequestView;
+  private acceptJoinPlanRequestView: AcceptJoinPlanRequestView;
+
   private findPlanView: FindPlanView;
   // private findPlanByCategoryView: FindPlanByCategoryView;
   // private findPlanByIdView: FindPlanByIdView;
@@ -20,6 +23,7 @@ export class UserViewExpress {
   constructor() {
     this.createPlanView = new CreatePlanView();
     this.joinPlanRequestView = new JoinPlanRequestView();
+    this.acceptJoinPlanRequestView = new AcceptJoinPlanRequestView();
 
     this.findPlanView = new FindPlanView();
     this.createUserView = new CreateUserView();
@@ -30,6 +34,13 @@ export class UserViewExpress {
 
   public async joinPlanRequest(req: Request, res: Response): Promise<void> {
     await this.joinPlanRequestView.render(req, res);
+  }
+
+  public async acceptJoinPlanRequest(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    await this.acceptJoinPlanRequestView.render(req, res);
   }
 
   public async createPlan(req: Request, res: Response): Promise<void> {

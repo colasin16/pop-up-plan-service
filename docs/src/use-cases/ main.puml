@@ -18,6 +18,8 @@ usecase EditPlan
 usecase DeletePlan
 usecase InviteToPlan
 usecase JoinPlanRequest
+usecase AcceptJoinPlanRequest
+
 
 usecase Chat
 
@@ -35,6 +37,7 @@ User --> EditPlan
 User --> DeletePlan
 User --> InviteToPlan
 User --> JoinPlanRequest
+User --> AcceptJoinPlanRequest
 User --> Chat
 User --> RateUser
 

@@ -16,4 +16,7 @@ export const register = (app: any) => {
   app.patch("/plans/:planId/join-request", (req: Request, res: Response) =>
     view.joinPlanRequest(req, res)
   );
+  app.patch("/plans/:planId/accept-request", (req: Request, res: Response) =>
+    view.acceptJoinPlanRequest(req, res)
+  );
 };
