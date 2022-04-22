@@ -14,10 +14,6 @@ export interface CreateUserMessage {
 export class CreateUserView extends View {
   protected controllerClass = CreateUserController;
 
-  constructor() {
-    super();
-  }
-
   public async render(req: Request, res: Response): Promise<void> {
     const message: CreateUserMessage = {
       email: req.body.email,
