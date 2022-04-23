@@ -22,8 +22,8 @@ export class AcceptJoinPlanRequestView extends View {
 
     const { data } = await this.control(message);
 
-    const constExpresResponseAdapter = new ExpressResponseAdapter(res);
-    constExpresResponseAdapter.sendResponse(StatusCode.OK_200, {
+    const expresResponseAdapter = new ExpressResponseAdapter(res);
+    expresResponseAdapter.sendResponse(StatusCode.OK_200, {
       success: true,
       data,
       errors: [],
