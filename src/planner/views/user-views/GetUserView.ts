@@ -12,7 +12,8 @@ export class GetUserView extends View {
   protected controllerClass = GetUserController;
 
   protected async doRender(req: Request, res: Response): Promise<void> {
-    // Because here we need somethings in params, we have to override super class method
+    // Because here we need some things in params, we have to override the super class method
+    // TODO: How can we add this logic to super class? maybe we can have multiple types of controller base classes
     const message: GetUserMessage = {
       id: Identifier.fromString(req.params.userId),
     };
