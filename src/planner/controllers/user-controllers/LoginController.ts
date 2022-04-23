@@ -10,16 +10,6 @@ export interface LoginMessage {
   password: string;
 }
 
-// export interface LoginResponseMessage extends ResponseData {
-//   data: {
-//     token: string;
-
-//     // TODO: Revise this part
-//     // temprorarily we return user completely when user authenticates,
-//     // to have user data in front-end for profile screen
-//     user: UserPrimitives;
-//   };
-// }
 
 export class LoginController extends Controller {
   protected async doControl(message: LoginMessage): Promise<ResponseData> {
@@ -42,6 +32,10 @@ export class LoginController extends Controller {
 
         const data = {
           token: "fakeToken__ReplaceWithJWTLater", //TODO:  Replace with JWT later
+          
+          // TODO: Revise this part
+          // temprorarily we return user completely when user authenticates,
+          // to have user data in front-end for profile screen
           user: user.serialize(),
         };
 
