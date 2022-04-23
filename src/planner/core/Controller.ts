@@ -11,6 +11,3 @@ export class Controller {
   }
 }
 
-// export class ControllerReturnMessage {
-//   data: object | null;
-// }
