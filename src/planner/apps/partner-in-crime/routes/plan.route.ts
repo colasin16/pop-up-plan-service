@@ -4,7 +4,7 @@ import { container } from "tsyringe";
 import { UserViewExpress } from "../../../views/UserViewExpress";
 
 export const register = (app: any) => {
-  // TODO: Ask? Why do we need dependecy injection here? It my mind UserViewExpress is independent
+  // TODO: Ask? Why do we need dependency injection here? In my mind UserViewExpress is independent
   // from express and it's our domain logic
 
   const view = container.resolve(UserViewExpress);
