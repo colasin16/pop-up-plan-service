@@ -1,15 +1,13 @@
-import { autoInjectable } from "tsyringe";
 import { Collection, ObjectId } from "mongodb";
-import { ObjectID } from "bson";
-
-import { PlanPrimitives } from "../../../models/primitives/PlanPrimitives";
-import { MongoPlanConverter } from "../converters/PlanConverter";
-import { PlanRepository } from "../../../models/PlanRepository";
+import { autoInjectable } from "tsyringe";
 import { Identifier } from "../../../models/Identifier";
-import { Category } from "../../../types/Category";
-import { MongoDBClient } from "../MongoDBClient";
-import { MongoPlan } from "../models/MongoPlan";
 import { Plan } from "../../../models/Plan";
+import { PlanRepository } from "../../../models/PlanRepository";
+import { Category } from "../../../types/Category";
+import { MongoPlanConverter } from "../converters/PlanConverter";
+import { MongoPlan } from "../models/MongoPlan";
+import { MongoDBClient } from "../MongoDBClient";
+
 
 @autoInjectable()
 export class MongoPlanRepository implements PlanRepository {
@@ -23,6 +21,7 @@ export class MongoPlanRepository implements PlanRepository {
 
   public async find(id: Identifier): Promise<Plan | null> {
     const _id = new ObjectId(id.toString());
+
     const foundItem = await this.collection.findOne({ _id });
 
     return foundItem ? MongoPlanConverter.mongoPlanToPlan(foundItem) : null;

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { AcceptJoinPlanRequestView } from "./plan-views/AcceptJoinPlanRequestView";
 import { CreatePlanView } from "./plan-views/CreatePlanView";
 import { FindPlanView } from "./plan-views/FindPlanView";
+import { GetPlanView } from "./plan-views/GetPlanView";
 import { JoinPlanRequestView } from "./plan-views/JoinPlanRequestView";
 import { CreateUserView } from "./user-views/CreateUserView";
 import { GetUserView } from "./user-views/GetUserView";
@@ -13,6 +14,8 @@ export class UserViewExpress {
   private acceptJoinPlanRequestView: AcceptJoinPlanRequestView;
 
   private findPlanView: FindPlanView;
+  private getPlanView: GetPlanView;
+
   // private findPlanByCategoryView: FindPlanByCategoryView;
   // private findPlanByIdView: FindPlanByIdView;
 
@@ -26,6 +29,8 @@ export class UserViewExpress {
     this.acceptJoinPlanRequestView = new AcceptJoinPlanRequestView();
 
     this.findPlanView = new FindPlanView();
+    this.getPlanView = new GetPlanView();
+
     this.createUserView = new CreateUserView();
     this.getUserView = new GetUserView();
 
@@ -61,6 +66,10 @@ export class UserViewExpress {
 
   public async findAll(req: Request, res: Response): Promise<void> {
     await this.findPlanView.render(req, res);
+  }
+
+  public async getPlan(req: Request, res: Response): Promise<void> {
+    await this.getPlanView.render(req, res);
   }
 
   // README: que no se haga la lista muy grande de findByNske findByNscuantos findBySkibidi... Criteria pattern si se va de las manos
