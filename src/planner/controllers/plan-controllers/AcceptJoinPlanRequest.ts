@@ -9,14 +9,21 @@ import { MongoPlanRepository } from "../../infrastructure/mongo-db/repositories/
 import { Identifier } from "../../models/Identifier";
 import { PlanRepository } from "../../models/PlanRepository";
 
-export interface AcceptJoinPlanRequestMessage {
-  userId: string;
-  planId: string;
+
+export enum JoinPlanRequestStatus {
+  ACCEPT = "ACCEPT",
+  REJECT = "REJECT",
 }
 
-export class AccepJoinPlanRequestController extends Controller {
+export interface AcceptOrRejectJoinPlanRequestMessage {
+  userId: string;
+  planId: string;
+  status:JoinPlanRequestStatus;
+}
+
+export class AcceptOrRejectJoinPlanRequestController extends Controller {
   protected async doControl(
-    message: AcceptJoinPlanRequestMessage
+    message: AcceptOrRejectJoinPlanRequestMessage
   ): Promise<ResponseData> {
     const planRepository: PlanRepository = new MongoPlanRepository();
 
@@ -28,7 +35,11 @@ export class AccepJoinPlanRequestController extends Controller {
       throw new NotFoundError();
     }
 
-    plan.addAttendee(Identifier.fromString(message.userId));
+    if (message.status === JoinPlanRequestStatus.ACCEPT){
+      plan.addAttendee(Identifier.fromString(message.userId));
+    }else if (message.status === JoinPlanRequestStatus.REJECT){
+      throw Error("Implement rejection of a request")
+    }
     plan.remotePendingAttendee(Identifier.fromString(message.userId));
 
     const updatedPlan = await planRepository.update(plan);
@@ -41,7 +52,7 @@ export class AccepJoinPlanRequestController extends Controller {
   }
 
   protected async validate(
-    message: AcceptJoinPlanRequestMessage
+    message: AcceptOrRejectJoinPlanRequestMessage
   ): Promise<void> {
     // TODO: If a user already joint, we should response with bad request or do nothing?
 

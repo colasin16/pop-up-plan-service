@@ -1,23 +1,25 @@
 import { Request, Response } from "express";
 import {
-  AccepJoinPlanRequestController,
-  AcceptJoinPlanRequestMessage,
+  AcceptOrRejectJoinPlanRequestController,
+  AcceptOrRejectJoinPlanRequestMessage,
 } from "../../controllers/plan-controllers/AcceptJoinPlanRequest";
 import { ExpressResponseAdapter } from "../../core/ExpressResponseAdapter";
 import { StatusCode } from "../../core/StatusCodes";
 import { View } from "../../core/View";
 
 export class AcceptJoinPlanRequestView extends View {
-  protected controllerClass = AccepJoinPlanRequestController;
+  protected controllerClass = AcceptOrRejectJoinPlanRequestController;
 
   protected async doRender(req: Request, res: Response): Promise<void> {
     const planId = req.params.planId;
-
     const userId = req.body.userId;
+    const status = req.body.status;
 
-    const message: AcceptJoinPlanRequestMessage = {
+
+    const message: AcceptOrRejectJoinPlanRequestMessage = {
       planId,
       userId,
+      status
     };
 
     const { data } = await this.control(message);

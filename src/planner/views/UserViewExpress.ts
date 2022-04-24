@@ -41,7 +41,7 @@ export class UserViewExpress {
     await this.joinPlanRequestView.render(req, res);
   }
 
-  public async acceptJoinPlanRequest(
+  public async acceptOrRejectJoinPlanRequest(
     req: Request,
     res: Response
   ): Promise<void> {
