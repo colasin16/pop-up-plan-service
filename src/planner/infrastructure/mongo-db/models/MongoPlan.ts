@@ -9,6 +9,7 @@ export interface MongoPlan {
   category: string;
   attendeesId: ObjectId[];
   pendingAttendeesId: ObjectId[];
+  rejectedAttendeesId: ObjectId[];
   description?: string;
   image?: string;
 }

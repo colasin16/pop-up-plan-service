@@ -38,5 +38,6 @@ export class CreateUserController extends Controller {
     if (userWithSameEmail) {
       throw new AlreadyExistsError();
     }
+
   }
 }

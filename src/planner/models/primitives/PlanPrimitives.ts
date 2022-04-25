@@ -9,5 +9,6 @@ export interface PlanPrimitives {
   category: string;
   attendeesId: string[];
   pendingAttendeesId: string[];
+  rejectedAttendeesId: string[];
   image?: string;
 }

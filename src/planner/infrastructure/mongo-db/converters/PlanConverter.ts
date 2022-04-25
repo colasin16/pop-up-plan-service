@@ -22,6 +22,9 @@ export class MongoPlanConverter {
       pendingAttendeesId: planPrimitives.pendingAttendeesId.map(
         (pendingAttendeeId) => new ObjectId(pendingAttendeeId)
       ),
+      rejectedAttendeesId: planPrimitives.rejectedAttendeesId.map(
+        (rejectedAttendeesId) => new ObjectId(rejectedAttendeesId)
+      ),
       description: planPrimitives.description,
       image: planPrimitives.description,
     };
@@ -40,6 +43,9 @@ export class MongoPlanConverter {
       category: mongoPlan.category,
       attendeesId: mongoPlan.attendeesId.map((_id) => _id.toString()),
       pendingAttendeesId: mongoPlan.pendingAttendeesId.map((_id) =>
+        _id.toString()
+      ),
+      rejectedAttendeesId: mongoPlan.rejectedAttendeesId.map((_id) =>
         _id.toString()
       ),
       description: mongoPlan.description,

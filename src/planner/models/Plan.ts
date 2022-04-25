@@ -13,6 +13,7 @@ export class Plan {
   private category: Category;
   private attendeesId: Identifier[];
   private pendingAttendeesId: Identifier[];
+  private rejectedAttendeesId: Identifier[];
   private description?: string;
   private image?: string;
 
@@ -33,6 +34,9 @@ export class Plan {
       Identifier.fromString(attendee)
     );
     plan.pendingAttendeesId = primitives.pendingAttendeesId.map((attendee) =>
+      Identifier.fromString(attendee)
+    );
+    plan.rejectedAttendeesId = primitives.rejectedAttendeesId.map((attendee) =>
       Identifier.fromString(attendee)
     );
     return plan;
@@ -58,6 +62,7 @@ export class Plan {
     this.category = new Category(category);
     this.attendeesId = new Array<Identifier>();
     this.pendingAttendeesId = new Array<Identifier>();
+    this.rejectedAttendeesId = new Array<Identifier>();
     this.image = image;
   }
 
@@ -93,7 +98,7 @@ export class Plan {
     this.pendingAttendeesId.push(pendingAttendee);
   }
 
-  public remotePendingAttendee(pendingAttendee: Identifier) {
+  public removePendingAttendee(pendingAttendee: Identifier) {
     if (
       pendingAttendee.toString() in
       this.pendingAttendeesId.map((id) => id.toString())
@@ -108,6 +113,18 @@ export class Plan {
     );
   }
 
+  public addRejectedAttendee(rejectedAttendee: Identifier) {
+    if (
+      rejectedAttendee.toString() in
+      this.rejectedAttendeesId.map((id) => id.toString())
+    ) {
+      // already added to pending the list
+      return;
+    }
+
+    this.rejectedAttendeesId.push(rejectedAttendee);
+  }
+
   public serialize(): PlanPrimitives {
     return {
       id: this.id?.toString(),
@@ -120,6 +137,9 @@ export class Plan {
       category: this.category.value.toString(),
       attendeesId: this.attendeesId.map((attendee) => attendee.toString()),
       pendingAttendeesId: this.pendingAttendeesId.map((attendee) =>
+        attendee.toString()
+      ),
+      rejectedAttendeesId: this.rejectedAttendeesId.map((attendee) =>
         attendee.toString()
       ),
       image: this.image,
