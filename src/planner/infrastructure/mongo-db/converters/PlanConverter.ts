@@ -26,7 +26,7 @@ export class MongoPlanConverter {
         (rejectedAttendeesId) => new ObjectId(rejectedAttendeesId)
       ),
       description: planPrimitives.description,
-      image: planPrimitives.description,
+      image: planPrimitives.image,
     };
   }
 

@@ -32,7 +32,7 @@ export class LoginController extends Controller {
 
         const data = {
           token: "fakeToken__ReplaceWithJWTLater", //TODO:  Replace with JWT later
-          
+
           // TODO: Revise this part
           // temprorarily we return user completely when user authenticates,
           // to have user data in front-end for profile screen
@@ -46,12 +46,12 @@ export class LoginController extends Controller {
         };
       } else {
         console.debug(`user:${message.username}, Login failed`);
-        throw new ForbiddenError();
+        throw new ForbiddenError("User or password is wrong");
       }
     }
     console.debug(
       `cannot authenticate because user '${message.username}' has not been found`
     );
-    throw new ForbiddenError();
+    throw new ForbiddenError("User or password is wrong");
   }
 }
