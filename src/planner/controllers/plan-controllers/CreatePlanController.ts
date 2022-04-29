@@ -18,7 +18,7 @@ export interface CreatePlanMessage {
   image?: string;
 }
 
-export class CreatePlanController extends Controller {
+export class CreatePlanController extends Controller<CreatePlanMessage> {
   protected async doControl(message: CreatePlanMessage): Promise<ResponseData> {
     const planRepository: PlanRepository = new MongoPlanRepository();
 

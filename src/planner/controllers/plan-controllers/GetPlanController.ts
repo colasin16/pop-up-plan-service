@@ -8,7 +8,7 @@ export interface GetPlanMessage {
   id: Identifier;
 }
 
-export class GetPlanController extends Controller {
+export class GetPlanController extends Controller<GetPlanMessage> {
   protected async doControl(message: GetPlanMessage): Promise<ResponseData> {
     const planRepository: PlanRepository = new MongoPlanRepository();
 

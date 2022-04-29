@@ -22,7 +22,7 @@ export interface AcceptOrRejectJoinPlanRequestMessage {
   status: JoinPlanRequestStatus;
 }
 
-export class AcceptOrRejectJoinPlanRequestController extends Controller {
+export class AcceptOrRejectJoinPlanRequestController extends Controller<AcceptOrRejectJoinPlanRequestMessage> {
   protected async doControl(
     message: AcceptOrRejectJoinPlanRequestMessage
   ): Promise<ResponseData> {

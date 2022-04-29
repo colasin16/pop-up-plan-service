@@ -11,8 +11,8 @@ export interface LoginMessage {
 }
 
 
-export class LoginController extends Controller {
-  protected async doControl(message: LoginMessage): Promise<ResponseData> {
+export class LoginController extends Controller<LoginMessage>{
+  protected async doControl(message): Promise<ResponseData> {
     const userRepository: UserRepository = new MongoUserRepository();
 
     const user = await userRepository.findByEmail(message.username);

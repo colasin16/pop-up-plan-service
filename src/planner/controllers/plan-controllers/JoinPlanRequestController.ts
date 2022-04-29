@@ -10,7 +10,7 @@ export interface JoinPlanRequestMessage {
   planId: string;
 }
 
-export class JoinPlanRequestController extends Controller {
+export class JoinPlanRequestController extends Controller<JoinPlanRequestMessage> {
   protected async doControl(
     message: JoinPlanRequestMessage
   ): Promise<ResponseData> {

@@ -13,7 +13,7 @@ export interface CreateUserMessage {
   password: string;
 }
 
-export class CreateUserController extends Controller {
+export class CreateUserController extends Controller<CreateUserMessage> {
   protected async doControl(message: CreateUserMessage): Promise<ResponseData> {
     const userRepository: UserRepository = new MongoUserRepository();
 

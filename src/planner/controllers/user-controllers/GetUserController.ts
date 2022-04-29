@@ -8,7 +8,7 @@ export interface GetUserMessage {
   id: Identifier;
 }
 
-export class GetUserController extends Controller {
+export class GetUserController extends Controller<GetUserMessage> {
   protected async doControl(message: GetUserMessage): Promise<ResponseData> {
     const userRepository: UserRepository = new MongoUserRepository();
     const user = await userRepository.find(message.id);
