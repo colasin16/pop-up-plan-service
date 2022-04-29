@@ -1,23 +1,20 @@
-import { container } from "tsyringe";
-import { ObjectId } from "bson";
+import { Model } from "../../core/model/Model";
+import { FullName } from "../../types/FullName";
+import { PasswordEncryptor } from "../../utils/PasswordEcryptor";
+import { Identifier } from "../../core/model/Identifier";
+import { UserPrimitives } from "./UserPrimitives";
 
-import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
-import { MongoDBClient } from "../infrastructure/mongo-db/MongoDBClient";
-import { PasswordEncryptor } from "../utils/PasswordEcryptor";
-import { UserPrimitives } from "./primitives/UserPrimitives";
-import { FullName } from "../types/FullName";
-import { Identifier } from "./Identifier";
 
-export class User {
+export class UserModel extends Model {
   private id: Identifier;
   private name: FullName;
   private email: string;
   private phoneNumber: string;
   private password: string;
 
-  public static deserialize(document: UserPrimitives): Promise<User> {
+  public static deserialize(document: UserPrimitives): Promise<UserModel> {
     return this.buildWithIdentifier(
-      new Identifier(new ObjectId(document.id)),
+      Identifier.fromString(document.id),
       document.name,
       document.email,
       document.phoneNumber,
@@ -26,6 +23,7 @@ export class User {
   }
 
   constructor(async_param) {
+    super()
     if (typeof async_param === "undefined") {
       throw new Error("Cannot be called directly, use build method instead");
     }
@@ -36,21 +34,13 @@ export class User {
     email: string,
     phoneNumber: string,
     password: string
-  ): Promise<User> {
-    const userWithSameEmail = await new MongoUserRepository(
-      container.resolve(MongoDBClient)
-    ).findByEmail(email);
-
-    if (userWithSameEmail) {
-      throw new Error("User with that email already exists");
-    }
-
+  ): Promise<UserModel> {
     const emailThis = email;
     const nameThis = name;
     const phoneNumberThis = phoneNumber;
     const encryptedPassword = await PasswordEncryptor.encryptPassword(password);
 
-    const user = new User(encryptedPassword);
+    const user = new UserModel(encryptedPassword);
     user.name = nameThis;
     user.email = emailThis;
     user.phoneNumber = phoneNumberThis;
@@ -59,15 +49,36 @@ export class User {
     return user;
   }
 
+  /**
+   * We have id here, which means user is already created and we have a encrypted password
+   * @param id
+   * @param name
+   * @param email
+   * @param phoneNumber
+   * @param encryptedPassword
+   * @returns
+   */
   static async buildWithIdentifier(
     id: Identifier,
     name: FullName,
     email: string,
     phoneNumber: string,
-    password: string
-  ): Promise<User> {
-    const user = await this.build(name, email, phoneNumber, password);
+    encryptedPassword: string
+  ): Promise<UserModel> {
+    const emailThis = email;
+    const nameThis = name;
+    const phoneNumberThis = phoneNumber;
+    // const encryptedPassword = await PasswordEncryptor.encryptPassword(password);
+
+    const user = new UserModel(true);
+    user.name = nameThis;
+    user.email = emailThis;
+    user.phoneNumber = phoneNumberThis;
     user.id = id;
+
+    // TODO: change user.password to user.encryptedPassword
+    user.password = encryptedPassword;
+
     return user;
   }
 
@@ -77,7 +88,7 @@ export class User {
 
   public serialize(): UserPrimitives {
     return {
-      id: this.id.toString(),
+      id: this.id?.toString(),
       name: this.name,
       email: this.email,
       phoneNumber: this.phoneNumber,

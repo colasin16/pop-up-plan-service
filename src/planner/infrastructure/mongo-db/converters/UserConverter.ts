@@ -1,10 +1,11 @@
 import { WithId } from "mongodb";
-import { UserPrimitives } from "../../../models/primitives/UserPrimitives";
-import { User } from "../../../models/User";
+import { Identifier } from "../../../core/model/Identifier";
+import { UserPrimitives } from "../../../models/user-model/UserPrimitives";
+import { UserModel } from "../../../models/user-model/UserModel";
 import { MongoUser } from "../models/MongoUser";
 
 export class MongoUserConverter {
-  static userToMongoUser(user: User): void {}
+  static userToMongoUser(user: UserModel): void { }
 
   static mongoUserToUserPrimitives(
     mongoUser: WithId<MongoUser>
@@ -19,5 +20,19 @@ export class MongoUserConverter {
       phoneNumber: mongoUser.phoneNumber,
       password: mongoUser.password,
     };
+  }
+
+  static async mongoUserToUser(mongoUser: WithId<MongoUser>): Promise<UserModel> {
+    const user = UserModel.buildWithIdentifier(
+      Identifier.fromString(mongoUser._id.toString()),
+      {
+        firstName: mongoUser.name.firstName,
+        lastName: mongoUser.name.lastName,
+      },
+      mongoUser.email,
+      mongoUser.phoneNumber,
+      mongoUser.password
+    );
+    return user;
   }
 }

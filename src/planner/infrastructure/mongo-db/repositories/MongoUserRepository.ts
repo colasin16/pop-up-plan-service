@@ -1,14 +1,11 @@
 import { Collection, ObjectId } from "mongodb";
 import { autoInjectable } from "tsyringe";
-import { ObjectID } from "bson";
-
-import { UserPrimitives } from "../../../models/primitives/UserPrimitives";
+import { Identifier } from "../../../core/model/Identifier";
+import { UserModel } from "../../../models/user-model/UserModel";
+import { UserRepository } from "../../../models/user-model/UserRepository";
 import { MongoUserConverter } from "../converters/UserConverter";
-import { UserRepository } from "../../../models/UserRepository";
-import { Identifier } from "../../../models/Identifier";
-import { MongoDBClient } from "../MongoDBClient";
 import { MongoUser } from "../models/MongoUser";
-import { User } from "../../../models/User";
+import { MongoDBClient } from "../MongoDBClient";
 
 @autoInjectable()
 export class MongoUserRepository implements UserRepository {
@@ -20,34 +17,50 @@ export class MongoUserRepository implements UserRepository {
       .collection("Users");
   }
 
-  public async findByEmail(email: string): Promise<UserPrimitives | null> {
+  public async findByEmail(email: string): Promise<UserModel | null> {
     const foundUser = await this.collection.findOne({
       email,
     });
 
-    return foundUser
-      ? MongoUserConverter.mongoUserToUserPrimitives(foundUser)
-      : null;
+    return foundUser ? MongoUserConverter.mongoUserToUser(foundUser) : null;
   }
 
-  public async find(id: Identifier): Promise<UserPrimitives | null> {
+  public async find(id: Identifier): Promise<UserModel | null> {
     const _id = new ObjectId(id.toString());
     const foundItem = await this.collection.findOne({ _id });
 
-    return foundItem
-      ? MongoUserConverter.mongoUserToUserPrimitives(foundItem)
-      : null;
+    return foundItem ? MongoUserConverter.mongoUserToUser(foundItem) : null;
   }
 
-  update(user: User): void {
+  public async findAll(): Promise<UserModel[]> {
+    throw new Error("Method not implemented.");
+
+  }
+
+  public async update(user: UserModel): Promise<UserModel | null> {
     throw new Error("Method not implemented.");
   }
+
+  public async findMultipleObjectsById(ids: Identifier[]): Promise<UserModel[]> {
+    const oids: ObjectId[] = [];
+    ids.forEach(function (item) {
+      oids.push(new ObjectId(item.toString()));
+    });
+
+    const mongoUserList = await this.collection.find({ _id: { $in: oids } }).toArray()
+    const mongoUserListPromises = mongoUserList.map<Promise<UserModel>>((userDocument) =>
+      MongoUserConverter.mongoUserToUser(userDocument)
+    );
+
+    return Promise.all(mongoUserListPromises)
+  }
+
 
   delete(id: Identifier): void {
     throw new Error("Method not implemented.");
   }
 
-  public async create(user: User): Promise<UserPrimitives | null> {
+  public async create(user: UserModel): Promise<UserModel | null> {
     const serializedUser = user.serialize();
     const result = await this.collection.insertOne({
       name: {
@@ -60,10 +73,7 @@ export class MongoUserRepository implements UserRepository {
     });
     console.log("User created with id " + result.insertedId);
 
-    const identifier = new Identifier(
-      new ObjectID(result.insertedId.toString())
-    );
-
+    const identifier = Identifier.fromString(result.insertedId.toString());
     const newUser = await this.find(identifier);
 
     return newUser;

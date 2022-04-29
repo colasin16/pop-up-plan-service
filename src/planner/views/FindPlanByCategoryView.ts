@@ -1,29 +1,26 @@
-import { User } from "../models/User";
-import { PlanRepository } from "../models/PlanRepository";
-import { Plan } from "../models/Plan";
+import { UserModel } from "../models/user-model/UserModel";
+import { PlanRepository } from "../models/plan-model/PlanRepository";
+import { PlanModel } from "../models/plan-model/PlanModel";
 import { Category } from "../types/Category";
 
 export interface FindPlanByCategoryMessage {
   category: string;
 }
 
-// esta vista... jejejeje
 export class FindPlanByCategoryView {
-  private user: User;
+  private user: UserModel;
   private planRepository: PlanRepository;
 
-  constructor(user: User, planRepository: PlanRepository) {
+  constructor(user: UserModel, planRepository: PlanRepository) {
     this.user = user;
     this.planRepository = planRepository;
   }
 
-  public async interact(message: FindPlanByCategoryMessage): Promise<Plan[]> {
-    const planPrimitivesList = await this.planRepository.findByCategory(
+  public async interact(message: FindPlanByCategoryMessage): Promise<PlanModel[]> {
+    const planList = await this.planRepository.findByCategory(
       new Category(message.category)
     );
 
-    return planPrimitivesList.map((planPrimitives) =>
-      Plan.deserialize(planPrimitives)
-    );
+    return planList;
   }
 }

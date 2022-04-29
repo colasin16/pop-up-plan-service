@@ -1,19 +1,19 @@
 import { describe } from "mocha";
 import { expect } from "chai";
-import { Plan } from "../../src/planner/models/Plan";
+import { PlanModel } from "../../src/planner/models/plan-model/PlanModel";
 import { Category } from "../../src/planner/types/Category";
 import { Privacy } from "../../src/planner/types/Privacy";
 import { InMemoryPlanRepository } from "../../src/planner/infrastructure/in-memory-storage/InMemoryPlanRepository";
 
-import { User } from "../../src/planner/models/User";
-import { Identifier } from "../../src/planner/models/Identifier";
-import { CreatePlanMessage } from "../../src/planner/controllers/CreatePlanController";
+import { UserModel } from "../../src/planner/models/user-model/UserModel";
+import { Identifier } from "../../src/planner/core/model/Identifier";
+import { CreatePlanMessage } from "../../src/planner/controllers/plan-controllers/CreatePlanController";
 
 describe("Unit test", () => {
   describe("Plan", () => {
     describe(".addAtendees", () => {
       before(async () => {
-        const ownerUser = await User.buildWithIdentifier(
+        const ownerUser = await UserModel.buildWithIdentifier(
           new Identifier(),
           { firstName: "Jhon", lastName: "Doe" },
           "jhondoe@owner.pic",
@@ -30,21 +30,21 @@ describe("Unit test", () => {
           ownerId: "1644055774364",
         };
 
-        const planEntity = new Plan(
+        const planEntity = new PlanModel(
           createPlanMessage.title,
+          Identifier.fromString(createPlanMessage.ownerId),
           createPlanMessage.location,
           createPlanMessage.time,
           new Privacy(createPlanMessage.privacy).value,
           new Category(createPlanMessage.category).value,
           createPlanMessage.description
         );
-        planEntity.setOwner(ownerUser.getId());
 
         const inMemoryPlanRepository = new InMemoryPlanRepository();
-        const planId = inMemoryPlanRepository.create(planEntity);
+        const createdPlan = await inMemoryPlanRepository.create(planEntity);
 
         const plans = await inMemoryPlanRepository.findAll();
-        const plan = plans.find((p) => p.id === planId.toString());
+        const plan = plans.find((p) => p.getId() === createdPlan?.getId());
 
         expect(plan).to.not.be.eq(undefined);
         // expect(planId).should.be.eq(plan.getId());

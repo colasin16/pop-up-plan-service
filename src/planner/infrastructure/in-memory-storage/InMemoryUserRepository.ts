@@ -1,34 +1,43 @@
-import { Identifier } from "../../models/Identifier";
-import { UserPrimitives } from "../../models/primitives/UserPrimitives";
-import { User } from "../../models/User";
-import { UserRepository } from "../../models/UserRepository";
+import { Identifier } from "../../core/model/Identifier";
+import { UserModel } from "../../models/user-model/UserModel";
+import { UserRepository } from "../../models/user-model/UserRepository";
 
 export class InMemoryUserRepository implements UserRepository {
-  private map: Map<string, User>;
+  private map: Map<string, UserModel>;
 
   constructor() {
-    this.map = new Map<string, User>();
+    this.map = new Map<string, UserModel>();
   }
 
-  async findByEmail(email: string): Promise<UserPrimitives | null> {
+  async findByEmail(email: string): Promise<UserModel | null> {
     throw new Error("Method not implemented.");
   }
 
-  public async create(user: User): Promise<UserPrimitives | null> {
+  public async create(user: UserModel): Promise<UserModel | null> {
     await Promise.resolve(this.map.set(user.getId().toString(), user));
-    return user.serialize();
+    return user;
   }
 
-  public async find(id: Identifier): Promise<UserPrimitives | null> {
+  public async find(id: Identifier): Promise<UserModel | null> {
     const user = this.map.get(id.toString());
     if (!user) {
       return null;
     }
-    return user.serialize();
+    return user;
   }
 
-  public update(user: User): void {
-    this.map.set(user.getId().toString(), user);
+  update(object: UserModel): Promise<UserModel | null> {
+    this.map.set(object.getId().toString(), object);
+    return Promise.resolve(object)
+  }
+
+  findAll(): Promise<UserModel[]> {
+    throw new Error("Method not implemented.");
+  }
+
+  findMultipleObjectsById(ids: Identifier[]): Promise<UserModel[]> {
+    throw new Error("Method not implemented.");
+
   }
 
   public async delete(id: Identifier): Promise<void> {

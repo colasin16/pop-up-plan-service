@@ -18,7 +18,6 @@ export class PasswordEncryptor {
               // throw hashError;
               reject(`hash error: ${JSON.stringify(hashError)}`);
             } else {
-              console.log(`hash: ${hash}`);
               resolve(hash);
               //$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K
             }

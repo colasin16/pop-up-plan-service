@@ -1,21 +1,21 @@
 import { Request, Response } from "express";
-
-import { FindPlanView } from "./express/FindPlanView";
-import {
-  FindPlanByCategoryMessage,
-  FindPlanByCategoryView,
-} from "./FindPlanByCategoryView";
-import { FindPlanByIdMessage, FindPlanByIdView } from "./findPlanByIdView";
-import { LoginUserView } from "./express/LoginUserView";
-import { CreatePlanView } from "./express/CreatePlanView";
-import { CreateUserView } from "./express/CreateUserView";
-import { GetUserView } from "./express/GetUserView";
+import { AcceptJoinPlanRequestView } from "./plan-views/AcceptJoinPlanRequestView";
+import { CreatePlanView } from "./plan-views/CreatePlanView";
+import { FindPlanView } from "./plan-views/FindPlanView";
+import { GetPlanView } from "./plan-views/GetPlanView";
+import { JoinPlanRequestView } from "./plan-views/JoinPlanRequestView";
+import { CreateUserView } from "./user-views/CreateUserView";
+import { GetUserView } from "./user-views/GetUserView";
+import { LoginUserView } from "./user-views/LoginUserView";
 
 export class UserViewExpress {
   private createPlanView: CreatePlanView;
+  private joinPlanRequestView: JoinPlanRequestView;
+  private acceptJoinPlanRequestView: AcceptJoinPlanRequestView;
+
   private findPlanView: FindPlanView;
-  // private findPlanByCategoryView: FindPlanByCategoryView;
-  // private findPlanByIdView: FindPlanByIdView;
+  private getPlanView: GetPlanView;
+
 
   private createUserView: CreateUserView;
   private getUserView: GetUserView;
@@ -23,11 +23,27 @@ export class UserViewExpress {
 
   constructor() {
     this.createPlanView = new CreatePlanView();
+    this.joinPlanRequestView = new JoinPlanRequestView();
+    this.acceptJoinPlanRequestView = new AcceptJoinPlanRequestView();
+
     this.findPlanView = new FindPlanView();
+    this.getPlanView = new GetPlanView();
+
     this.createUserView = new CreateUserView();
     this.getUserView = new GetUserView();
 
     this.loginUserView = new LoginUserView();
+  }
+
+  public async joinPlanRequest(req: Request, res: Response): Promise<void> {
+    await this.joinPlanRequestView.render(req, res);
+  }
+
+  public async acceptOrRejectJoinPlanRequest(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    await this.acceptJoinPlanRequestView.render(req, res);
   }
 
   public async createPlan(req: Request, res: Response): Promise<void> {
@@ -50,12 +66,15 @@ export class UserViewExpress {
     await this.findPlanView.render(req, res);
   }
 
+  public async getPlan(req: Request, res: Response): Promise<void> {
+    await this.getPlanView.render(req, res);
+  }
+
   // README: que no se haga la lista muy grande de findByNske findByNscuantos findBySkibidi... Criteria pattern si se va de las manos
   // public async findByCategory(req: Request, res: Response): Promise<void> {
   //   const message: FindPlanByCategoryMessage = {
   //     category: req.params.category,
   //   };
-  //   try {
   //     const plans = await this.findPlanByCategoryView.interact(message);
   //     res.status(200).send({
   //       success: true,
@@ -72,17 +91,12 @@ export class UserViewExpress {
   //         };
   //       }),
   //     });
-  //   } catch (e) {
-  //     console.error(e);
-  //     res.status(500).send({ message: "internal-error" });
-  //   }
   // }
 
   // public async findById(req: Request, res: Response): Promise<void> {
   //   const message: FindPlanByIdMessage = {
   //     id: req.params.id,
   //   };
-  //   try {
   //     const plan = await this.findPlanByIdView.interact(message);
 
   //     if (!plan) {
@@ -104,9 +118,5 @@ export class UserViewExpress {
   //         },
   //       },
   //     });
-  //   } catch (e) {
-  //     console.error(e);
-  //     res.status(500).send({ message: "internal-error" });
-  //   }
   // }
 }

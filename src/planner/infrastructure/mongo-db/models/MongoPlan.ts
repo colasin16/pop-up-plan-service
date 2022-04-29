@@ -8,6 +8,8 @@ export interface MongoPlan {
   privacy: string;
   category: string;
   attendeesId: ObjectId[];
+  pendingAttendeesId: ObjectId[];
+  rejectedAttendeesId: ObjectId[];
   description?: string;
   image?: string;
 }

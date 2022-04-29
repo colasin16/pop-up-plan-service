@@ -1,24 +1,21 @@
-import { PlanRepository } from "../../models/PlanRepository";
-import { Plan } from "../../models/Plan";
-import { Identifier } from "../../models/Identifier";
+import { Identifier } from "../../core/model/Identifier";
+import { PlanModel } from "../../models/plan-model/PlanModel";
+import { PlanRepository } from "../../models/plan-model/PlanRepository";
 import { Category } from "../../types/Category";
-import { PlanPrimitives } from "../../models/primitives/PlanPrimitives";
 
 export class InMemoryPlanRepository implements PlanRepository {
-  private map: Map<string, PlanPrimitives>;
+  private map: Map<string, PlanModel>;
 
   constructor() {
-    this.map = new Map<string, PlanPrimitives>();
+    this.map = new Map<string, PlanModel>();
   }
 
-  public async create(plan: Plan): Promise<PlanPrimitives | null> {
-    await Promise.resolve(
-      this.map.set(plan.getId().toString(), plan.serialize())
-    );
-    return plan.serialize();
+  public async create(plan: PlanModel): Promise<PlanModel | null> {
+    await Promise.resolve(this.map.set(plan.getId().toString(), plan));
+    return plan;
   }
 
-  public async find(id: Identifier): Promise<PlanPrimitives | null> {
+  public async find(id: Identifier): Promise<PlanModel | null> {
     const plan = this.map.get(id.toString());
     if (!plan) {
       return null;
@@ -26,25 +23,35 @@ export class InMemoryPlanRepository implements PlanRepository {
     return plan;
   }
 
-  public async findAll(): Promise<PlanPrimitives[]> {
-    const plans = new Array<PlanPrimitives>();
+  public async findAll(): Promise<PlanModel[]> {
+    const plans = new Array<PlanModel>();
     this.map.forEach((plan) => plans.push(plan));
     return plans;
   }
 
-  public async findByCategory(category: Category): Promise<PlanPrimitives[]> {
-    const plans = new Array<PlanPrimitives>();
+  public async findByCategory(category: Category): Promise<PlanModel[]> {
+    const plans = new Array<PlanModel>();
     this.map.forEach((plan) => {
-      const planInstance = Plan.deserialize(plan);
-      if (planInstance.hasCategory(category)) {
+      if (plan.hasCategory(category)) {
         plans.push(plan);
       }
     });
     return plans;
   }
 
-  public update(plan: Plan): void {
-    this.map.set(plan.getId().toString(), plan.serialize());
+  public update(plan: PlanModel): Promise<PlanModel | null> {
+    this.map.set(plan.getId().toString(), plan);
+    return Promise.resolve(plan);
+  }
+
+  findMultipleObjectsById(ids: Identifier[]): Promise<PlanModel[]> {
+    const plans = new Array<PlanModel>();
+    this.map.forEach((plan) => {
+      if (ids.includes(plan.getId())) {
+        plans.push(plan);
+      }
+    });
+    return Promise.resolve(plans);
   }
 
   public async delete(id: Identifier): Promise<void> {

@@ -1,15 +1,13 @@
-import { autoInjectable } from "tsyringe";
 import { Collection, ObjectId } from "mongodb";
-import { ObjectID } from "bson";
-
-import { PlanPrimitives } from "../../../models/primitives/PlanPrimitives";
-import { MongoPlanConverter } from "../converters/PlanConverter";
-import { PlanRepository } from "../../../models/PlanRepository";
-import { Identifier } from "../../../models/Identifier";
+import { autoInjectable } from "tsyringe";
+import { Identifier } from "../../../core/model/Identifier";
+import { PlanModel } from "../../../models/plan-model/PlanModel";
+import { PlanRepository } from "../../../models/plan-model/PlanRepository";
 import { Category } from "../../../types/Category";
-import { MongoDBClient } from "../MongoDBClient";
+import { MongoPlanConverter } from "../converters/PlanConverter";
 import { MongoPlan } from "../models/MongoPlan";
-import { Plan } from "../../../models/Plan";
+import { MongoDBClient } from "../MongoDBClient";
+
 
 @autoInjectable()
 export class MongoPlanRepository implements PlanRepository {
@@ -21,32 +19,28 @@ export class MongoPlanRepository implements PlanRepository {
       .collection<MongoPlan>("Plans");
   }
 
-  public async find(id: Identifier): Promise<PlanPrimitives | null> {
+  public async find(id: Identifier): Promise<PlanModel | null> {
     const _id = new ObjectId(id.toString());
+
     const foundItem = await this.collection.findOne({ _id });
 
-    console.debug(`foundedItem: ${foundItem}`);
-
-    return foundItem
-      ? MongoPlanConverter.mongoPlanToPlanPrimitives(foundItem)
-      : null;
+    return foundItem ? MongoPlanConverter.mongoPlanToPlan(foundItem) : null;
   }
 
-  public async findAll(): Promise<PlanPrimitives[]> {
+  public async findAll(): Promise<PlanModel[]> {
     const mongoPlanList = await this.collection.find().toArray();
 
-    return mongoPlanList.map<PlanPrimitives>((planDocument) =>
-      MongoPlanConverter.mongoPlanToPlanPrimitives(planDocument)
+    return mongoPlanList.map<PlanModel>((planDocument) =>
+      MongoPlanConverter.mongoPlanToPlan(planDocument)
     );
   }
 
-  public async findByCategory(category: Category): Promise<PlanPrimitives[]> {
-    const plans = new Array<PlanPrimitives>();
+  public async findByCategory(category: Category): Promise<PlanModel[]> {
+    const plans = new Array<PlanModel>();
     const plansPrimitives = await this.findAll();
 
     plansPrimitives.forEach((plan) => {
-      const planInstance = Plan.deserialize(plan);
-      if (planInstance.hasCategory(category)) {
+      if (plan.hasCategory(category)) {
         plans.push(plan);
       }
     });
@@ -54,22 +48,41 @@ export class MongoPlanRepository implements PlanRepository {
     return plans;
   }
 
-  update(plan: Plan): void {
-    throw new Error("Method not implemented.");
+  public async update(plan: PlanModel): Promise<PlanModel | null> {
+    const updatedItem = await this.collection.findOneAndUpdate(
+      { _id: new ObjectId(plan.getId().toString()) },
+      { $set: MongoPlanConverter.planToMongoPlan(plan) }
+    );
+
+    if (!updatedItem.value) {
+      return null;
+    }
+
+    return MongoPlanConverter.mongoPlanToPlan(updatedItem.value);
+  }
+
+  public async findMultipleObjectsById(ids: Identifier[]): Promise<PlanModel[]> {
+    const oids: ObjectId[] = [];
+    ids.forEach(function (item) {
+      oids.push(new ObjectId(item.toString()));
+    });
+
+    const mongoPlanList = await this.collection.find({ _id: { $in: oids } }).toArray()
+    return mongoPlanList.map<PlanModel>((planDocument) =>
+      MongoPlanConverter.mongoPlanToPlan(planDocument)
+    );
   }
 
   delete(id: Identifier): void {
     throw new Error("Method not implemented.");
   }
 
-  public async create(plan: Plan): Promise<PlanPrimitives | null> {
+  public async create(plan: PlanModel): Promise<PlanModel | null> {
     const result = await this.collection.insertOne(
       MongoPlanConverter.planToMongoPlan(plan)
     );
 
-    const identifier = new Identifier(
-      new ObjectID(result.insertedId.toString())
-    );
+    const identifier = Identifier.fromString(result.insertedId.toString());
 
     const createdItem = await this.find(identifier);
 
