@@ -69,7 +69,6 @@ export class PlanModel extends Model {
 
     super()
 
-    // this.id = new Identifier();
     this.title = title;
     this.ownerId = ownerId;
     this.location = location;
