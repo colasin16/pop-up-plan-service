@@ -2,7 +2,7 @@ import { Controller } from "../../core/Controller";
 import { ForbiddenError } from "../../core/ResponseErrors";
 import { ResponseData } from "../../core/types";
 import { MongoUserRepository } from "../../infrastructure/mongo-db/repositories/MongoUserRepository";
-import { UserRepository } from "../../models/UserRepository";
+import { UserRepository } from "../../models/user-model/UserRepository";
 import { PasswordEncryptor } from "../../utils/PasswordEcryptor";
 
 export interface LoginMessage {

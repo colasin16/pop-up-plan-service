@@ -1,6 +1,6 @@
-import { PlanRepository } from "../models/PlanRepository";
-import { Identifier } from "../models/Identifier";
-import { PlanModel } from "../models/Plan";
+import { PlanRepository } from "../models/plan-model/PlanRepository";
+import { Identifier } from "../core/model/Identifier";
+import { PlanModel } from "../models/plan-model/Plan";
 import { ObjectId } from "bson";
 
 export interface FindPlanByIdMessage {

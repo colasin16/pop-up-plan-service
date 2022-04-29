@@ -1,7 +1,7 @@
 import { Controller } from "../../core/Controller";
 import { ResponseData } from "../../core/types";
 import { MongoPlanRepository } from "../../infrastructure/mongo-db/repositories/MongoPlanRepository";
-import { PlanRepository } from "../../models/PlanRepository";
+import { PlanRepository } from "../../models/plan-model/PlanRepository";
 
 export class SearchPlanController extends Controller<any> {
   protected async doControl(message: any): Promise<ResponseData> {

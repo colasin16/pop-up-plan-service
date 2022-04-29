@@ -1,10 +1,11 @@
-import { FullName } from "../types/FullName";
-import { PasswordEncryptor } from "../utils/PasswordEcryptor";
-import { Identifier } from "./Identifier";
-import { UserPrimitives } from "./primitives/UserPrimitives";
+import { Model } from "../../core/model/Model";
+import { FullName } from "../../types/FullName";
+import { PasswordEncryptor } from "../../utils/PasswordEcryptor";
+import { Identifier } from "../../core/model/Identifier";
+import { UserPrimitives } from "./UserPrimitives";
 
 
-export class UserModel {
+export class UserModel extends Model {
   private id: Identifier;
   private name: FullName;
   private email: string;
@@ -22,6 +23,7 @@ export class UserModel {
   }
 
   constructor(async_param) {
+    super()
     if (typeof async_param === "undefined") {
       throw new Error("Cannot be called directly, use build method instead");
     }

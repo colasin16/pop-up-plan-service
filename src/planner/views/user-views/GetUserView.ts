@@ -6,7 +6,7 @@ import {
 import { ExpressResponseAdapter } from "../../core/ExpressResponseAdapter";
 import { StatusCode } from "../../core/StatusCodes";
 import { View } from "../../core/View";
-import { Identifier } from "../../models/Identifier";
+import { Identifier } from "../../core/model/Identifier";
 
 export class GetUserView extends View {
   protected controllerClass = GetUserController;

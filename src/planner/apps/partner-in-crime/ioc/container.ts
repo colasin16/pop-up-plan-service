@@ -1,7 +1,7 @@
 import { container } from "tsyringe";
 import { MongoDBClient } from "../../../infrastructure/mongo-db/MongoDBClient";
 import { MongoPlanRepository } from "../../../infrastructure/mongo-db/repositories/MongoPlanRepository";
-import { PlanRepository } from "../../../models/PlanRepository";
+import { PlanRepository } from "../../../models/plan-model/PlanRepository";
 import { UserViewExpress } from "../../../views/UserViewExpress";
 import { types } from "./types";
 

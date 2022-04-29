@@ -2,8 +2,8 @@ import { Controller } from "../../core/Controller";
 import { AlreadyExistsError } from "../../core/ResponseErrors";
 import { ResponseData } from "../../core/types";
 import { MongoUserRepository } from "../../infrastructure/mongo-db/repositories/MongoUserRepository";
-import { UserModel } from "../../models/User";
-import { UserRepository } from "../../models/UserRepository";
+import { UserModel } from "../../models/user-model/User";
+import { UserRepository } from "../../models/user-model/UserRepository";
 import { FullName } from "../../types/FullName";
 
 export interface CreateUserMessage {

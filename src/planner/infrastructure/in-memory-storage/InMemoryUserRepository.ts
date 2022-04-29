@@ -1,6 +1,6 @@
-import { Identifier } from "../../models/Identifier";
-import { UserModel } from "../../models/User";
-import { UserRepository } from "../../models/UserRepository";
+import { Identifier } from "../../core/model/Identifier";
+import { UserModel } from "../../models/user-model/User";
+import { UserRepository } from "../../models/user-model/UserRepository";
 
 export class InMemoryUserRepository implements UserRepository {
   private map: Map<string, UserModel>;
@@ -26,8 +26,14 @@ export class InMemoryUserRepository implements UserRepository {
     return user;
   }
 
-  public update(user: UserModel): void {
-    this.map.set(user.getId().toString(), user);
+  update(object: UserModel): Promise<UserModel | null> {
+    this.map.set(object.getId().toString(), object);
+    return Promise.resolve(object)
+  }
+
+  findAll(): Promise<UserModel[]> {
+    throw new Error("Method not implemented.");
+
   }
 
   public async delete(id: Identifier): Promise<void> {

@@ -1,8 +1,8 @@
-import { PlanRepository } from "../../models/PlanRepository";
-import { PlanModel } from "../../models/Plan";
-import { Identifier } from "../../models/Identifier";
+import { PlanRepository } from "../../models/plan-model/PlanRepository";
+import { PlanModel } from "../../models/plan-model/Plan";
+import { Identifier } from "../../core/model/Identifier";
 import { Category } from "../../types/Category";
-import { PlanPrimitives } from "../../models/primitives/PlanPrimitives";
+import { PlanPrimitives } from "../../models/plan-model/PlanPrimitives";
 
 export class InMemoryPlanRepository implements PlanRepository {
   private map: Map<string, PlanModel>;

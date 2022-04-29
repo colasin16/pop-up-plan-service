@@ -1,9 +1,10 @@
-import { Category, ECategory } from "../types/Category";
-import { EPrivacy, Privacy } from "../types/Privacy";
-import { Identifier } from "./Identifier";
-import { PlanPrimitives } from "./primitives/PlanPrimitives";
+import { Model } from "../../core/model/Model";
+import { Category, ECategory } from "../../types/Category";
+import { EPrivacy, Privacy } from "../../types/Privacy";
+import { Identifier } from "../../core/model/Identifier";
+import { PlanPrimitives } from "./PlanPrimitives";
 
-export class PlanModel {
+export class PlanModel extends Model {
   private id: Identifier;
   private ownerId: Identifier;
   private title: string;
@@ -52,6 +53,9 @@ export class PlanModel {
     description?: string,
     image?: string
   ) {
+
+    super()
+
     // this.id = new Identifier();
     this.title = title;
     this.ownerId = ownerId;

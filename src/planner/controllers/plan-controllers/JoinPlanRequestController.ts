@@ -1,6 +1,6 @@
 import { MongoPlanRepository } from "../../infrastructure/mongo-db/repositories/MongoPlanRepository";
-import { Identifier } from "../../models/Identifier";
-import { PlanRepository } from "../../models/PlanRepository";
+import { Identifier } from "../../core/model/Identifier";
+import { PlanRepository } from "../../models/plan-model/PlanRepository";
 import { BadRequestError, NotFoundError } from "../../core/ResponseErrors";
 import { Controller } from "../../core/Controller";
 import { ResponseData } from "../../core/types";

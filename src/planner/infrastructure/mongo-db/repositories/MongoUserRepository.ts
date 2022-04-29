@@ -1,8 +1,8 @@
 import { Collection, ObjectId } from "mongodb";
 import { autoInjectable } from "tsyringe";
-import { Identifier } from "../../../models/Identifier";
-import { UserModel } from "../../../models/User";
-import { UserRepository } from "../../../models/UserRepository";
+import { Identifier } from "../../../core/model/Identifier";
+import { UserModel } from "../../../models/user-model/User";
+import { UserRepository } from "../../../models/user-model/UserRepository";
 import { MongoUserConverter } from "../converters/UserConverter";
 import { MongoUser } from "../models/MongoUser";
 import { MongoDBClient } from "../MongoDBClient";
@@ -32,7 +32,12 @@ export class MongoUserRepository implements UserRepository {
     return foundItem ? MongoUserConverter.mongoUserToUser(foundItem) : null;
   }
 
-  update(user: UserModel): void {
+  public async findAll(): Promise<UserModel[]> {
+    throw new Error("Method not implemented.");
+
+  }
+
+  public async update(user: UserModel): Promise<UserModel | null> {
     throw new Error("Method not implemented.");
   }
 

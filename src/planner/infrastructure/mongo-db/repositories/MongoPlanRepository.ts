@@ -1,8 +1,8 @@
 import { Collection, ObjectId } from "mongodb";
 import { autoInjectable } from "tsyringe";
-import { Identifier } from "../../../models/Identifier";
-import { PlanModel } from "../../../models/Plan";
-import { PlanRepository } from "../../../models/PlanRepository";
+import { Identifier } from "../../../core/model/Identifier";
+import { PlanModel } from "../../../models/plan-model/Plan";
+import { PlanRepository } from "../../../models/plan-model/PlanRepository";
 import { Category } from "../../../types/Category";
 import { MongoPlanConverter } from "../converters/PlanConverter";
 import { MongoPlan } from "../models/MongoPlan";

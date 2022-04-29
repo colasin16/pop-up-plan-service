@@ -6,9 +6,9 @@ import {
 } from "../../core/ResponseErrors";
 import { ResponseData } from "../../core/types";
 import { MongoPlanRepository } from "../../infrastructure/mongo-db/repositories/MongoPlanRepository";
-import { Identifier } from "../../models/Identifier";
-import { PlanModel } from "../../models/Plan";
-import { PlanRepository } from "../../models/PlanRepository";
+import { Identifier } from "../../core/model/Identifier";
+import { PlanModel } from "../../models/plan-model/Plan";
+import { PlanRepository } from "../../models/plan-model/PlanRepository";
 
 
 export enum JoinPlanRequestStatus {

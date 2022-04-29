@@ -1,12 +1,12 @@
 import { describe } from "mocha";
 import { expect } from "chai";
-import { PlanModel } from "../../src/planner/models/Plan";
+import { PlanModel } from "../../src/planner/models/plan-model/Plan";
 import { Category } from "../../src/planner/types/Category";
 import { Privacy } from "../../src/planner/types/Privacy";
 import { InMemoryPlanRepository } from "../../src/planner/infrastructure/in-memory-storage/InMemoryPlanRepository";
 
-import { UserModel } from "../../src/planner/models/User";
-import { Identifier } from "../../src/planner/models/Identifier";
+import { UserModel } from "../../src/planner/models/user-model/User";
+import { Identifier } from "../../src/planner/core/model/Identifier";
 import { CreatePlanMessage } from "../../src/planner/controllers/plan-controllers/CreatePlanController";
 
 describe("Unit test", () => {

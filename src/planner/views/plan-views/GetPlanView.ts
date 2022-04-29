@@ -3,7 +3,7 @@ import { GetPlanController, GetPlanMessage } from "../../controllers/plan-contro
 import { ExpressResponseAdapter } from "../../core/ExpressResponseAdapter";
 import { StatusCode } from "../../core/StatusCodes";
 import { View } from "../../core/View";
-import { Identifier } from "../../models/Identifier";
+import { Identifier } from "../../core/model/Identifier";
 
 export class GetPlanView extends View {
   protected controllerClass = GetPlanController;
