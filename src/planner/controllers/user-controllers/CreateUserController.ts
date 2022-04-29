@@ -2,7 +2,7 @@ import { Controller } from "../../core/Controller";
 import { AlreadyExistsError } from "../../core/ResponseErrors";
 import { ResponseData } from "../../core/types";
 import { MongoUserRepository } from "../../infrastructure/mongo-db/repositories/MongoUserRepository";
-import { User } from "../../models/User";
+import { UserModel } from "../../models/User";
 import { UserRepository } from "../../models/UserRepository";
 import { FullName } from "../../types/FullName";
 
@@ -17,7 +17,7 @@ export class CreateUserController extends Controller<CreateUserMessage> {
   protected async doControl(message: CreateUserMessage): Promise<ResponseData> {
     const userRepository: UserRepository = new MongoUserRepository();
 
-    const user = await User.build(
+    const user = await UserModel.build(
       message.name,
       message.email,
       message.phoneNumber,

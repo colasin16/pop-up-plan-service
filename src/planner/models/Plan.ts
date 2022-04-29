@@ -3,7 +3,7 @@ import { EPrivacy, Privacy } from "../types/Privacy";
 import { Identifier } from "./Identifier";
 import { PlanPrimitives } from "./primitives/PlanPrimitives";
 
-export class Plan {
+export class PlanModel {
   private id: Identifier;
   private ownerId: Identifier;
   private title: string;
@@ -17,8 +17,8 @@ export class Plan {
   private description?: string;
   private image?: string;
 
-  public static deserialize(primitives: PlanPrimitives): Plan {
-    const plan = new Plan(
+  public static deserialize(primitives: PlanPrimitives): PlanModel {
+    const plan = new PlanModel(
       primitives.title,
       Identifier.fromString(primitives.ownerId),
       primitives.location,

@@ -1,24 +1,24 @@
 import { Identifier } from "../../models/Identifier";
-import { User } from "../../models/User";
+import { UserModel } from "../../models/User";
 import { UserRepository } from "../../models/UserRepository";
 
 export class InMemoryUserRepository implements UserRepository {
-  private map: Map<string, User>;
+  private map: Map<string, UserModel>;
 
   constructor() {
-    this.map = new Map<string, User>();
+    this.map = new Map<string, UserModel>();
   }
 
-  async findByEmail(email: string): Promise<User | null> {
+  async findByEmail(email: string): Promise<UserModel | null> {
     throw new Error("Method not implemented.");
   }
 
-  public async create(user: User): Promise<User | null> {
+  public async create(user: UserModel): Promise<UserModel | null> {
     await Promise.resolve(this.map.set(user.getId().toString(), user));
     return user;
   }
 
-  public async find(id: Identifier): Promise<User | null> {
+  public async find(id: Identifier): Promise<UserModel | null> {
     const user = this.map.get(id.toString());
     if (!user) {
       return null;
@@ -26,7 +26,7 @@ export class InMemoryUserRepository implements UserRepository {
     return user;
   }
 
-  public update(user: User): void {
+  public update(user: UserModel): void {
     this.map.set(user.getId().toString(), user);
   }
 

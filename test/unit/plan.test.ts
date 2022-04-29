@@ -1,11 +1,11 @@
 import { describe } from "mocha";
 import { expect } from "chai";
-import { Plan } from "../../src/planner/models/Plan";
+import { PlanModel } from "../../src/planner/models/Plan";
 import { Category } from "../../src/planner/types/Category";
 import { Privacy } from "../../src/planner/types/Privacy";
 import { InMemoryPlanRepository } from "../../src/planner/infrastructure/in-memory-storage/InMemoryPlanRepository";
 
-import { User } from "../../src/planner/models/User";
+import { UserModel } from "../../src/planner/models/User";
 import { Identifier } from "../../src/planner/models/Identifier";
 import { CreatePlanMessage } from "../../src/planner/controllers/plan-controllers/CreatePlanController";
 
@@ -13,7 +13,7 @@ describe("Unit test", () => {
   describe("Plan", () => {
     describe(".addAtendees", () => {
       before(async () => {
-        const ownerUser = await User.buildWithIdentifier(
+        const ownerUser = await UserModel.buildWithIdentifier(
           new Identifier(),
           { firstName: "Jhon", lastName: "Doe" },
           "jhondoe@owner.pic",
@@ -30,7 +30,7 @@ describe("Unit test", () => {
           ownerId: "1644055774364",
         };
 
-        const planEntity = new Plan(
+        const planEntity = new PlanModel(
           createPlanMessage.title,
           Identifier.fromString(createPlanMessage.ownerId),
           createPlanMessage.location,

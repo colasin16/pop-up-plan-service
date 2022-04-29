@@ -1,13 +1,13 @@
 import { ObjectId, WithId } from "mongodb";
 import { Identifier } from "../../../models/Identifier";
-import { Plan } from "../../../models/Plan";
+import { PlanModel } from "../../../models/Plan";
 import { PlanPrimitives } from "../../../models/primitives/PlanPrimitives";
 import { ECategory } from "../../../types/Category";
 import { EPrivacy } from "../../../types/Privacy";
 import { MongoPlan } from "../models/MongoPlan";
 
 export class MongoPlanConverter {
-  static planToMongoPlan(plan: Plan): MongoPlan {
+  static planToMongoPlan(plan: PlanModel): MongoPlan {
     const planPrimitives = plan.serialize();
     return {
       ownerId: new ObjectId(planPrimitives.ownerId),
@@ -53,8 +53,8 @@ export class MongoPlanConverter {
     };
   }
 
-  static mongoPlanToPlan(mongoPlan: WithId<MongoPlan>): Plan {
-    const plan = new Plan(
+  static mongoPlanToPlan(mongoPlan: WithId<MongoPlan>): PlanModel {
+    const plan = new PlanModel(
       mongoPlan.title,
       Identifier.fromString(mongoPlan.ownerId.toString()),
       mongoPlan.location,

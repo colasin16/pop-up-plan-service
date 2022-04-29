@@ -1,7 +1,7 @@
 import { Collection, ObjectId } from "mongodb";
 import { autoInjectable } from "tsyringe";
 import { Identifier } from "../../../models/Identifier";
-import { Plan } from "../../../models/Plan";
+import { PlanModel } from "../../../models/Plan";
 import { PlanRepository } from "../../../models/PlanRepository";
 import { Category } from "../../../types/Category";
 import { MongoPlanConverter } from "../converters/PlanConverter";
@@ -19,7 +19,7 @@ export class MongoPlanRepository implements PlanRepository {
       .collection<MongoPlan>("Plans");
   }
 
-  public async find(id: Identifier): Promise<Plan | null> {
+  public async find(id: Identifier): Promise<PlanModel | null> {
     const _id = new ObjectId(id.toString());
 
     const foundItem = await this.collection.findOne({ _id });
@@ -27,16 +27,16 @@ export class MongoPlanRepository implements PlanRepository {
     return foundItem ? MongoPlanConverter.mongoPlanToPlan(foundItem) : null;
   }
 
-  public async findAll(): Promise<Plan[]> {
+  public async findAll(): Promise<PlanModel[]> {
     const mongoPlanList = await this.collection.find().toArray();
 
-    return mongoPlanList.map<Plan>((planDocument) =>
+    return mongoPlanList.map<PlanModel>((planDocument) =>
       MongoPlanConverter.mongoPlanToPlan(planDocument)
     );
   }
 
-  public async findByCategory(category: Category): Promise<Plan[]> {
-    const plans = new Array<Plan>();
+  public async findByCategory(category: Category): Promise<PlanModel[]> {
+    const plans = new Array<PlanModel>();
     const plansPrimitives = await this.findAll();
 
     plansPrimitives.forEach((plan) => {
@@ -48,7 +48,7 @@ export class MongoPlanRepository implements PlanRepository {
     return plans;
   }
 
-  public async update(plan: Plan): Promise<Plan | null> {
+  public async update(plan: PlanModel): Promise<PlanModel | null> {
     const updatedItem = await this.collection.findOneAndUpdate(
       { _id: new ObjectId(plan.getId().toString()) },
       { $set: MongoPlanConverter.planToMongoPlan(plan) }
@@ -65,7 +65,7 @@ export class MongoPlanRepository implements PlanRepository {
     throw new Error("Method not implemented.");
   }
 
-  public async create(plan: Plan): Promise<Plan | null> {
+  public async create(plan: PlanModel): Promise<PlanModel | null> {
     const result = await this.collection.insertOne(
       MongoPlanConverter.planToMongoPlan(plan)
     );

@@ -1,22 +1,22 @@
 import { PlanRepository } from "../../models/PlanRepository";
-import { Plan } from "../../models/Plan";
+import { PlanModel } from "../../models/Plan";
 import { Identifier } from "../../models/Identifier";
 import { Category } from "../../types/Category";
 import { PlanPrimitives } from "../../models/primitives/PlanPrimitives";
 
 export class InMemoryPlanRepository implements PlanRepository {
-  private map: Map<string, Plan>;
+  private map: Map<string, PlanModel>;
 
   constructor() {
-    this.map = new Map<string, Plan>();
+    this.map = new Map<string, PlanModel>();
   }
 
-  public async create(plan: Plan): Promise<Plan | null> {
+  public async create(plan: PlanModel): Promise<PlanModel | null> {
     await Promise.resolve(this.map.set(plan.getId().toString(), plan));
     return plan;
   }
 
-  public async find(id: Identifier): Promise<Plan | null> {
+  public async find(id: Identifier): Promise<PlanModel | null> {
     const plan = this.map.get(id.toString());
     if (!plan) {
       return null;
@@ -24,14 +24,14 @@ export class InMemoryPlanRepository implements PlanRepository {
     return plan;
   }
 
-  public async findAll(): Promise<Plan[]> {
-    const plans = new Array<Plan>();
+  public async findAll(): Promise<PlanModel[]> {
+    const plans = new Array<PlanModel>();
     this.map.forEach((plan) => plans.push(plan));
     return plans;
   }
 
-  public async findByCategory(category: Category): Promise<Plan[]> {
-    const plans = new Array<Plan>();
+  public async findByCategory(category: Category): Promise<PlanModel[]> {
+    const plans = new Array<PlanModel>();
     this.map.forEach((plan) => {
       if (plan.hasCategory(category)) {
         plans.push(plan);
@@ -40,7 +40,7 @@ export class InMemoryPlanRepository implements PlanRepository {
     return plans;
   }
 
-  public update(plan: Plan): Promise<Plan | null> {
+  public update(plan: PlanModel): Promise<PlanModel | null> {
     this.map.set(plan.getId().toString(), plan);
     return Promise.resolve(plan);
   }

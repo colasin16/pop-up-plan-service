@@ -2,7 +2,7 @@ import { Controller } from "../../core/Controller";
 import { ResponseData } from "../../core/types";
 import { MongoPlanRepository } from "../../infrastructure/mongo-db/repositories/MongoPlanRepository";
 import { Identifier } from "../../models/Identifier";
-import { Plan } from "../../models/Plan";
+import { PlanModel } from "../../models/Plan";
 import { PlanRepository } from "../../models/PlanRepository";
 import { Category } from "../../types/Category";
 import { Privacy } from "../../types/Privacy";
@@ -22,7 +22,7 @@ export class CreatePlanController extends Controller<CreatePlanMessage> {
   protected async doControl(message: CreatePlanMessage): Promise<ResponseData> {
     const planRepository: PlanRepository = new MongoPlanRepository();
 
-    const plan = new Plan(
+    const plan = new PlanModel(
       message.title,
       Identifier.fromString(message.ownerId),
       message.location,

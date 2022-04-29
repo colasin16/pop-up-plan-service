@@ -1,22 +1,17 @@
-import { container } from "tsyringe";
-import { ObjectId } from "bson";
-
-import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
-import { MongoDBClient } from "../infrastructure/mongo-db/MongoDBClient";
-import { PasswordEncryptor } from "../utils/PasswordEcryptor";
-import { UserPrimitives } from "./primitives/UserPrimitives";
 import { FullName } from "../types/FullName";
+import { PasswordEncryptor } from "../utils/PasswordEcryptor";
 import { Identifier } from "./Identifier";
-import { AlreadyExistsError, BadRequestError } from "../core/ResponseErrors";
+import { UserPrimitives } from "./primitives/UserPrimitives";
 
-export class User {
+
+export class UserModel {
   private id: Identifier;
   private name: FullName;
   private email: string;
   private phoneNumber: string;
   private password: string;
 
-  public static deserialize(document: UserPrimitives): Promise<User> {
+  public static deserialize(document: UserPrimitives): Promise<UserModel> {
     return this.buildWithIdentifier(
       Identifier.fromString(document.id),
       document.name,
@@ -37,13 +32,13 @@ export class User {
     email: string,
     phoneNumber: string,
     password: string
-  ): Promise<User> {
+  ): Promise<UserModel> {
     const emailThis = email;
     const nameThis = name;
     const phoneNumberThis = phoneNumber;
     const encryptedPassword = await PasswordEncryptor.encryptPassword(password);
 
-    const user = new User(encryptedPassword);
+    const user = new UserModel(encryptedPassword);
     user.name = nameThis;
     user.email = emailThis;
     user.phoneNumber = phoneNumberThis;
@@ -67,13 +62,13 @@ export class User {
     email: string,
     phoneNumber: string,
     encryptedPassword: string
-  ): Promise<User> {
+  ): Promise<UserModel> {
     const emailThis = email;
     const nameThis = name;
     const phoneNumberThis = phoneNumber;
     // const encryptedPassword = await PasswordEncryptor.encryptPassword(password);
 
-    const user = new User(true);
+    const user = new UserModel(true);
     user.name = nameThis;
     user.email = emailThis;
     user.phoneNumber = phoneNumberThis;

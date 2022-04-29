@@ -7,7 +7,7 @@ import {
 import { ResponseData } from "../../core/types";
 import { MongoPlanRepository } from "../../infrastructure/mongo-db/repositories/MongoPlanRepository";
 import { Identifier } from "../../models/Identifier";
-import { Plan } from "../../models/Plan";
+import { PlanModel } from "../../models/Plan";
 import { PlanRepository } from "../../models/PlanRepository";
 
 
@@ -70,7 +70,7 @@ export class AcceptOrRejectJoinPlanRequestController extends Controller<AcceptOr
 
   }
 
-  private validateUserIsOwner(message: AcceptOrRejectJoinPlanRequestMessage, plan: Plan | null) {
+  private validateUserIsOwner(message: AcceptOrRejectJoinPlanRequestMessage, plan: PlanModel | null) {
     if (message.userId === plan?.serialize().ownerId) {
       throw new InternalServerError(
         "plan owner cannot accept his request, It shouldn't have sent join request!"
@@ -78,13 +78,13 @@ export class AcceptOrRejectJoinPlanRequestController extends Controller<AcceptOr
     }
   }
 
-  private validateNotFound(message: AcceptOrRejectJoinPlanRequestMessage, plan: Plan | null) {
+  private validateNotFound(message: AcceptOrRejectJoinPlanRequestMessage, plan: PlanModel | null) {
     if (!plan) {
       throw new NotFoundError();
     }
   }
 
-  private validateAlreadyAccepted(message: AcceptOrRejectJoinPlanRequestMessage, plan: Plan | null) {
+  private validateAlreadyAccepted(message: AcceptOrRejectJoinPlanRequestMessage, plan: PlanModel | null) {
     const attendees = plan?.serialize().attendeesId;
 
     attendees?.forEach((attendee) => {
@@ -94,7 +94,7 @@ export class AcceptOrRejectJoinPlanRequestController extends Controller<AcceptOr
     });
   }
 
-  private validateAlreadyRejected(message: AcceptOrRejectJoinPlanRequestMessage, plan: Plan | null) {
+  private validateAlreadyRejected(message: AcceptOrRejectJoinPlanRequestMessage, plan: PlanModel | null) {
     const rejectedAttendees = plan?.serialize().rejectedAttendeesId;
 
     rejectedAttendees?.forEach((attendee) => {

@@ -1,7 +1,7 @@
 import { Collection, ObjectId } from "mongodb";
 import { autoInjectable } from "tsyringe";
 import { Identifier } from "../../../models/Identifier";
-import { User } from "../../../models/User";
+import { UserModel } from "../../../models/User";
 import { UserRepository } from "../../../models/UserRepository";
 import { MongoUserConverter } from "../converters/UserConverter";
 import { MongoUser } from "../models/MongoUser";
@@ -17,7 +17,7 @@ export class MongoUserRepository implements UserRepository {
       .collection("Users");
   }
 
-  public async findByEmail(email: string): Promise<User | null> {
+  public async findByEmail(email: string): Promise<UserModel | null> {
     const foundUser = await this.collection.findOne({
       email,
     });
@@ -25,14 +25,14 @@ export class MongoUserRepository implements UserRepository {
     return foundUser ? MongoUserConverter.mongoUserToUser(foundUser) : null;
   }
 
-  public async find(id: Identifier): Promise<User | null> {
+  public async find(id: Identifier): Promise<UserModel | null> {
     const _id = new ObjectId(id.toString());
     const foundItem = await this.collection.findOne({ _id });
 
     return foundItem ? MongoUserConverter.mongoUserToUser(foundItem) : null;
   }
 
-  update(user: User): void {
+  update(user: UserModel): void {
     throw new Error("Method not implemented.");
   }
 
@@ -40,7 +40,7 @@ export class MongoUserRepository implements UserRepository {
     throw new Error("Method not implemented.");
   }
 
-  public async create(user: User): Promise<User | null> {
+  public async create(user: UserModel): Promise<UserModel | null> {
     const serializedUser = user.serialize();
     const result = await this.collection.insertOne({
       name: {
