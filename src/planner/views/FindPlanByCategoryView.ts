@@ -7,7 +7,6 @@ export interface FindPlanByCategoryMessage {
   category: string;
 }
 
-// esta vista... jejejeje
 export class FindPlanByCategoryView {
   private user: UserModel;
   private planRepository: PlanRepository;
