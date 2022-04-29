@@ -16,8 +16,6 @@ export class UserViewExpress {
   private findPlanView: FindPlanView;
   private getPlanView: GetPlanView;
 
-  // private findPlanByCategoryView: FindPlanByCategoryView;
-  // private findPlanByIdView: FindPlanByIdView;
 
   private createUserView: CreateUserView;
   private getUserView: GetUserView;

@@ -2,7 +2,7 @@ import { Controller } from "../../core/Controller";
 import { AlreadyExistsError } from "../../core/ResponseErrors";
 import { ResponseData } from "../../core/types";
 import { MongoUserRepository } from "../../infrastructure/mongo-db/repositories/MongoUserRepository";
-import { UserModel } from "../../models/user-model/User";
+import { UserModel } from "../../models/user-model/UserModel";
 import { UserRepository } from "../../models/user-model/UserRepository";
 import { FullName } from "../../types/FullName";
 

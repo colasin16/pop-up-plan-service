@@ -1,7 +1,7 @@
 import { Collection, ObjectId } from "mongodb";
 import { autoInjectable } from "tsyringe";
 import { Identifier } from "../../../core/model/Identifier";
-import { PlanModel } from "../../../models/plan-model/Plan";
+import { PlanModel } from "../../../models/plan-model/PlanModel";
 import { PlanRepository } from "../../../models/plan-model/PlanRepository";
 import { Category } from "../../../types/Category";
 import { MongoPlanConverter } from "../converters/PlanConverter";
@@ -59,6 +59,18 @@ export class MongoPlanRepository implements PlanRepository {
     }
 
     return MongoPlanConverter.mongoPlanToPlan(updatedItem.value);
+  }
+
+  public async findMultipleObjectsById(ids: Identifier[]): Promise<PlanModel[]> {
+    const oids: ObjectId[] = [];
+    ids.forEach(function (item) {
+      oids.push(new ObjectId(item.toString()));
+    });
+
+    const mongoPlanList = await this.collection.find({ _id: { $in: oids } }).toArray()
+    return mongoPlanList.map<PlanModel>((planDocument) =>
+      MongoPlanConverter.mongoPlanToPlan(planDocument)
+    );
   }
 
   delete(id: Identifier): void {

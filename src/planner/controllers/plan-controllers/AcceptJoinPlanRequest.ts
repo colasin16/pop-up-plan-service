@@ -7,7 +7,7 @@ import {
 import { ResponseData } from "../../core/types";
 import { MongoPlanRepository } from "../../infrastructure/mongo-db/repositories/MongoPlanRepository";
 import { Identifier } from "../../core/model/Identifier";
-import { PlanModel } from "../../models/plan-model/Plan";
+import { PlanModel } from "../../models/plan-model/PlanModel";
 import { PlanRepository } from "../../models/plan-model/PlanRepository";
 
 

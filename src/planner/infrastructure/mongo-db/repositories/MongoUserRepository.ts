@@ -1,7 +1,7 @@
 import { Collection, ObjectId } from "mongodb";
 import { autoInjectable } from "tsyringe";
 import { Identifier } from "../../../core/model/Identifier";
-import { UserModel } from "../../../models/user-model/User";
+import { UserModel } from "../../../models/user-model/UserModel";
 import { UserRepository } from "../../../models/user-model/UserRepository";
 import { MongoUserConverter } from "../converters/UserConverter";
 import { MongoUser } from "../models/MongoUser";
@@ -40,6 +40,21 @@ export class MongoUserRepository implements UserRepository {
   public async update(user: UserModel): Promise<UserModel | null> {
     throw new Error("Method not implemented.");
   }
+
+  public async findMultipleObjectsById(ids: Identifier[]): Promise<UserModel[]> {
+    const oids: ObjectId[] = [];
+    ids.forEach(function (item) {
+      oids.push(new ObjectId(item.toString()));
+    });
+
+    const mongoUserList = await this.collection.find({ _id: { $in: oids } }).toArray()
+    const mongoUserListPromises = mongoUserList.map<Promise<UserModel>>((userDocument) =>
+      MongoUserConverter.mongoUserToUser(userDocument)
+    );
+
+    return Promise.all(mongoUserListPromises)
+  }
+
 
   delete(id: Identifier): void {
     throw new Error("Method not implemented.");

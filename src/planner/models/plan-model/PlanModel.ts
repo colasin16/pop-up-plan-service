@@ -3,6 +3,8 @@ import { Category, ECategory } from "../../types/Category";
 import { EPrivacy, Privacy } from "../../types/Privacy";
 import { Identifier } from "../../core/model/Identifier";
 import { PlanPrimitives } from "./PlanPrimitives";
+import { OneToMany } from "../../core/model/OneToMany";
+import { UserModel } from "../user-model/UserModel";
 
 export class PlanModel extends Model {
   private id: Identifier;
@@ -12,9 +14,9 @@ export class PlanModel extends Model {
   private time: number;
   private privacy: Privacy;
   private category: Category;
-  private attendeesId: Identifier[];
-  private pendingAttendeesId: Identifier[];
-  private rejectedAttendeesId: Identifier[];
+  private attendees: OneToMany<UserModel>;
+  private pendingAttendees: OneToMany<UserModel>;
+  private rejectedAttendees: OneToMany<UserModel>;
   private description?: string;
   private image?: string;
 
@@ -31,15 +33,26 @@ export class PlanModel extends Model {
     );
 
     plan.id = Identifier.fromString(primitives.id);
-    plan.attendeesId = primitives.attendeesId.map((attendee) =>
+
+    const attendeesIds = primitives.attendeesId.map((attendee) =>
       Identifier.fromString(attendee)
-    );
-    plan.pendingAttendeesId = primitives.pendingAttendeesId.map((attendee) =>
+    )
+    plan.attendees = new OneToMany<UserModel>(attendeesIds)
+
+
+    const pendingAttendeesIds = primitives.pendingAttendeesId.map((attendee) =>
       Identifier.fromString(attendee)
-    );
-    plan.rejectedAttendeesId = primitives.rejectedAttendeesId.map((attendee) =>
+    )
+    plan.pendingAttendees = new OneToMany<UserModel>(pendingAttendeesIds)
+
+
+    const rejectedAttendeesIds = primitives.rejectedAttendeesId.map((attendee) =>
       Identifier.fromString(attendee)
-    );
+    )
+    plan.rejectedAttendees = new OneToMany<UserModel>(rejectedAttendeesIds)
+
+
+
     return plan;
   }
 
@@ -64,9 +77,9 @@ export class PlanModel extends Model {
     this.description = description;
     this.privacy = new Privacy(privacy);
     this.category = new Category(category);
-    this.attendeesId = new Array<Identifier>();
-    this.pendingAttendeesId = new Array<Identifier>();
-    this.rejectedAttendeesId = new Array<Identifier>();
+    this.attendees = new OneToMany<UserModel>();
+    this.pendingAttendees = new OneToMany<UserModel>();
+    this.rejectedAttendees = new OneToMany<UserModel>();
     this.image = image;
   }
 
@@ -83,50 +96,50 @@ export class PlanModel extends Model {
   }
 
   public addAttendee(attendee: Identifier) {
-    if (attendee.toString() in this.attendeesId.map((id) => id.toString())) {
+    if (attendee.toString() in this.attendees.values.map((id) => id.toString())) {
       // already added to the list
       return;
     }
-    this.attendeesId.push(attendee);
+    this.attendees.push(attendee);
   }
 
   public addPendingAttendee(pendingAttendee: Identifier) {
     if (
       pendingAttendee.toString() in
-      this.pendingAttendeesId.map((id) => id.toString())
+      this.rejectedAttendees.values.map((id) => id.toString())
     ) {
       // already added to pending the list
       return;
     }
 
-    this.pendingAttendeesId.push(pendingAttendee);
+    this.pendingAttendees.push(pendingAttendee);
   }
 
   public removePendingAttendee(pendingAttendee: Identifier) {
     if (
       pendingAttendee.toString() in
-      this.pendingAttendeesId.map((id) => id.toString())
+      this.pendingAttendees.values.map((id) => id.toString())
     ) {
       // already added to pending the list
       return;
     }
 
     // TODO: how can we optimise this?
-    this.pendingAttendeesId = this.pendingAttendeesId.filter(
+    this.pendingAttendees = new OneToMany<UserModel>(this.pendingAttendees.values.filter(
       (attendee) => attendee.toString() !== pendingAttendee.toString()
-    );
+    ))
   }
 
   public addRejectedAttendee(rejectedAttendee: Identifier) {
     if (
       rejectedAttendee.toString() in
-      this.rejectedAttendeesId.map((id) => id.toString())
+      this.rejectedAttendees.values.map((id) => id.toString())
     ) {
       // already added to pending the list
       return;
     }
 
-    this.rejectedAttendeesId.push(rejectedAttendee);
+    this.rejectedAttendees.push(rejectedAttendee);
   }
 
   public serialize(): PlanPrimitives {
@@ -139,11 +152,11 @@ export class PlanModel extends Model {
       time: this.time,
       privacy: this.privacy.value.toString(),
       category: this.category.value.toString(),
-      attendeesId: this.attendeesId.map((attendee) => attendee.toString()),
-      pendingAttendeesId: this.pendingAttendeesId.map((attendee) =>
+      attendeesId: this.attendees.values.map((attendee) => attendee.toString()),
+      pendingAttendeesId: this.pendingAttendees.values.map((attendee) =>
         attendee.toString()
       ),
-      rejectedAttendeesId: this.rejectedAttendeesId.map((attendee) =>
+      rejectedAttendeesId: this.rejectedAttendees.values.map((attendee) =>
         attendee.toString()
       ),
       image: this.image,

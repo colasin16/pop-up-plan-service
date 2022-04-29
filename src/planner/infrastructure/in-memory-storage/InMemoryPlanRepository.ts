@@ -1,8 +1,7 @@
-import { PlanRepository } from "../../models/plan-model/PlanRepository";
-import { PlanModel } from "../../models/plan-model/Plan";
 import { Identifier } from "../../core/model/Identifier";
+import { PlanModel } from "../../models/plan-model/PlanModel";
+import { PlanRepository } from "../../models/plan-model/PlanRepository";
 import { Category } from "../../types/Category";
-import { PlanPrimitives } from "../../models/plan-model/PlanPrimitives";
 
 export class InMemoryPlanRepository implements PlanRepository {
   private map: Map<string, PlanModel>;
@@ -43,6 +42,16 @@ export class InMemoryPlanRepository implements PlanRepository {
   public update(plan: PlanModel): Promise<PlanModel | null> {
     this.map.set(plan.getId().toString(), plan);
     return Promise.resolve(plan);
+  }
+
+  findMultipleObjectsById(ids: Identifier[]): Promise<PlanModel[]> {
+    const plans = new Array<PlanModel>();
+    this.map.forEach((plan) => {
+      if (ids.includes(plan.getId())) {
+        plans.push(plan);
+      }
+    });
+    return Promise.resolve(plans);
   }
 
   public async delete(id: Identifier): Promise<void> {

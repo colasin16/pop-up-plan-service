@@ -1,5 +1,5 @@
 import { Identifier } from "../../core/model/Identifier";
-import { UserModel } from "../../models/user-model/User";
+import { UserModel } from "../../models/user-model/UserModel";
 import { UserRepository } from "../../models/user-model/UserRepository";
 
 export class InMemoryUserRepository implements UserRepository {
@@ -32,6 +32,10 @@ export class InMemoryUserRepository implements UserRepository {
   }
 
   findAll(): Promise<UserModel[]> {
+    throw new Error("Method not implemented.");
+  }
+
+  findMultipleObjectsById(ids: Identifier[]): Promise<UserModel[]> {
     throw new Error("Method not implemented.");
 
   }

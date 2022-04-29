@@ -1,6 +1,6 @@
-import { UserModel } from "../models/user-model/User";
+import { UserModel } from "../models/user-model/UserModel";
 import { PlanRepository } from "../models/plan-model/PlanRepository";
-import { PlanModel } from "../models/plan-model/Plan";
+import { PlanModel } from "../models/plan-model/PlanModel";
 import { Category } from "../types/Category";
 
 export interface FindPlanByCategoryMessage {

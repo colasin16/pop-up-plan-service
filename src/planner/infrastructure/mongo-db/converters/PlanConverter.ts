@@ -1,6 +1,6 @@
 import { ObjectId, WithId } from "mongodb";
 import { Identifier } from "../../../core/model/Identifier";
-import { PlanModel } from "../../../models/plan-model/Plan";
+import { PlanModel } from "../../../models/plan-model/PlanModel";
 import { PlanPrimitives } from "../../../models/plan-model/PlanPrimitives";
 import { ECategory } from "../../../types/Category";
 import { EPrivacy } from "../../../types/Privacy";
