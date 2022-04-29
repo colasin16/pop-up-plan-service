@@ -1,13 +1,11 @@
 import { ResponseData } from "./types";
 
-export class Controller {
-  protected async validate(message) {}
-  public async control(message): Promise<any> {
+export abstract class Controller<M> {
+  protected abstract validate(message: M): Promise<void>;
+  protected abstract doControl(message: M): Promise<ResponseData>;
+  public async control(message): Promise<ResponseData> {
     await this.validate(message);
     return await this.doControl(message);
-  }
-  protected async doControl(message): Promise<ResponseData> {
-    throw Error("not implemented");
   }
 }
 
