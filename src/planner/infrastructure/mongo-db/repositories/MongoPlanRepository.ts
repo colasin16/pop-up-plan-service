@@ -36,8 +36,11 @@ export class MongoPlanRepository implements PlanRepository {
     throw new Error("Method not implemented.");
   }
 
-  update(plan: Plan): void {
-    throw new Error("Method not implemented.");
+  public async update(plan: Plan): Promise<void> {
+    await this.collection.findOneAndUpdate(
+      { _id: plan.getId() },
+      { $set: MongoPlanConverter.toMongo(plan) }
+    );
   }
 
   delete(id: Identifier): void {

@@ -55,4 +55,25 @@ export const register = (app: any) => {
       res.status(500).send({ message: "internal-error" });
     }
   });
+
+  app.patch(
+    "/plans/:planId/join-request",
+    async (req: Request, res: Response) => {
+      try {
+        // const user = await view.getUser(req.header.get("jwt token and descrypt"));
+        const user = await view.getUser("626d3f7b7aa88b9339627665");
+
+        view.joinPlanRequest(req, res);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: "internal-error" });
+      }
+    }
+  );
+  app.patch(
+    "/plans/:planId/accept-or-reject-request",
+    async (req: Request, res: Response) => {
+      view.acceptOrRejectJoinPlanRequest(req, res);
+    }
+  );
 };

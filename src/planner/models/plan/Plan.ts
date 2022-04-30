@@ -67,8 +67,14 @@ export class Plan {
     return category.equals(this.category);
   }
 
-  public addAttendees(attendees: User[]) {
-    this.attendees.push(...attendees);
+  public addAttendee(newAttendee: User) {
+    const attendeeAlreadyExists = this.attendees.some((attendee) => {
+      attendee.getId().equals(newAttendee.getId());
+    });
+
+    if (!attendeeAlreadyExists) {
+      this.attendees.push(newAttendee);
+    }
   }
 
   public toPrimitives(): PlanPrimitives {

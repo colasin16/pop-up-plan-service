@@ -38,7 +38,7 @@ class Profile {
 }
 
 class Image {
-  + idkxd(): string
+  + source(): string
 }
 
 class Plan {
