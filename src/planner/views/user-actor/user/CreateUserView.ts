@@ -1,6 +1,6 @@
-import { CreateUserMessage } from "../../controllers/user/CreateUserController";
-import { UserController } from "../../controllers/user/UserController";
-import { Identifier } from "../../models/Identifier";
+import { CreateUserMessage } from "../../../controllers/user/CreateUserController";
+import { UserController } from "../../../controllers/user/UserController";
+import { Identifier } from "../../../models/Identifier";
 
 export class CreateUserView {
   private userController: UserController;

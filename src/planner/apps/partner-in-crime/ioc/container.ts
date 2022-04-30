@@ -1,6 +1,6 @@
 import { container } from "tsyringe";
 import { MongoDBClient } from "../../../infrastructure/mongo-db/MongoDBClient";
-import { UserView } from "../../../views/UserViewExpress";
+import { UserActor } from "../../../views/user-actor/UserActor";
 
 export class DependencyInjectionManager {
   async setup() {
@@ -9,8 +9,8 @@ export class DependencyInjectionManager {
     container.register<MongoDBClient>(MongoDBClient, {
       useValue: MongoClientInstance,
     });
-    container.register<UserView>(UserView, {
-      useValue: new UserView(),
+    container.register<UserActor>(UserActor, {
+      useValue: new UserActor(),
     });
   }
 }

@@ -2,7 +2,7 @@ import {
   LoginController,
   LoginMessage,
   LoginResponseMessage,
-} from "../../controllers/LoginController";
+} from "../../../controllers/LoginController";
 
 export class LoginUserView {
   private loginController: LoginController;

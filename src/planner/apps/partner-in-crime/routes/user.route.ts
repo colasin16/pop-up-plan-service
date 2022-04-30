@@ -3,10 +3,10 @@ import { Request, Response } from "express";
 import { container } from "tsyringe";
 import { LoginMessage } from "../../../controllers/LoginController";
 import { CreateUserMessage } from "../../../controllers/user/CreateUserController";
-import { UserView } from "../../../views/UserViewExpress";
+import { UserActor } from "../../../views/user-actor/UserActor";
 
 export const register = (app: any) => {
-  const view = container.resolve(UserView);
+  const view = container.resolve(UserActor);
 
   app.post("/users", async (req: Request, res: Response) => {
     try {

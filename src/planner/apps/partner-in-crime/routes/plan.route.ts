@@ -2,10 +2,10 @@
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 import { CreatePlanMessage } from "../../../controllers/plan/CreatePlanController";
-import { UserView } from "../../../views/UserViewExpress";
+import { UserActor } from "../../../views/user-actor/UserActor";
 
 export const register = (app: any) => {
-  const view = container.resolve(UserView);
+  const view = container.resolve(UserActor);
 
   app.get("/plans", async (req: Request, res: Response) => {
     try {

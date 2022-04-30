@@ -1,6 +1,6 @@
-import { CreatePlanMessage } from "../../controllers/plan/CreatePlanController";
-import { PlanController } from "../../controllers/plan/PlanController";
-import { Identifier } from "../../models/Identifier";
+import { CreatePlanMessage } from "../../../controllers/plan/CreatePlanController";
+import { PlanController } from "../../../controllers/plan/PlanController";
+import { Identifier } from "../../../models/Identifier";
 
 export class CreatePlanView {
   private planController: PlanController;
