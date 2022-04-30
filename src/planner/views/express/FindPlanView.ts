@@ -1,13 +1,10 @@
 import { Request, Response } from "express";
-import { GetUserController } from "../../controllers/user/GetUserController";
 import { SearchPlanController } from "../../controllers/plan/SearchPlanController";
 
 export class FindPlanView {
   private searchPlanController: SearchPlanController;
-  private getUserByIdController: GetUserController;
   constructor() {
     this.searchPlanController = new SearchPlanController();
-    this.getUserByIdController = new GetUserController();
   }
 
   public async render(req: Request, res: Response): Promise<void> {
@@ -17,7 +14,7 @@ export class FindPlanView {
       res.status(200).send({
         success: true,
         plans: planPrimitivesList.map((plan) => {
-          const ownerId = plan.toPrimitives().ownerId;
+          const ownerId = plan.toPrimitives().owner;
 
           return {
             ...plan.toPrimitives(),

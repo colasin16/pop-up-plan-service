@@ -15,7 +15,6 @@ export class FindPlanByIdView {
 
   public async interact(message: FindPlanByIdMessage): Promise<Plan | null> {
     const plan_id = Identifier.fromString(message.id);
-    const plan = await this.planRepository.find(plan_id);
-    return plan ? Plan.fromPrimitives(plan) : null;
+    return await this.planRepository.find(plan_id);
   }
 }

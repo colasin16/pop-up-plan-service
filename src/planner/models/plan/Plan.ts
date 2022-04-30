@@ -1,17 +1,18 @@
 import { Identifier } from "../Identifier";
 import { PlanPrimitives } from "./PlanPrimitives";
-import { Category, ECategory } from "../../types/Category";
-import { EPrivacy, Privacy } from "../../types/Privacy";
+import { Category } from "../../types/Category";
+import { Privacy } from "../../types/Privacy";
+import { User } from "../user/User";
 
 export class Plan {
   private id: Identifier;
-  private ownerId: Identifier;
+  private owner: User;
   private title: string;
   private location: string;
   private time: number;
   private privacy: Privacy;
   private category: Category;
-  private attendeesId: Identifier[];
+  private attendees: User[];
   private description?: string;
   private image?: string;
 
@@ -26,13 +27,10 @@ export class Plan {
       primitives.image
     );
 
-    // settear los attendees
-    // const users = primitives.attendees.map((attendee: UserPrimitives) => User.fromPrimitives(attendee))
-
-    plan.setOwner(Identifier.fromString(primitives.ownerId));
     plan.id = Identifier.fromString(primitives.id);
-    plan.attendeesId = primitives.attendeesId.map((attendee) =>
-      Identifier.fromString(attendee)
+    plan.setOwner(User.fromPrimitives(primitives.owner));
+    plan.attendees = primitives.attendees.map((attendee) =>
+      User.fromPrimitives(attendee)
     );
     return plan;
   }
@@ -53,7 +51,7 @@ export class Plan {
     this.description = description;
     this.privacy = privacy;
     this.category = category;
-    this.attendeesId = new Array<Identifier>();
+    this.attendees = new Array<User>();
     this.image = image;
   }
 
@@ -61,29 +59,29 @@ export class Plan {
     return this.id;
   }
 
-  public setOwner(userId: Identifier) {
-    this.ownerId = userId;
+  public setOwner(user: User) {
+    this.owner = user;
   }
 
   public hasCategory(category: Category) {
     return category.equals(this.category);
   }
 
-  public addAttendees(attendees: Identifier[]) {
-    this.attendeesId.push(...attendees);
+  public addAttendees(attendees: User[]) {
+    this.attendees.push(...attendees);
   }
 
   public toPrimitives(): PlanPrimitives {
     return {
       id: this.id.toString(),
-      ownerId: this.ownerId.toString(),
+      owner: this.owner.toPrimitives(),
       title: this.title,
       description: this.description,
       location: this.location,
       time: this.time,
-      privacy: this.privacy.value.toString(),
-      category: this.category.value.toString(),
-      attendeesId: this.attendeesId.map((attendee) => attendee.toString()),
+      privacy: this.privacy.value,
+      category: this.category.value,
+      attendees: this.attendees.map((attendee) => attendee.toPrimitives()),
       image: this.image,
     };
   }

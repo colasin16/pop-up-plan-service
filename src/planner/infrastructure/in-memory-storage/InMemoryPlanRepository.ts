@@ -11,36 +11,20 @@ export class InMemoryPlanRepository implements PlanRepository {
     this.map = new Map<string, PlanPrimitives>();
   }
 
-  public async create(plan: Plan): Promise<PlanPrimitives | null> {
-    await Promise.resolve(
-      this.map.set(plan.getId().toString(), plan.toPrimitives())
-    );
-    return plan.toPrimitives();
+  public async create(plan: Plan): Promise<Plan | null> {
+    throw new Error("Method not implemented.");
   }
 
-  public async find(id: Identifier): Promise<PlanPrimitives | null> {
-    const plan = this.map.get(id.toString());
-    if (!plan) {
-      return null;
-    }
-    return plan;
+  public async find(id: Identifier): Promise<Plan | null> {
+    throw new Error("Method not implemented.");
   }
 
-  public async findAll(): Promise<PlanPrimitives[]> {
-    const plans = new Array<PlanPrimitives>();
-    this.map.forEach((plan) => plans.push(plan));
-    return plans;
+  public async findAll(): Promise<Plan[]> {
+    throw new Error("Method not implemented.");
   }
 
-  public async findByCategory(category: Category): Promise<PlanPrimitives[]> {
-    const plans = new Array<PlanPrimitives>();
-    this.map.forEach((plan) => {
-      const planInstance = Plan.fromPrimitives(plan);
-      if (planInstance.hasCategory(category)) {
-        plans.push(plan);
-      }
-    });
-    return plans;
+  public async findByCategory(category: Category): Promise<Plan[]> {
+    throw new Error("Method not implemented.");
   }
 
   public update(plan: Plan): void {

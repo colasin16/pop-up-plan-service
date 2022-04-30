@@ -1,13 +1,14 @@
 import { MongoPlanRepository } from "../../infrastructure/mongo-db/repositories/MongoPlanRepository";
-import { PlanPrimitives } from "../../models/plan/PlanPrimitives";
 import { PlanRepository } from "../../models/plan/PlanRepository";
 import { Category } from "../../types/Category";
 import { Privacy } from "../../types/Privacy";
 import { Plan } from "../../models/plan/Plan";
+import { UserPrimitives } from "../../models/user/UserPrimitives";
+import { User } from "../../models/user/User";
 import { Identifier } from "../../models/Identifier";
 
 export interface CreatePlanMessage {
-  ownerId: string;
+  owner: UserPrimitives;
   title: string;
   location: string;
   time: number;
@@ -18,9 +19,7 @@ export interface CreatePlanMessage {
 }
 
 export class CreatePlanController {
-  public async control(
-    message: CreatePlanMessage
-  ): Promise<PlanPrimitives | null> {
+  public async control(message: CreatePlanMessage): Promise<Identifier | null> {
     const planRepository: PlanRepository = new MongoPlanRepository();
 
     const plan = new Plan(
@@ -32,7 +31,9 @@ export class CreatePlanController {
       message.description
     );
 
-    plan.setOwner(Identifier.fromString(message.ownerId));
-    return await planRepository.create(plan);
+    plan.setOwner(User.fromPrimitives(message.owner));
+    await planRepository.create(plan);
+
+    return plan.getId();
   }
 }

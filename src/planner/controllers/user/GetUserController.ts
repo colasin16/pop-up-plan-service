@@ -10,8 +10,6 @@ export interface GetUserMessage {
 export class GetUserController {
   public async control(message: GetUserMessage): Promise<User | null> {
     const userRepository: UserRepository = new MongoUserRepository();
-    const userPrimitive = await userRepository.find(message.id);
-
-    return userPrimitive ? User.fromPrimitives(userPrimitive) : null;
+    return await userRepository.find(message.id);
   }
 }

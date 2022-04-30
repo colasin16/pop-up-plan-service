@@ -7,7 +7,6 @@ export interface FindPlanByCategoryMessage {
   category: string;
 }
 
-// esta vista... jejejeje
 export class FindPlanByCategoryView {
   private user: User;
   private planRepository: PlanRepository;
@@ -22,8 +21,6 @@ export class FindPlanByCategoryView {
       new Category(message.category)
     );
 
-    return planPrimitivesList.map((planPrimitives) =>
-      Plan.fromPrimitives(planPrimitives)
-    );
+    return planPrimitivesList;
   }
 }

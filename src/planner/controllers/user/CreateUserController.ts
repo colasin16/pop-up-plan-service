@@ -1,8 +1,8 @@
 import { MongoUserRepository } from "../../infrastructure/mongo-db/repositories/MongoUserRepository";
-import { UserPrimitives } from "../../models/user/UserPrimitives";
 import { UserRepository } from "../../models/user/UserRepository";
 import { FullName } from "../../types/FullName";
 import { User } from "../../models/user/User";
+import { Identifier } from "../../models/Identifier";
 
 export interface CreateUserMessage {
   name: FullName;
@@ -12,9 +12,7 @@ export interface CreateUserMessage {
 }
 
 export class CreateUserController {
-  public async control(
-    message: CreateUserMessage
-  ): Promise<UserPrimitives | null> {
+  public async control(message: CreateUserMessage): Promise<Identifier | null> {
     const userRepository: UserRepository = new MongoUserRepository();
 
     const user = new User(
@@ -28,6 +26,7 @@ export class CreateUserController {
     // if NullObject.isnull(createdUser)
     // throw ....
 
-    return await userRepository.create(user);
+    await userRepository.create(user);
+    return user.getId();
   }
 }

@@ -7,8 +7,6 @@ export class SearchPlanController {
     const planRepository: PlanRepository = new MongoPlanRepository();
     const planPrimitivesList = await planRepository.findAll();
 
-    return planPrimitivesList.map((planPrimitives) =>
-      Plan.fromPrimitives(planPrimitives)
-    );
+    return planPrimitivesList;
   }
 }

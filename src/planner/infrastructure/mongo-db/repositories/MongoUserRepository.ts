@@ -1,7 +1,6 @@
 import { Collection, ObjectId } from "mongodb";
 import { autoInjectable } from "tsyringe";
 
-import { UserPrimitives } from "../../../models/user/UserPrimitives";
 import { MongoUserConverter } from "../converters/UserConverter";
 import { UserRepository } from "../../../models/user/UserRepository";
 import { Identifier } from "../../../models/Identifier";
@@ -20,23 +19,19 @@ export class MongoUserRepository implements UserRepository {
       .collection("Users");
   }
 
-  public async findByEmail(email: string): Promise<UserPrimitives | null> {
+  public async findByEmail(email: string): Promise<User | null> {
     const foundUser = await this.collection.findOne({
       email,
     });
 
-    return foundUser
-      ? MongoUserConverter.mongoUserToUserPrimitives(foundUser)
-      : null;
+    return foundUser ? MongoUserConverter.toDomain(foundUser) : null;
   }
 
-  public async find(id: Identifier): Promise<UserPrimitives | null> {
+  public async find(id: Identifier): Promise<User | null> {
     const _id = new ObjectId(id.toString());
     const foundItem = await this.collection.findOne({ _id });
 
-    return foundItem
-      ? MongoUserConverter.mongoUserToUserPrimitives(foundItem)
-      : null;
+    return foundItem ? MongoUserConverter.toDomain(foundItem) : null;
   }
 
   update(user: User): void {
@@ -47,7 +42,7 @@ export class MongoUserRepository implements UserRepository {
     throw new Error("Method not implemented.");
   }
 
-  public async create(user: User): Promise<UserPrimitives | null> {
+  public async create(user: User): Promise<User | null> {
     const userPrimitives = user.toPrimitives();
     const userWithSameEmail = await this.findByEmail(userPrimitives.email);
 
@@ -68,6 +63,7 @@ export class MongoUserRepository implements UserRepository {
     );
 
     const result = await this.collection.insertOne({
+      _id: new ObjectId(userPrimitives.id),
       name: {
         firstName: userPrimitives.name.firstName,
         lastName: userPrimitives.name.lastName,
