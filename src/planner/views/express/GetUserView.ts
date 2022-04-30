@@ -7,10 +7,6 @@ import { Identifier } from "../../models/Identifier";
 import { UserPrimitives } from "../../models/user/UserPrimitives";
 import { User } from "../../models/user/User";
 
-// export interface GetUserMessage {
-//   userId: Identifier;
-// }
-
 export class GetUserView {
   private GetUserController: GetUserController;
   constructor() {
@@ -23,7 +19,7 @@ export class GetUserView {
     };
     try {
       const user: User | null = await this.GetUserController.control(message);
-      res.status(201).send({ success: true, user: user?.serialize() });
+      res.status(201).send({ success: true, user: user?.toPrimitives() });
     } catch (e) {
       console.error(e);
       res.status(500).send({ message: "internal-error" });

@@ -48,7 +48,7 @@ export class MongoUserRepository implements UserRepository {
   }
 
   public async create(user: User): Promise<UserPrimitives | null> {
-    const serializedUser = user.serialize();
+    const serializedUser = user.toPrimitives();
     const result = await this.collection.insertOne({
       name: {
         firstName: serializedUser.name.firstName,

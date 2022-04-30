@@ -16,7 +16,7 @@ export class InMemoryUserRepository implements UserRepository {
 
   public async create(user: User): Promise<UserPrimitives | null> {
     await Promise.resolve(this.map.set(user.getId().toString(), user));
-    return user.serialize();
+    return user.toPrimitives();
   }
 
   public async find(id: Identifier): Promise<UserPrimitives | null> {
@@ -24,7 +24,7 @@ export class InMemoryUserRepository implements UserRepository {
     if (!user) {
       return null;
     }
-    return user.serialize();
+    return user.toPrimitives();
   }
 
   public update(user: User): void {

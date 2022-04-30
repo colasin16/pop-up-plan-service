@@ -12,6 +12,6 @@ export class GetUserController {
     const userRepository: UserRepository = new MongoUserRepository();
     const userPrimitive = await userRepository.find(message.id);
 
-    return userPrimitive ? User.deserialize(userPrimitive) : null;
+    return userPrimitive ? User.fromPrimitives(userPrimitive) : null;
   }
 }

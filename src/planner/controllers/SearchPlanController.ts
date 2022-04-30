@@ -8,7 +8,7 @@ export class SearchPlanController {
     const planPrimitivesList = await planRepository.findAll();
 
     return planPrimitivesList.map((planPrimitives) =>
-      Plan.deserialize(planPrimitives)
+      Plan.fromPrimitives(planPrimitives)
     );
   }
 }

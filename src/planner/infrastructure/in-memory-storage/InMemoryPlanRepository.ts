@@ -13,9 +13,9 @@ export class InMemoryPlanRepository implements PlanRepository {
 
   public async create(plan: Plan): Promise<PlanPrimitives | null> {
     await Promise.resolve(
-      this.map.set(plan.getId().toString(), plan.serialize())
+      this.map.set(plan.getId().toString(), plan.toPrimitives())
     );
-    return plan.serialize();
+    return plan.toPrimitives();
   }
 
   public async find(id: Identifier): Promise<PlanPrimitives | null> {
@@ -35,7 +35,7 @@ export class InMemoryPlanRepository implements PlanRepository {
   public async findByCategory(category: Category): Promise<PlanPrimitives[]> {
     const plans = new Array<PlanPrimitives>();
     this.map.forEach((plan) => {
-      const planInstance = Plan.deserialize(plan);
+      const planInstance = Plan.fromPrimitives(plan);
       if (planInstance.hasCategory(category)) {
         plans.push(plan);
       }
@@ -44,7 +44,7 @@ export class InMemoryPlanRepository implements PlanRepository {
   }
 
   public update(plan: Plan): void {
-    this.map.set(plan.getId().toString(), plan.serialize());
+    this.map.set(plan.getId().toString(), plan.toPrimitives());
   }
 
   public async delete(id: Identifier): Promise<void> {

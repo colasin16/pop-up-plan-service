@@ -1,11 +1,7 @@
 import { Request, Response } from "express";
 
 import { FindPlanView } from "./express/FindPlanView";
-import {
-  FindPlanByCategoryMessage,
-  FindPlanByCategoryView,
-} from "./FindPlanByCategoryView";
-import { FindPlanByIdMessage, FindPlanByIdView } from "./findPlanByIdView";
+
 import { LoginUserView } from "./express/LoginUserView";
 import { CreatePlanView } from "./express/CreatePlanView";
 import { CreateUserView } from "./express/CreateUserView";
@@ -14,9 +10,6 @@ import { GetUserView } from "./express/GetUserView";
 export class UserViewExpress {
   private createPlanView: CreatePlanView;
   private findPlanView: FindPlanView;
-  // private findPlanByCategoryView: FindPlanByCategoryView;
-  // private findPlanByIdView: FindPlanByIdView;
-
   private createUserView: CreateUserView;
   private getUserView: GetUserView;
   private loginUserView: LoginUserView;
@@ -49,64 +42,4 @@ export class UserViewExpress {
   public async findAll(req: Request, res: Response): Promise<void> {
     await this.findPlanView.render(req, res);
   }
-
-  // README: que no se haga la lista muy grande de findByNske findByNscuantos findBySkibidi... Criteria pattern si se va de las manos
-  // public async findByCategory(req: Request, res: Response): Promise<void> {
-  //   const message: FindPlanByCategoryMessage = {
-  //     category: req.params.category,
-  //   };
-  //   try {
-  //     const plans = await this.findPlanByCategoryView.interact(message);
-  //     res.status(200).send({
-  //       success: true,
-  //       plans: plans.map((plan) => {
-  //         return {
-  //           ...plan.serialize(),
-  //           owner: {
-  //             id: plan.serialize().owner,
-  //             name: {
-  //               firstName: "Deivasss",
-  //               lastName: "Cuellaar",
-  //             },
-  //           },
-  //         };
-  //       }),
-  //     });
-  //   } catch (e) {
-  //     console.error(e);
-  //     res.status(500).send({ message: "internal-error" });
-  //   }
-  // }
-
-  // public async findById(req: Request, res: Response): Promise<void> {
-  //   const message: FindPlanByIdMessage = {
-  //     id: req.params.id,
-  //   };
-  //   try {
-  //     const plan = await this.findPlanByIdView.interact(message);
-
-  //     if (!plan) {
-  //       res.status(404).send("Not found");
-  //       return;
-  //     }
-  //     res.status(200).send({
-  //       success: true,
-  //       plan: {
-  //         ...plan.serialize(),
-  //         // TODO: The reason behind this is we don't have coded anything related with plan owners.
-  //         // Once everything with plans is working kind of properly we can introduce the owner concept/idea and fix this
-  //         owner: {
-  //           id: plan.serialize().owner,
-  //           name: {
-  //             firstName: "Deivasss",
-  //             lastName: "Cuellaar",
-  //           },
-  //         },
-  //       },
-  //     });
-  //   } catch (e) {
-  //     console.error(e);
-  //     res.status(500).send({ message: "internal-error" });
-  //   }
-  // }
 }

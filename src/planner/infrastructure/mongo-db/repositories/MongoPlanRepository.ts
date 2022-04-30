@@ -45,7 +45,7 @@ export class MongoPlanRepository implements PlanRepository {
     const plansPrimitives = await this.findAll();
 
     plansPrimitives.forEach((plan) => {
-      const planInstance = Plan.deserialize(plan);
+      const planInstance = Plan.fromPrimitives(plan);
       if (planInstance.hasCategory(category)) {
         plans.push(plan);
       }

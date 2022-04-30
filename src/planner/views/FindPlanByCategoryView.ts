@@ -23,7 +23,7 @@ export class FindPlanByCategoryView {
     );
 
     return planPrimitivesList.map((planPrimitives) =>
-      Plan.deserialize(planPrimitives)
+      Plan.fromPrimitives(planPrimitives)
     );
   }
 }

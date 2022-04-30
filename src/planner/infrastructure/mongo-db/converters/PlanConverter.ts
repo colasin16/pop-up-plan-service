@@ -5,7 +5,7 @@ import { MongoPlan } from "../models/MongoPlan";
 
 export class MongoPlanConverter {
   static planToMongoPlan(plan: Plan): MongoPlan {
-    const planPrimitives = plan.serialize();
+    const planPrimitives = plan.toPrimitives();
     return {
       ownerId: new ObjectId(planPrimitives.ownerId),
       title: planPrimitives.title,

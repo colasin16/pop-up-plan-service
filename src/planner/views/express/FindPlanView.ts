@@ -17,10 +17,10 @@ export class FindPlanView {
       res.status(200).send({
         success: true,
         plans: planPrimitivesList.map((plan) => {
-          const ownerId = plan.serialize().ownerId;
+          const ownerId = plan.toPrimitives().ownerId;
 
           return {
-            ...plan.serialize(),
+            ...plan.toPrimitives(),
             ownerId: ownerId,
           };
         }),

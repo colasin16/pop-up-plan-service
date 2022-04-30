@@ -16,7 +16,7 @@ export class Plan {
   private description?: string;
   private image?: string;
 
-  public static deserialize(primitives: PlanPrimitives): Plan {
+  public static fromPrimitives(primitives: PlanPrimitives): Plan {
     const plan = new Plan(
       primitives.title,
       primitives.location,
@@ -71,7 +71,7 @@ export class Plan {
     this.attendeesId.push(...attendees);
   }
 
-  public serialize(): PlanPrimitives {
+  public toPrimitives(): PlanPrimitives {
     return {
       id: this.id.toString(),
       ownerId: this.ownerId.toString(),

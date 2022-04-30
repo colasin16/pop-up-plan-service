@@ -15,7 +15,7 @@ export class User {
   private phoneNumber: string;
   private password: string;
 
-  public static deserialize(document: UserPrimitives): Promise<User> {
+  public static fromPrimitives(document: UserPrimitives): Promise<User> {
     return this.buildWithIdentifier(
       new Identifier(new ObjectId(document.id)),
       document.name,
@@ -75,7 +75,7 @@ export class User {
     return this.id;
   }
 
-  public serialize(): UserPrimitives {
+  public toPrimitives(): UserPrimitives {
     return {
       id: this.id.toString(),
       name: this.name,
