@@ -1,7 +1,7 @@
 import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
-import { UserPrimitives } from "../models/primitives/UserPrimitives";
+import { UserPrimitives } from "../models/user/UserPrimitives";
 import { PasswordEncryptor } from "../utils/PasswordEcryptor";
-import { UserRepository } from "../models/UserRepository";
+import { UserRepository } from "../models/user/UserRepository";
 
 export interface LoginMessage {
   username: string;
@@ -23,21 +23,20 @@ export class LoginController {
   ): Promise<LoginResponseMessage | undefined> {
     const userRepository: UserRepository = new MongoUserRepository();
 
-    const userPrimitives = await userRepository.findByEmail(message.username);
-    console.debug(`userPrimitives: ${JSON.stringify(userPrimitives)}`);
+    const user = await userRepository.findByEmail(message.username);
 
-    if (userPrimitives) {
+    if (user) {
       const plainPassword = message.password;
       console.log(`plainPassword: ${plainPassword}`);
       const loggedIn = await PasswordEncryptor.comparePassword(
         plainPassword,
-        userPrimitives.password
+        user.toPrimitives().password
       );
 
       if (loggedIn) {
         console.debug(`user: ${message.username}, Logged in successfully`);
         // TODO: implement token part
-        return { token: "fakeToken", user: userPrimitives };
+        return { token: "fakeToken", user: user.toPrimitives() };
       } else {
         console.debug(`user:${message.username}, Login failed`);
         return;

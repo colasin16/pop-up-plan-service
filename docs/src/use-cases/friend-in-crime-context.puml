@@ -29,16 +29,65 @@ FindFriendInCrime
 endnote
 IN_APP --> PLAN_CREATION
 note on link
-FindFriendInCrime
+CreatePlan
 endnote
 PLAN_CREATION --> PLAN
 note on link
-CreatePlan
+GetPlan
 endnote
 PLAN_SEARCH --> PLAN
 note on link
 SearchPlan
 endnote
+PLAN --> CHAT
+note on link
+JoinPlan
+endnote
+PLAN --> PROFILE
+note on link
+GetProfile
+endnote
+
+@enduml
+
+@startuml FriendInCrimeContext2
+
+state INITIAL
+state IN_APP
+state PROFILE
+state PLAN
+state CHAT
+
+[*] --> INITIAL
+INITIAL --> IN_APP
+note on link
+Login
+CreateProfile
+end note
+IN_APP --> INITIAL
+note on link
+DeleteProfile
+endnote
+IN_APP --> PROFILE
+note on link
+GetProfile
+endnote
+PROFILE --> PROFILE
+note on link
+EditProfile
+endnote
+IN_APP --> PLAN
+note on link
+FindPlan
+endnote
+IN_APP --> PLAN
+note on link
+CreatePlan
+endnote
+PLAN --> PLAN
+note on link
+EditPlan
+end note
 PLAN --> CHAT
 note on link
 JoinPlan

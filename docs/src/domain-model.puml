@@ -1,28 +1,85 @@
 @startuml DomainModel
 
-object FriendInCrime
-object User
-object Profile
-object Plan
-object Owner
-object Atendees
-object Name
-object Conversation
+class FriendInCrime
+class User
+class Profile
+class Plan
+class Atendee
+class Name
+class Conversation
 
 FriendInCrime --> "2..n" User
 User *--> Profile
+User o--> Plan
+
 Profile *--> Name
-Profile --> Plan
 
 Plan --> Conversation
+Plan "0..n" o-down-> Atendee
 
-Owner -up-|> Profile
-Atendees -up-|> Profile
-
-Plan "1" o-down-> Owner
-Owner .up.> Plan
-
-Plan "0..n" o-down-> Atendees
-Atendees ..> Plan
+Atendee -up-|> User
 
 @enduml
+
+@startuml Domain Classes
+
+
+class User {
+  - id: Identifier
+  - profile: Profile
+  - ownedPlans: Plan[]
+  + addPlan(plan: Plan): void
+  + joinPlan(plan: Plan): void
+}
+
+class Profile {
+  + name: string
+  + image: Image
+}
+
+class Image {
+  + idkxd(): string
+}
+
+class Plan {
+  - owner: User
+  - attendees: User[]
+  - feed: Feed
+  + addAttendee(user: User): void
+  + removeAttendee(user: User): void
+  + postMessage(message: string, user: User): void
+  + getAttendeesProfiles(): Profile[]
+}
+
+class Feed {
+  - messages: Message[]
+  + post(message: string): void
+  + getMessages(): string[]
+}
+
+class Message {
+  - from: User
+  + content: string 
+}
+
+
+User *--> Profile
+Profile --> Image
+User o--> Plan
+note on link
+as owner
+end note
+User ..> Plan
+note on link
+joins
+post on a wall
+end note
+Plan o--> User
+note on link
+as attendees
+end note
+Plan *--> Feed
+Feed o--> Message
+@enduml
+
+

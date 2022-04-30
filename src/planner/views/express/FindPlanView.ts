@@ -1,13 +1,10 @@
 import { Request, Response } from "express";
-import { GetUserController } from "../../controllers/GetUserController";
-import { SearchPlanController } from "../../controllers/SearchPlanController";
+import { SearchPlanController } from "../../controllers/plan/SearchPlanController";
 
 export class FindPlanView {
   private searchPlanController: SearchPlanController;
-  private getUserByIdController: GetUserController;
   constructor() {
     this.searchPlanController = new SearchPlanController();
-    this.getUserByIdController = new GetUserController();
   }
 
   public async render(req: Request, res: Response): Promise<void> {
@@ -17,10 +14,10 @@ export class FindPlanView {
       res.status(200).send({
         success: true,
         plans: planPrimitivesList.map((plan) => {
-          const ownerId = plan.serialize().ownerId;
+          const ownerId = plan.toPrimitives().owner;
 
           return {
-            ...plan.serialize(),
+            ...plan.toPrimitives(),
             ownerId: ownerId,
           };
         }),

@@ -1,8 +1,8 @@
-import { PlanRepository } from "../../models/PlanRepository";
-import { Plan } from "../../models/Plan";
+import { PlanRepository } from "../../models/plan/PlanRepository";
+import { Plan } from "../../models/plan/Plan";
 import { Identifier } from "../../models/Identifier";
 import { Category } from "../../types/Category";
-import { PlanPrimitives } from "../../models/primitives/PlanPrimitives";
+import { PlanPrimitives } from "../../models/plan/PlanPrimitives";
 
 export class InMemoryPlanRepository implements PlanRepository {
   private map: Map<string, PlanPrimitives>;
@@ -11,40 +11,24 @@ export class InMemoryPlanRepository implements PlanRepository {
     this.map = new Map<string, PlanPrimitives>();
   }
 
-  public async create(plan: Plan): Promise<PlanPrimitives | null> {
-    await Promise.resolve(
-      this.map.set(plan.getId().toString(), plan.serialize())
-    );
-    return plan.serialize();
+  public async create(plan: Plan): Promise<Plan | null> {
+    throw new Error("Method not implemented.");
   }
 
-  public async find(id: Identifier): Promise<PlanPrimitives | null> {
-    const plan = this.map.get(id.toString());
-    if (!plan) {
-      return null;
-    }
-    return plan;
+  public async find(id: Identifier): Promise<Plan | null> {
+    throw new Error("Method not implemented.");
   }
 
-  public async findAll(): Promise<PlanPrimitives[]> {
-    const plans = new Array<PlanPrimitives>();
-    this.map.forEach((plan) => plans.push(plan));
-    return plans;
+  public async findAll(): Promise<Plan[]> {
+    throw new Error("Method not implemented.");
   }
 
-  public async findByCategory(category: Category): Promise<PlanPrimitives[]> {
-    const plans = new Array<PlanPrimitives>();
-    this.map.forEach((plan) => {
-      const planInstance = Plan.deserialize(plan);
-      if (planInstance.hasCategory(category)) {
-        plans.push(plan);
-      }
-    });
-    return plans;
+  public async findByCategory(category: Category): Promise<Plan[]> {
+    throw new Error("Method not implemented.");
   }
 
   public update(plan: Plan): void {
-    this.map.set(plan.getId().toString(), plan.serialize());
+    this.map.set(plan.getId().toString(), plan.toPrimitives());
   }
 
   public async delete(id: Identifier): Promise<void> {

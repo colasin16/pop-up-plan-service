@@ -1,7 +1,6 @@
-import { PlanRepository } from "../models/PlanRepository";
+import { PlanRepository } from "../models/plan/PlanRepository";
 import { Identifier } from "../models/Identifier";
-import { Plan } from "../models/Plan";
-import { ObjectId } from "bson";
+import { Plan } from "../models/plan/Plan";
 
 export interface FindPlanByIdMessage {
   id: string;
@@ -15,8 +14,7 @@ export class FindPlanByIdView {
   }
 
   public async interact(message: FindPlanByIdMessage): Promise<Plan | null> {
-    const plan_id = new Identifier(new ObjectId(message.id));
-    const plan = await this.planRepository.find(plan_id);
-    return plan ? Plan.deserialize(plan) : null;
+    const plan_id = Identifier.fromString(message.id);
+    return await this.planRepository.find(plan_id);
   }
 }

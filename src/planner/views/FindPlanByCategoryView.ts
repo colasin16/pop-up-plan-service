@@ -1,13 +1,12 @@
-import { User } from "../models/User";
-import { PlanRepository } from "../models/PlanRepository";
-import { Plan } from "../models/Plan";
+import { User } from "../models/user/User";
+import { PlanRepository } from "../models/plan/PlanRepository";
+import { Plan } from "../models/plan/Plan";
 import { Category } from "../types/Category";
 
 export interface FindPlanByCategoryMessage {
   category: string;
 }
 
-// esta vista... jejejeje
 export class FindPlanByCategoryView {
   private user: User;
   private planRepository: PlanRepository;
@@ -22,8 +21,6 @@ export class FindPlanByCategoryView {
       new Category(message.category)
     );
 
-    return planPrimitivesList.map((planPrimitives) =>
-      Plan.deserialize(planPrimitives)
-    );
+    return planPrimitivesList;
   }
 }

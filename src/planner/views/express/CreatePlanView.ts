@@ -1,32 +1,19 @@
-import { Request, Response } from "express";
-import {
-  CreatePlanController,
-  CreatePlanMessage,
-} from "../../controllers/CreatePlanController";
+import { CreatePlanMessage } from "../../controllers/plan/CreatePlanController";
+import { PlanController } from "../../controllers/plan/PlanController";
+import { Identifier } from "../../models/Identifier";
 
 export class CreatePlanView {
-  private createPlanController: CreatePlanController;
+  private planController: PlanController;
   constructor() {
-    this.createPlanController = new CreatePlanController();
+    this.planController = new PlanController();
   }
 
-  public async render(req: Request, res: Response): Promise<void> {
-    const message: CreatePlanMessage = {
-      ownerId: req.body.ownerId,
-      title: req.body.title,
-      location: req.body.location,
-      time: req.body.time,
-      category: req.body.category,
-      privacy: req.body.privacy,
-      description: req.body.description,
-      image: req.body.image,
-    };
+  public async render(message: CreatePlanMessage): Promise<Identifier | null> {
     try {
-      const plan = await this.createPlanController.control(message);
-      res.status(201).send({ success: true, planId: plan });
+      return await this.planController.create(message);
     } catch (e) {
-      console.error(e);
-      res.status(500).send({ message: "internal-error" });
+      // Manage domain errors
+      return null;
     }
   }
 }
