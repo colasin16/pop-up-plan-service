@@ -1,8 +1,8 @@
 import { ObjectID } from "bson";
 
 import { MongoPlanRepository } from "../infrastructure/mongo-db/repositories/MongoPlanRepository";
-import { PlanPrimitives } from "../models/primitives/PlanPrimitives";
-import { PlanRepository } from "../models/PlanRepository";
+import { PlanPrimitives } from "../models/plan/PlanPrimitives";
+import { PlanRepository } from "../models/plan/PlanRepository";
 import { Identifier } from "../models/Identifier";
 
 export interface GetPlanMessage {

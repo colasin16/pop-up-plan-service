@@ -1,7 +1,7 @@
-import { Identifier } from "./Identifier";
+import { Identifier } from "../Identifier";
 import { Plan } from "./Plan";
-import { Category } from "../types/Category";
-import { PlanPrimitives } from "./primitives/PlanPrimitives";
+import { Category } from "../../types/Category";
+import { PlanPrimitives } from "./PlanPrimitives";
 
 export interface PlanRepository {
   create(plan: Plan): Promise<PlanPrimitives | null>;

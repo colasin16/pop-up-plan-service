@@ -1,7 +1,7 @@
 import { Identifier } from "../../models/Identifier";
-import { UserPrimitives } from "../../models/primitives/UserPrimitives";
-import { User } from "../../models/User";
-import { UserRepository } from "../../models/UserRepository";
+import { UserPrimitives } from "../../models/user/UserPrimitives";
+import { User } from "../../models/user/User";
+import { UserRepository } from "../../models/user/UserRepository";
 
 export class InMemoryUserRepository implements UserRepository {
   private map: Map<string, User>;

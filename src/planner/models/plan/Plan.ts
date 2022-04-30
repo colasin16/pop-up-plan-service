@@ -1,8 +1,8 @@
 import { ObjectID } from "bson";
-import { Identifier } from "./Identifier";
-import { PlanPrimitives } from "./primitives/PlanPrimitives";
-import { Category, ECategory } from "../types/Category";
-import { EPrivacy, Privacy } from "../types/Privacy";
+import { Identifier } from "../Identifier";
+import { PlanPrimitives } from "./PlanPrimitives";
+import { Category, ECategory } from "../../types/Category";
+import { EPrivacy, Privacy } from "../../types/Privacy";
 
 export class Plan {
   private id: Identifier;

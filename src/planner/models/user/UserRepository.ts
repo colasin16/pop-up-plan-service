@@ -1,5 +1,5 @@
-import { Identifier } from "./Identifier";
-import { UserPrimitives } from "./primitives/UserPrimitives";
+import { Identifier } from "../Identifier";
+import { UserPrimitives } from "./UserPrimitives";
 import { User } from "./User";
 
 export interface UserRepository {

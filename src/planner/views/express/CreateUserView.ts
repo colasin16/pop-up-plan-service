@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { CreateUserController } from "../../controllers/CreateUserController";
-import { UserPrimitives } from "../../models/primitives/UserPrimitives";
+import { UserPrimitives } from "../../models/user/UserPrimitives";
 import { FullName } from "../../types/FullName";
 
 export interface CreateUserMessage {

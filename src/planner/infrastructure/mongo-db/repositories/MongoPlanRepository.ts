@@ -2,14 +2,14 @@ import { autoInjectable } from "tsyringe";
 import { Collection, ObjectId } from "mongodb";
 import { ObjectID } from "bson";
 
-import { PlanPrimitives } from "../../../models/primitives/PlanPrimitives";
+import { PlanPrimitives } from "../../../models/plan/PlanPrimitives";
 import { MongoPlanConverter } from "../converters/PlanConverter";
-import { PlanRepository } from "../../../models/PlanRepository";
+import { PlanRepository } from "../../../models/plan/PlanRepository";
 import { Identifier } from "../../../models/Identifier";
 import { Category } from "../../../types/Category";
 import { MongoDBClient } from "../MongoDBClient";
 import { MongoPlan } from "../models/MongoPlan";
-import { Plan } from "../../../models/Plan";
+import { Plan } from "../../../models/plan/Plan";
 
 @autoInjectable()
 export class MongoPlanRepository implements PlanRepository {

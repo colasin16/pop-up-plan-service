@@ -1,12 +1,12 @@
 import { ObjectID } from "bson";
 
 import { MongoPlanRepository } from "../infrastructure/mongo-db/repositories/MongoPlanRepository";
-import { PlanPrimitives } from "../models/primitives/PlanPrimitives";
-import { PlanRepository } from "../models/PlanRepository";
+import { PlanPrimitives } from "../models/plan/PlanPrimitives";
+import { PlanRepository } from "../models/plan/PlanRepository";
 import { Identifier } from "../models/Identifier";
 import { Category } from "../types/Category";
 import { Privacy } from "../types/Privacy";
-import { Plan } from "../models/Plan";
+import { Plan } from "../models/plan/Plan";
 
 export interface CreatePlanMessage {
   ownerId: string;

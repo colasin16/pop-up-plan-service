@@ -1,7 +1,7 @@
 import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
-import { UserPrimitives } from "../models/primitives/UserPrimitives";
+import { UserPrimitives } from "../models/user/UserPrimitives";
 import { PasswordEncryptor } from "../utils/PasswordEcryptor";
-import { UserRepository } from "../models/UserRepository";
+import { UserRepository } from "../models/user/UserRepository";
 
 export interface LoginMessage {
   username: string;

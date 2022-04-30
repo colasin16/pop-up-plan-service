@@ -1,11 +1,11 @@
 import { describe } from "mocha";
 import { expect } from "chai";
-import { Plan } from "../../src/planner/models/Plan";
+import { Plan } from "../../src/planner/models/plan/Plan";
 import { Category } from "../../src/planner/types/Category";
 import { Privacy } from "../../src/planner/types/Privacy";
 import { InMemoryPlanRepository } from "../../src/planner/infrastructure/in-memory-storage/InMemoryPlanRepository";
 
-import { User } from "../../src/planner/models/User";
+import { User } from "../../src/planner/models/user/User";
 import { Identifier } from "../../src/planner/models/Identifier";
 import { CreatePlanMessage } from "../../src/planner/controllers/CreatePlanController";
 

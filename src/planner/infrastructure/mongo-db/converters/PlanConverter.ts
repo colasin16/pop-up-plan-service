@@ -1,6 +1,6 @@
 import { ObjectId, WithId } from "mongodb";
-import { Plan } from "../../../models/Plan";
-import { PlanPrimitives } from "../../../models/primitives/PlanPrimitives";
+import { Plan } from "../../../models/plan/Plan";
+import { PlanPrimitives } from "../../../models/plan/PlanPrimitives";
 import { MongoPlan } from "../models/MongoPlan";
 
 export class MongoPlanConverter {

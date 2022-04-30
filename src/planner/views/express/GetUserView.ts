@@ -4,8 +4,8 @@ import {
   GetUserMessage,
 } from "../../controllers/GetUserController";
 import { Identifier } from "../../models/Identifier";
-import { UserPrimitives } from "../../models/primitives/UserPrimitives";
-import { User } from "../../models/User";
+import { UserPrimitives } from "../../models/user/UserPrimitives";
+import { User } from "../../models/user/User";
 
 // export interface GetUserMessage {
 //   userId: Identifier;

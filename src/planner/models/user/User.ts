@@ -1,12 +1,12 @@
 import { container } from "tsyringe";
 import { ObjectId } from "bson";
 
-import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
-import { MongoDBClient } from "../infrastructure/mongo-db/MongoDBClient";
-import { PasswordEncryptor } from "../utils/PasswordEcryptor";
-import { UserPrimitives } from "./primitives/UserPrimitives";
-import { FullName } from "../types/FullName";
-import { Identifier } from "./Identifier";
+import { MongoUserRepository } from "../../infrastructure/mongo-db/repositories/MongoUserRepository";
+import { MongoDBClient } from "../../infrastructure/mongo-db/MongoDBClient";
+import { PasswordEncryptor } from "../../utils/PasswordEcryptor";
+import { UserPrimitives } from "./UserPrimitives";
+import { FullName } from "../../types/FullName";
+import { Identifier } from "../Identifier";
 
 export class User {
   private id: Identifier;

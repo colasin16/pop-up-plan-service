@@ -2,13 +2,13 @@ import { Collection, ObjectId } from "mongodb";
 import { autoInjectable } from "tsyringe";
 import { ObjectID } from "bson";
 
-import { UserPrimitives } from "../../../models/primitives/UserPrimitives";
+import { UserPrimitives } from "../../../models/user/UserPrimitives";
 import { MongoUserConverter } from "../converters/UserConverter";
-import { UserRepository } from "../../../models/UserRepository";
+import { UserRepository } from "../../../models/user/UserRepository";
 import { Identifier } from "../../../models/Identifier";
 import { MongoDBClient } from "../MongoDBClient";
 import { MongoUser } from "../models/MongoUser";
-import { User } from "../../../models/User";
+import { User } from "../../../models/user/User";
 
 @autoInjectable()
 export class MongoUserRepository implements UserRepository {

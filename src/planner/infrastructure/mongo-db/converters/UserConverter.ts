@@ -1,6 +1,6 @@
 import { WithId } from "mongodb";
-import { UserPrimitives } from "../../../models/primitives/UserPrimitives";
-import { User } from "../../../models/User";
+import { UserPrimitives } from "../../../models/user/UserPrimitives";
+import { User } from "../../../models/user/User";
 import { MongoUser } from "../models/MongoUser";
 
 export class MongoUserConverter {
