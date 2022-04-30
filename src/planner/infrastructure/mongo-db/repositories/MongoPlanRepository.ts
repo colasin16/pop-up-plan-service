@@ -1,6 +1,5 @@
 import { autoInjectable } from "tsyringe";
 import { Collection, ObjectId } from "mongodb";
-import { ObjectID } from "bson";
 
 import { PlanPrimitives } from "../../../models/plan/PlanPrimitives";
 import { MongoPlanConverter } from "../converters/PlanConverter";
@@ -67,9 +66,7 @@ export class MongoPlanRepository implements PlanRepository {
       MongoPlanConverter.planToMongoPlan(plan)
     );
 
-    const identifier = new Identifier(
-      new ObjectID(result.insertedId.toString())
-    );
+    const identifier = Identifier.fromString(result.insertedId.toString());
 
     const createdItem = await this.find(identifier);
 

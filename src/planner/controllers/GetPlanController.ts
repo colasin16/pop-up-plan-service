@@ -1,5 +1,3 @@
-import { ObjectID } from "bson";
-
 import { MongoPlanRepository } from "../infrastructure/mongo-db/repositories/MongoPlanRepository";
 import { PlanPrimitives } from "../models/plan/PlanPrimitives";
 import { PlanRepository } from "../models/plan/PlanRepository";
@@ -15,7 +13,7 @@ export class GetPlanController {
   ): Promise<PlanPrimitives | null> {
     const planRepository: PlanRepository = new MongoPlanRepository();
 
-    const id = new Identifier(new ObjectID(message.id));
+    const id = Identifier.fromString(message.id);
     return await planRepository.find(id);
   }
 }

@@ -1,9 +1,8 @@
-import { ObjectID } from "bson";
+import { ObjectId } from "bson";
 
 import { MongoPlanRepository } from "../infrastructure/mongo-db/repositories/MongoPlanRepository";
 import { PlanPrimitives } from "../models/plan/PlanPrimitives";
 import { PlanRepository } from "../models/plan/PlanRepository";
-import { Identifier } from "../models/Identifier";
 import { Category } from "../types/Category";
 import { Privacy } from "../types/Privacy";
 import { Plan } from "../models/plan/Plan";
@@ -29,15 +28,11 @@ export class CreatePlanController {
       message.title,
       message.location,
       message.time,
-      new Privacy(message.privacy).value,
-      new Category(message.category).value,
+      new Privacy(message.privacy),
+      new Category(message.category),
       message.description
     );
-
-    if (message.ownerId) {
-      plan.setOwner(new Identifier(new ObjectID(message.ownerId)));
-    }
-
+    plan.setOwner(user);
     return await planRepository.create(plan);
   }
 }

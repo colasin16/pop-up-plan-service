@@ -17,12 +17,16 @@ export class CreateUserController {
   ): Promise<UserPrimitives | null> {
     const userRepository: UserRepository = new MongoUserRepository();
 
-    const user = await User.build(
+    const user = new User(
       message.name,
       message.email,
       message.phoneNumber,
       message.password
     );
+
+    // const createdUser = repo.create(user): User;
+    // if NullObject.isnull(createdUser)
+    // throw ....
 
     return await userRepository.create(user);
   }

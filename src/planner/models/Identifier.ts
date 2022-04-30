@@ -1,10 +1,14 @@
-import { ObjectID } from "bson";
+import { ObjectId } from "bson";
 
 export class Identifier {
-  private readonly _value: ObjectID;
+  private readonly _value: ObjectId;
 
-  constructor(id?: ObjectID) {
-    this._value = id || new ObjectID();
+  public static fromString(id: string): Identifier {
+    return new Identifier(new ObjectId(id));
+  }
+
+  constructor(id?: ObjectId) {
+    this._value = id || new ObjectId();
   }
 
   public equals(id: Identifier) {
@@ -13,9 +17,5 @@ export class Identifier {
 
   public toString(): string {
     return this._value.toHexString();
-  }
-
-  public static fromString(id: string): Identifier {
-    return new Identifier(new ObjectID(id));
   }
 }

@@ -1,6 +1,5 @@
 import { Collection, ObjectId } from "mongodb";
 import { autoInjectable } from "tsyringe";
-import { ObjectID } from "bson";
 
 import { UserPrimitives } from "../../../models/user/UserPrimitives";
 import { MongoUserConverter } from "../converters/UserConverter";
@@ -9,6 +8,7 @@ import { Identifier } from "../../../models/Identifier";
 import { MongoDBClient } from "../MongoDBClient";
 import { MongoUser } from "../models/MongoUser";
 import { User } from "../../../models/user/User";
+import { PasswordEncryptor } from "../../../utils/PasswordEcryptor";
 
 @autoInjectable()
 export class MongoUserRepository implements UserRepository {
@@ -48,21 +48,38 @@ export class MongoUserRepository implements UserRepository {
   }
 
   public async create(user: User): Promise<UserPrimitives | null> {
-    const serializedUser = user.toPrimitives();
+    const userPrimitives = user.toPrimitives();
+    const userWithSameEmail = await this.findByEmail(userPrimitives.email);
+
+    if (userWithSameEmail) {
+      // checks if email exists
+      // if email exists return null
+      // else return user domain entity
+
+      // class NullObject {}
+      //
+
+      // this smell should be solved with nullobject pattern
+      throw new Error("User with that email already exists");
+    }
+
+    const encryptedPassword = await PasswordEncryptor.encryptPassword(
+      userPrimitives.password
+    );
+
     const result = await this.collection.insertOne({
       name: {
-        firstName: serializedUser.name.firstName,
-        lastName: serializedUser.name.lastName,
+        firstName: userPrimitives.name.firstName,
+        lastName: userPrimitives.name.lastName,
       },
-      email: serializedUser.email,
-      phoneNumber: serializedUser.phoneNumber,
-      password: serializedUser.password,
+      email: userPrimitives.email,
+      phoneNumber: userPrimitives.phoneNumber,
+      password: encryptedPassword,
     });
+
     console.log("User created with id " + result.insertedId);
 
-    const identifier = new Identifier(
-      new ObjectID(result.insertedId.toString())
-    );
+    const identifier = Identifier.fromString(result.insertedId.toString());
 
     const newUser = await this.find(identifier);
 

@@ -1,4 +1,3 @@
-import { ObjectID } from "bson";
 import { Identifier } from "../Identifier";
 import { PlanPrimitives } from "./PlanPrimitives";
 import { Category, ECategory } from "../../types/Category";
@@ -27,10 +26,10 @@ export class Plan {
       primitives.image
     );
 
-    plan.setOwner(new Identifier(new ObjectID(primitives.ownerId)));
-    plan.id = new Identifier(new ObjectID(primitives.id));
-    plan.attendeesId = primitives.attendeesId.map(
-      (attendee) => new Identifier(new ObjectID(attendee))
+    plan.setOwner(Identifier.fromString(primitives.ownerId));
+    plan.id = Identifier.fromString(primitives.id);
+    plan.attendeesId = primitives.attendeesId.map((attendee) =>
+      Identifier.fromString(attendee)
     );
     return plan;
   }
