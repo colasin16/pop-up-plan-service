@@ -1,7 +1,7 @@
-import { GetUserController as GetUserController } from "../../controllers/user/GetUserController";
-import { Identifier } from "../../models/Identifier";
+import { GetUserController as GetUserController } from "../../../controllers/user/GetUserController";
+import { Identifier } from "../../../models/Identifier";
 
-import { User } from "../../models/user/User";
+import { User } from "../../../models/user/User";
 
 export class GetUserView {
   private GetUserController: GetUserController;
