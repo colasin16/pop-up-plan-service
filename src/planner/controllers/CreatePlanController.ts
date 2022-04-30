@@ -1,11 +1,10 @@
-import { ObjectId } from "bson";
-
 import { MongoPlanRepository } from "../infrastructure/mongo-db/repositories/MongoPlanRepository";
 import { PlanPrimitives } from "../models/plan/PlanPrimitives";
 import { PlanRepository } from "../models/plan/PlanRepository";
 import { Category } from "../types/Category";
 import { Privacy } from "../types/Privacy";
 import { Plan } from "../models/plan/Plan";
+import { Identifier } from "../models/Identifier";
 
 export interface CreatePlanMessage {
   ownerId: string;
@@ -32,7 +31,8 @@ export class CreatePlanController {
       new Category(message.category),
       message.description
     );
-    plan.setOwner(user);
+
+    plan.setOwner(Identifier.fromString(message.ownerId));
     return await planRepository.create(plan);
   }
 }

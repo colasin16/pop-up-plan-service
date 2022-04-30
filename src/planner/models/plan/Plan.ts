@@ -20,11 +20,14 @@ export class Plan {
       primitives.title,
       primitives.location,
       primitives.time,
-      new Privacy(primitives.privacy).value,
-      new Category(primitives.category).value,
+      new Privacy(primitives.privacy),
+      new Category(primitives.category),
       primitives.description,
       primitives.image
     );
+
+    // settear los attendees
+    // const users = primitives.attendees.map((attendee: UserPrimitives) => User.fromPrimitives(attendee))
 
     plan.setOwner(Identifier.fromString(primitives.ownerId));
     plan.id = Identifier.fromString(primitives.id);
@@ -38,8 +41,8 @@ export class Plan {
     title: string,
     location: string,
     time: number,
-    privacy: EPrivacy,
-    category: ECategory,
+    privacy: Privacy,
+    category: Category,
     description?: string,
     image?: string
   ) {
@@ -48,8 +51,8 @@ export class Plan {
     this.location = location;
     this.time = time;
     this.description = description;
-    this.privacy = new Privacy(privacy);
-    this.category = new Category(category);
+    this.privacy = privacy;
+    this.category = category;
     this.attendeesId = new Array<Identifier>();
     this.image = image;
   }

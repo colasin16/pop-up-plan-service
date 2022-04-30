@@ -6,15 +6,13 @@ import { Privacy } from "../../src/planner/types/Privacy";
 import { InMemoryPlanRepository } from "../../src/planner/infrastructure/in-memory-storage/InMemoryPlanRepository";
 
 import { User } from "../../src/planner/models/user/User";
-import { Identifier } from "../../src/planner/models/Identifier";
 import { CreatePlanMessage } from "../../src/planner/controllers/CreatePlanController";
 
 describe("Unit test", () => {
   describe("Plan", () => {
     describe(".addAtendees", () => {
       before(async () => {
-        const ownerUser = await User.buildWithIdentifier(
-          new Identifier(),
+        const ownerUser = new User(
           { firstName: "Jhon", lastName: "Doe" },
           "jhondoe@owner.pic",
           "123123123",
@@ -34,8 +32,8 @@ describe("Unit test", () => {
           createPlanMessage.title,
           createPlanMessage.location,
           createPlanMessage.time,
-          new Privacy(createPlanMessage.privacy).value,
-          new Category(createPlanMessage.category).value,
+          new Privacy(createPlanMessage.privacy),
+          new Category(createPlanMessage.category),
           createPlanMessage.description
         );
         planEntity.setOwner(ownerUser.getId());
