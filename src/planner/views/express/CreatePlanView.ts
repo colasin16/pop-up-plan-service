@@ -2,12 +2,13 @@ import { Request, Response } from "express";
 import {
   CreatePlanController,
   CreatePlanMessage,
-} from "../../controllers/CreatePlanController";
+} from "../../controllers/plan/CreatePlanController";
+import { PlanController } from "../../controllers/plan/PlanController";
 
 export class CreatePlanView {
-  private createPlanController: CreatePlanController;
+  private planController: PlanController;
   constructor() {
-    this.createPlanController = new CreatePlanController();
+    this.planController = new PlanController();
   }
 
   public async render(req: Request, res: Response): Promise<void> {
@@ -22,7 +23,7 @@ export class CreatePlanView {
       image: req.body.image,
     };
     try {
-      const plan = await this.createPlanController.control(message);
+      const plan = await this.planController.create(message);
       res.status(201).send({ success: true, planId: plan });
     } catch (e) {
       console.error(e);

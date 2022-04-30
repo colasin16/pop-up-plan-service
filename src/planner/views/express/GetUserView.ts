@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import {
   GetUserController as GetUserController,
   GetUserMessage,
-} from "../../controllers/GetUserController";
+} from "../../controllers/user/GetUserController";
 import { Identifier } from "../../models/Identifier";
 import { UserPrimitives } from "../../models/user/UserPrimitives";
 import { User } from "../../models/user/User";

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { GetUserController } from "../../controllers/GetUserController";
-import { SearchPlanController } from "../../controllers/SearchPlanController";
+import { GetUserController } from "../../controllers/user/GetUserController";
+import { SearchPlanController } from "../../controllers/plan/SearchPlanController";
 
 export class FindPlanView {
   private searchPlanController: SearchPlanController;

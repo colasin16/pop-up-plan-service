@@ -1,7 +1,7 @@
-import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
-import { UserRepository } from "../models/user/UserRepository";
-import { Identifier } from "../models/Identifier";
-import { User } from "../models/user/User";
+import { MongoUserRepository } from "../../infrastructure/mongo-db/repositories/MongoUserRepository";
+import { UserRepository } from "../../models/user/UserRepository";
+import { Identifier } from "../../models/Identifier";
+import { User } from "../../models/user/User";
 
 export interface GetUserMessage {
   id: Identifier;

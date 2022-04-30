@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 
 import { FindPlanView } from "./express/FindPlanView";
-
 import { LoginUserView } from "./express/LoginUserView";
 import { CreatePlanView } from "./express/CreatePlanView";
 import { CreateUserView } from "./express/CreateUserView";
@@ -19,7 +18,6 @@ export class UserViewExpress {
     this.findPlanView = new FindPlanView();
     this.createUserView = new CreateUserView();
     this.getUserView = new GetUserView();
-
     this.loginUserView = new LoginUserView();
   }
 

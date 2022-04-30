@@ -6,7 +6,7 @@ import { Privacy } from "../../src/planner/types/Privacy";
 import { InMemoryPlanRepository } from "../../src/planner/infrastructure/in-memory-storage/InMemoryPlanRepository";
 
 import { User } from "../../src/planner/models/user/User";
-import { CreatePlanMessage } from "../../src/planner/controllers/CreatePlanController";
+import { CreatePlanMessage } from "../../src/planner/controllers/plan/CreatePlanController";
 
 describe("Unit test", () => {
   describe("Plan", () => {

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { CreateUserController } from "../../controllers/CreateUserController";
-import { UserPrimitives } from "../../models/user/UserPrimitives";
+
+import { UserController } from "../../controllers/user/UserController";
 import { FullName } from "../../types/FullName";
 
 export interface CreateUserMessage {
@@ -11,9 +11,9 @@ export interface CreateUserMessage {
 }
 
 export class CreateUserView {
-  private createUserController: CreateUserController;
+  private userController: UserController;
   constructor() {
-    this.createUserController = new CreateUserController();
+    this.userController = new UserController();
   }
 
   public async render(req: Request, res: Response): Promise<void> {
@@ -24,8 +24,7 @@ export class CreateUserView {
       password: req.body.password,
     };
     try {
-      const user: UserPrimitives | null =
-        await this.createUserController.control(message);
+      const user = await this.userController.create(message);
       res.status(201).send({ success: true, user: user });
     } catch (e) {
       console.error(e);

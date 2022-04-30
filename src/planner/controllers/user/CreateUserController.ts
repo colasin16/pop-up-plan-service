@@ -1,8 +1,8 @@
-import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
-import { UserPrimitives } from "../models/user/UserPrimitives";
-import { UserRepository } from "../models/user/UserRepository";
-import { FullName } from "../types/FullName";
-import { User } from "../models/user/User";
+import { MongoUserRepository } from "../../infrastructure/mongo-db/repositories/MongoUserRepository";
+import { UserPrimitives } from "../../models/user/UserPrimitives";
+import { UserRepository } from "../../models/user/UserRepository";
+import { FullName } from "../../types/FullName";
+import { User } from "../../models/user/User";
 
 export interface CreateUserMessage {
   name: FullName;
