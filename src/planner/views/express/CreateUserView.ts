@@ -1,14 +1,6 @@
-import { Request, Response } from "express";
-
+import { CreateUserMessage } from "../../controllers/user/CreateUserController";
 import { UserController } from "../../controllers/user/UserController";
-import { FullName } from "../../types/FullName";
-
-export interface CreateUserMessage {
-  name: FullName;
-  email: string;
-  phoneNumber: string;
-  password: string;
-}
+import { Identifier } from "../../models/Identifier";
 
 export class CreateUserView {
   private userController: UserController;
@@ -16,19 +8,12 @@ export class CreateUserView {
     this.userController = new UserController();
   }
 
-  public async render(req: Request, res: Response): Promise<void> {
-    const message: CreateUserMessage = {
-      email: req.body.email,
-      name: req.body.name,
-      phoneNumber: req.body.phoneNumber,
-      password: req.body.password,
-    };
+  public async render(message: CreateUserMessage): Promise<Identifier | null> {
     try {
-      const user = await this.userController.create(message);
-      res.status(201).send({ success: true, user: user });
+      return await this.userController.create(message);
     } catch (e) {
-      console.error(e);
-      res.status(500).send({ message: "internal-error" });
+      // Manage domain errors else keep throwing
+      return null;
     }
   }
 }

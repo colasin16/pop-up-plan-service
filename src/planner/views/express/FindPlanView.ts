@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { SearchPlanController } from "../../controllers/plan/SearchPlanController";
+import { Plan } from "../../models/plan/Plan";
 
 export class FindPlanView {
   private searchPlanController: SearchPlanController;
@@ -7,24 +8,11 @@ export class FindPlanView {
     this.searchPlanController = new SearchPlanController();
   }
 
-  public async render(req: Request, res: Response): Promise<void> {
+  public async render(): Promise<Plan[]> {
     try {
-      const planPrimitivesList = await this.searchPlanController.control();
-
-      res.status(200).send({
-        success: true,
-        plans: planPrimitivesList.map((plan) => {
-          const ownerId = plan.toPrimitives().owner;
-
-          return {
-            ...plan.toPrimitives(),
-            ownerId: ownerId,
-          };
-        }),
-      });
+      return await this.searchPlanController.control();
     } catch (e) {
-      console.error(e);
-      res.status(500).send({ message: "internal-error" });
+      return [];
     }
   }
 }

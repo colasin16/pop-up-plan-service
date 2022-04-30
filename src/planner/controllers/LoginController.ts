@@ -20,7 +20,7 @@ export interface LoginResponseMessage {
 export class LoginController {
   public async control(
     message: LoginMessage
-  ): Promise<LoginResponseMessage | undefined> {
+  ): Promise<LoginResponseMessage | null> {
     const userRepository: UserRepository = new MongoUserRepository();
 
     const user = await userRepository.findByEmail(message.username);
@@ -39,11 +39,13 @@ export class LoginController {
         return { token: "fakeToken", user: user.toPrimitives() };
       } else {
         console.debug(`user:${message.username}, Login failed`);
-        return;
+        return null;
       }
     }
     console.debug(
       `cannot authenticate because user '${message.username}' has not been found`
     );
+
+    return null;
   }
 }
