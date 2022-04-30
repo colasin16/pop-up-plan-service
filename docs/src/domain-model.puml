@@ -1,28 +1,22 @@
 @startuml DomainModel
 
-object FriendInCrime
-object User
-object Profile
-object Plan
-object Owner
-object Atendees
-object Name
-object Conversation
+class FriendInCrime
+class User
+class Profile
+class Plan
+class Atendee
+class Name
+class Conversation
 
 FriendInCrime --> "2..n" User
 User *--> Profile
+User o--> Plan
+
 Profile *--> Name
-Profile --> Plan
 
 Plan --> Conversation
+Plan "0..n" o-down-> Atendee
 
-Owner -up-|> Profile
-Atendees -up-|> Profile
-
-Plan "1" o-down-> Owner
-Owner .up.> Plan
-
-Plan "0..n" o-down-> Atendees
-Atendees ..> Plan
+Atendee -up-|> User
 
 @enduml

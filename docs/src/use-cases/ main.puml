@@ -16,7 +16,6 @@ usecase CreatePlan
 usecase SearchPlan
 usecase EditPlan
 usecase DeletePlan
-usecase InviteToPlan
 usecase JoinPlan
 
 usecase Chat
@@ -33,9 +32,10 @@ User --> FindFriendInCrime
 User --> SearchPlan
 User --> EditPlan
 User --> DeletePlan
-User --> InviteToPlan
 User --> JoinPlan
 User --> Chat
 User --> RateUser
+
+' Accept or decline join plan request is a use case?
 
 @enduml
