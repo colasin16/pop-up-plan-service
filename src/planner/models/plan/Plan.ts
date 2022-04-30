@@ -16,6 +16,26 @@ export class Plan {
   private description?: string;
   private image?: string;
 
+  constructor(
+    title: string,
+    location: string,
+    time: number,
+    privacy: Privacy,
+    category: Category,
+    description?: string,
+    image?: string
+  ) {
+    this.id = new Identifier();
+    this.title = title;
+    this.location = location;
+    this.time = time;
+    this.description = description;
+    this.privacy = privacy;
+    this.category = category;
+    this.attendees = new Array<User>();
+    this.image = image;
+  }
+
   public static fromPrimitives(primitives: PlanPrimitives): Plan {
     const plan = new Plan(
       primitives.title,
@@ -35,24 +55,19 @@ export class Plan {
     return plan;
   }
 
-  constructor(
-    title: string,
-    location: string,
-    time: number,
-    privacy: Privacy,
-    category: Category,
-    description?: string,
-    image?: string
-  ) {
-    this.id = new Identifier();
-    this.title = title;
-    this.location = location;
-    this.time = time;
-    this.description = description;
-    this.privacy = privacy;
-    this.category = category;
-    this.attendees = new Array<User>();
-    this.image = image;
+  public toPrimitives(): PlanPrimitives {
+    return {
+      id: this.id.toString(),
+      owner: this.owner.toPrimitives(),
+      title: this.title,
+      description: this.description,
+      location: this.location,
+      time: this.time,
+      privacy: this.privacy.value,
+      category: this.category.value,
+      attendees: this.attendees.map((attendee) => attendee.toPrimitives()),
+      image: this.image,
+    };
   }
 
   public getId(): Identifier {
@@ -77,18 +92,9 @@ export class Plan {
     }
   }
 
-  public toPrimitives(): PlanPrimitives {
-    return {
-      id: this.id.toString(),
-      owner: this.owner.toPrimitives(),
-      title: this.title,
-      description: this.description,
-      location: this.location,
-      time: this.time,
-      privacy: this.privacy.value,
-      category: this.category.value,
-      attendees: this.attendees.map((attendee) => attendee.toPrimitives()),
-      image: this.image,
-    };
+  public containsAttendee(user: User) {
+    return this.attendees.some((attendee) =>
+      attendee.getId().equals(user.getId())
+    );
   }
 }

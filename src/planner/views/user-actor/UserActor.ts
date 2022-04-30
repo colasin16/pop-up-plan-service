@@ -10,6 +10,7 @@ import {
 import { UserView } from "./user/UserView";
 import { PlanView } from "./plan/PlanView";
 import { CreateJoinRequestMessage } from "../../controllers/CreateJoinRequestController";
+import { AnswerJoinRequestMessage } from "../../controllers/user/AnswerJoinRequestController";
 
 export class UserActor {
   private userView: UserView;
@@ -30,6 +31,12 @@ export class UserActor {
     message: CreateJoinRequestMessage
   ): Promise<void> {
     await this.planView.renderCreateJoinRequest(message);
+  }
+
+  public async answerJoinRequest(
+    message: AnswerJoinRequestMessage
+  ): Promise<void> {
+    await this.userView.renderAnswerJoinRequest(message);
   }
 
   public async createUser(

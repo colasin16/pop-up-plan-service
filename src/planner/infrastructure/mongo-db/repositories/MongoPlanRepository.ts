@@ -1,4 +1,4 @@
-import { autoInjectable, container } from "tsyringe";
+import { autoInjectable } from "tsyringe";
 import { Collection } from "mongodb";
 
 import { MongoPlanConverter } from "../converters/PlanConverter";
@@ -37,8 +37,9 @@ export class MongoPlanRepository implements PlanRepository {
   }
 
   public async update(plan: Plan): Promise<void> {
+    const mongoPlan = MongoPlanConverter.toMongo(plan);
     await this.collection.findOneAndUpdate(
-      { _id: plan.getId() },
+      { _id: mongoPlan._id },
       { $set: MongoPlanConverter.toMongo(plan) }
     );
   }

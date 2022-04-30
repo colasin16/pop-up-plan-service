@@ -7,6 +7,6 @@ export interface PlanRepository {
   find(id: Identifier): Promise<Plan | null>;
   findAll(): Promise<Plan[]>;
   findByCategory(category: Category): Promise<Plan[]>;
-  update(plan: Plan): void;
+  update(plan: Plan): Promise<void>;
   delete(id: Identifier): void;
 }

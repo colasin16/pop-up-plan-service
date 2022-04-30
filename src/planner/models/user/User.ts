@@ -2,6 +2,7 @@ import { UserPrimitives } from "./UserPrimitives";
 import { FullName } from "../../types/FullName";
 import { Identifier } from "../Identifier";
 import { Plan } from "../plan/Plan";
+import { JoinRequest } from "../join-request/JoinRequest";
 
 export class User {
   private id: Identifier;
@@ -33,22 +34,18 @@ export class User {
     };
   }
 
-  public static fromPrimitives(document: UserPrimitives): User {
+  public static fromPrimitives(userPrimitives: UserPrimitives): User {
     const user = new User(
-      document.name,
-      document.email,
-      document.phoneNumber,
-      document.password
+      userPrimitives.name,
+      userPrimitives.email,
+      userPrimitives.phoneNumber,
+      userPrimitives.password
     );
-    user.id = Identifier.fromString(document.id);
+    user.id = Identifier.fromString(userPrimitives.id);
     return user;
   }
 
   public getId(): Identifier {
     return this.id;
-  }
-
-  public joinPlan(plan: Plan) {
-    plan.addAttendee(this);
   }
 }

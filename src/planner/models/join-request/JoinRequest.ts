@@ -5,8 +5,8 @@ import { JoinRequestPrimitives } from "./JoinRequestPrimitives";
 
 export class JoinRequest {
   private id: Identifier;
-  private plan: Plan;
-  private requester: User;
+  public plan: Plan;
+  public requester: User;
 
   constructor(plan: Plan, requester: User) {
     this.id = new Identifier();
@@ -32,5 +32,9 @@ export class JoinRequest {
 
     joinRequest.id = Identifier.fromString(joinRequestPrimitives.id);
     return joinRequest;
+  }
+
+  accept() {
+    this.plan.addAttendee(this.requester);
   }
 }
