@@ -1,15 +1,16 @@
-import { UserPrimitives } from "../../../models/user/UserPrimitives";
-import { User } from "../../../models/user/User";
-import { MongoUser } from "../models/MongoUser";
 import { ObjectId } from "mongodb";
+import { User } from "../../../models/user/User";
 import { JoinRequest } from "../../../models/join-request/JoinRequest";
 import { MongoJoinRequest } from "../models/MongoJoinRequest";
 import { MongoPlanConverter } from "./PlanConverter";
 import { Plan } from "../../../models/plan/Plan";
+import { MongoUserConverter } from "./UserConverter";
+import { JoinRequestPrimitives } from "../../../models/join-request/JoinRequestPrimitives";
 
-export class MongoUserConverter {
+export class MongoJoinRequestConverter {
   static toMongo(joinRequest: JoinRequest): MongoJoinRequest {
     const joinRequestPrimitives = joinRequest.toPrimitives();
+
     return {
       _id: new ObjectId(joinRequestPrimitives.id.toString()),
       plan: MongoPlanConverter.toMongo(
@@ -21,26 +22,23 @@ export class MongoUserConverter {
     };
   }
 
-  static toDomain(mongoUser: MongoUser): User {
-    const userPrimitives: UserPrimitives = {
-      id: mongoUser._id.toString(),
-      name: {
-        firstName: mongoUser.name.firstName,
-        lastName: mongoUser.name.lastName,
-      },
-      email: mongoUser.email,
-      phoneNumber: mongoUser.phoneNumber,
-      password: mongoUser.password,
+  static toDomain(mongoJoinRequest: MongoJoinRequest): JoinRequest {
+    const joinRequestPrimitives: JoinRequestPrimitives = {
+      id: mongoJoinRequest._id.toString(),
+      plan: MongoPlanConverter.toDomain(mongoJoinRequest.plan).toPrimitives(),
+      requester: MongoUserConverter.toDomain(
+        mongoJoinRequest.requester
+      ).toPrimitives(),
     };
 
-    return User.fromPrimitives(userPrimitives);
+    return JoinRequest.fromPrimitives(joinRequestPrimitives);
   }
 
-  static manyToDomain(mongoUsers: MongoUser[]): User[] {
-    return mongoUsers.map((user) => this.toDomain(user));
+  static manyToDomain(mongoJoinRequests: MongoJoinRequest[]): JoinRequest[] {
+    return mongoJoinRequests.map((joinRequest) => this.toDomain(joinRequest));
   }
 
-  static manyToMongo(users: User[]): MongoUser[] {
-    return users.map((user) => this.toMongo(user));
+  static manyToMongo(joinRequests: JoinRequest[]): MongoJoinRequest[] {
+    return joinRequests.map((joinRequest) => this.toMongo(joinRequest));
   }
 }

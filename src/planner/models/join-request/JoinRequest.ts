@@ -9,6 +9,7 @@ export class JoinRequest {
   private requester: User;
 
   constructor(plan: Plan, requester: User) {
+    this.id = new Identifier();
     this.plan = plan;
     this.requester = requester;
   }

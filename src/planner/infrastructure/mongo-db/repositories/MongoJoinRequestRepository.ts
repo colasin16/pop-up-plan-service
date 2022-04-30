@@ -1,30 +1,24 @@
-import { autoInjectable, container } from "tsyringe";
 import { Collection } from "mongodb";
-
-import { MongoPlanConverter } from "../converters/PlanConverter";
-import { PlanRepository } from "../../../models/plan/PlanRepository";
-import { Identifier } from "../../../models/Identifier";
-import { Category } from "../../../types/Category";
-import { MongoDBClient } from "../MongoDBClient";
-import { MongoPlan } from "../models/MongoPlan";
-import { Plan } from "../../../models/plan/Plan";
-import { JoinRequestRepository } from "../../../models/join-request/JoinRequestRepository";
-import { User } from "../../../models/user/User";
+import { autoInjectable } from "tsyringe";
 import { JoinRequest } from "../../../models/join-request/JoinRequest";
+import { JoinRequestRepository } from "../../../models/join-request/JoinRequestRepository";
+import { MongoJoinRequestConverter } from "../converters/JoinRequestConverter";
+import { MongoJoinRequest } from "../models/MongoJoinRequest";
+import { MongoDBClient } from "../MongoDBClient";
 
 @autoInjectable()
-export class MongoPlanRepository implements JoinRequestRepository {
-  private collection: Collection<MongoPlan>;
+export class MongoJoinRequestRepository implements JoinRequestRepository {
+  private collection: Collection<MongoJoinRequest>;
 
   constructor(mongoDBClient?: MongoDBClient) {
     this.collection = mongoDBClient!.client
       .db("FriendInCrime")
-      .collection<MongoPlan>("JoinRequests");
+      .collection<MongoJoinRequest>("JoinRequests");
   }
 
   public async create(joinRequest: JoinRequest): Promise<void> {
-    await this.collection.insertOne();
-
-    return null;
+    await this.collection.insertOne(
+      MongoJoinRequestConverter.toMongo(joinRequest)
+    );
   }
 }

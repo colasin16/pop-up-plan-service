@@ -1,19 +1,19 @@
-import { CreatePlanMessage } from "../../../controllers/plan/CreatePlanController";
-import { PlanController } from "../../../controllers/plan/PlanController";
-import { Identifier } from "../../../models/Identifier";
+import {
+  CreateJoinRequestController,
+  CreateJoinRequestMessage,
+} from "../../../controllers/CreateJoinRequestController";
 
 export class CreateJoinRequestView {
-  private planController: PlanController;
+  private createJoinRequestController: CreateJoinRequestController;
   constructor() {
-    this.planController = new PlanController();
+    this.createJoinRequestController = new CreateJoinRequestController();
   }
 
-  public async render(message: CreatePlanMessage): Promise<Identifier | null> {
+  public async render(message: CreateJoinRequestMessage): Promise<void> {
     try {
-      return await this.planController.create(message);
+      await this.createJoinRequestController.control(message);
     } catch (e) {
       // Manage domain errors
-      return null;
     }
   }
 }

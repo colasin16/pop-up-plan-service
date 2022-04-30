@@ -12,7 +12,7 @@ export class Identifier {
   }
 
   public equals(id: Identifier) {
-    return this._value === id._value;
+    return this._value.equals(id._value);
   }
 
   public toString(): string {

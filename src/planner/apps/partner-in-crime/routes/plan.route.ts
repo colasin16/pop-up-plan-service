@@ -2,6 +2,7 @@
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 import { CreatePlanMessage } from "../../../controllers/plan/CreatePlanController";
+import { Identifier } from "../../../models/Identifier";
 import { UserActor } from "../../../views/user-actor/UserActor";
 
 export const register = (app: any) => {
@@ -61,19 +62,44 @@ export const register = (app: any) => {
     async (req: Request, res: Response) => {
       try {
         // const user = await view.getUser(req.header.get("jwt token and descrypt"));
-        const user = await view.getUser("626d3f7b7aa88b9339627665");
+        const user = await view.getUser("626d41aaf7dd454d1de11ffa");
+        const planId = req.params.planId as string;
 
-        view.joinPlanRequest(req, res);
+        const plans = await view.findAll();
+
+        const requestedPlan = plans.find((plan) =>
+          plan.getId().equals(Identifier.fromString(planId))
+        );
+
+        if (!requestedPlan) {
+          return res
+            .status(404)
+            .json({ message: "Requested plan does not exist" });
+        }
+
+        if (!user) {
+          return res
+            .status(404)
+            .json({ message: "Requested plan no longer has an owner" });
+        }
+
+        await view.createJoinRequest({
+          plan: requestedPlan.toPrimitives(),
+          requester: user.toPrimitives(),
+        });
+
+        return res.status(200).json({ success: true });
       } catch (error) {
         console.error(error);
         res.status(500).send({ message: "internal-error" });
       }
     }
   );
-  app.patch(
-    "/plans/:planId/accept-or-reject-request",
-    async (req: Request, res: Response) => {
-      view.acceptOrRejectJoinPlanRequest(req, res);
-    }
-  );
+
+  // app.patch(
+  //   "/plans/:planId/accept-or-reject-request",
+  //   async (req: Request, res: Response) => {
+  //     view.acceptOrRejectJoinPlanRequest(req, res);
+  //   }
+  // );
 };
