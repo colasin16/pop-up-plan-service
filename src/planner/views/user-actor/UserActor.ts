@@ -33,8 +33,8 @@ export class UserActor {
     await this.planView.renderCreateJoinPlanRequest(message);
   }
 
-  public async getJoinPlanRequest() {
-    return await this.planView.renderGetJoinPlanRequest();
+  public async getJoinPlanRequests() {
+    return await this.planView.renderGetJoinPlanRequests();
   }
 
   public async answerJoinPlanRequest(

@@ -99,8 +99,8 @@ export const register = (app: any) => {
     }
   );
 
-  app.patch(
-    "/plans/:planId/answer-join-request",
+  app.get(
+    "/plans/:planId/join-requests",
     async (req: Request, res: Response) => {
       try {
         // TODO: get user id from the jwt in the Authorization Bearer header
@@ -114,23 +114,18 @@ export const register = (app: any) => {
         }
 
         const planId = req.params.planId as string;
-        const joinPlanRequests = await view.getJoinPlanRequest();
-        const joinPlanRequest = joinPlanRequests.find((request) =>
-          request.plan.getId().equals(Identifier.fromString(planId))
-        );
+        const joinPlanRequests = await view.getJoinPlanRequests();
+        const joinPlanRequestPrimitives = joinPlanRequests
+          .filter(
+            (request) =>
+              request.plan.getId().equals(Identifier.fromString(planId)) &&
+              request.isPlanOwner(user)
+          )
+          .map((request) => request.toPrimitives());
 
-        if (!joinPlanRequest) {
-          return res.status(404).json({
-            message: "No join request was found for this plan to be answered",
-          });
-        }
-
-        await view.answerJoinPlanRequest({
-          joinRequest: joinPlanRequest,
-          answer: req.body.accept,
-        });
-
-        return res.status(200).json({ success: true });
+        return res
+          .status(200)
+          .json({ success: true, data: joinPlanRequestPrimitives });
       } catch (error) {
         console.error(error);
         res.status(500).send({ message: "internal-error" });

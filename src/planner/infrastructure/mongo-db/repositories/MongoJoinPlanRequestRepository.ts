@@ -31,4 +31,13 @@ export class MongoJoinPlanRequestRepository
       ? MongoJoinPlanRequestConverter.manyToDomain(mongoJoinPlanRequests)
       : [];
   }
+
+  public async update(joinPlanRequest: JoinPlanRequest): Promise<void> {
+    const mongoJoinPlanRequest =
+      MongoJoinPlanRequestConverter.toMongo(joinPlanRequest);
+    await this.collection.findOneAndUpdate(
+      { _id: mongoJoinPlanRequest._id },
+      { $set: mongoJoinPlanRequest }
+    );
+  }
 }

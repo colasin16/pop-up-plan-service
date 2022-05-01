@@ -9,13 +9,13 @@ export class PlanView {
   private readonly createPlanView: CreatePlanView;
   private readonly findPlanView: FindPlanView;
   private readonly createJoinPlanRequestView: CreateJoinPlanRequestView;
-  private readonly getJoinPlanRequestView: GetJoinPlanRequestsView;
+  private readonly getJoinPlanRequestsView: GetJoinPlanRequestsView;
 
   constructor() {
     this.createPlanView = new CreatePlanView();
     this.findPlanView = new FindPlanView();
     this.createJoinPlanRequestView = new CreateJoinPlanRequestView();
-    this.getJoinPlanRequestView = new GetJoinPlanRequestsView();
+    this.getJoinPlanRequestsView = new GetJoinPlanRequestsView();
   }
 
   async renderCreate(message: CreatePlanMessage) {
@@ -29,7 +29,7 @@ export class PlanView {
   async renderCreateJoinPlanRequest(message: CreateJoinPlanRequestMessage) {
     await this.createJoinPlanRequestView.render(message);
   }
-  async renderGetJoinPlanRequest() {
-    return await this.getJoinPlanRequestView.render();
+  async renderGetJoinPlanRequests() {
+    return await this.getJoinPlanRequestsView.render();
   }
 }

@@ -6,6 +6,7 @@ import { MongoPlanConverter } from "./PlanConverter";
 import { Plan } from "../../../models/plan/Plan";
 import { MongoUserConverter } from "./UserConverter";
 import { JoinPlanRequestPrimitives } from "../../../models/join-plan-request/JoinPlanRequestPrimitives";
+import { JoinPlanRequestStatus } from "../../../types/JoinPlanRequestStatus";
 
 export class MongoJoinPlanRequestConverter {
   static toMongo(joinRequest: JoinPlanRequest): MongoJoinPlanRequest {
@@ -19,6 +20,7 @@ export class MongoJoinPlanRequestConverter {
       requester: MongoUserConverter.toMongo(
         User.fromPrimitives(joinRequestPrimitives.requester)
       ),
+      status: joinRequestPrimitives.status,
     };
   }
 
@@ -31,6 +33,7 @@ export class MongoJoinPlanRequestConverter {
       requester: MongoUserConverter.toDomain(
         mongoJoinPlanRequest.requester
       ).toPrimitives(),
+      status: new JoinPlanRequestStatus(mongoJoinPlanRequest.status).value,
     };
 
     return JoinPlanRequest.fromPrimitives(joinRequestPrimitives);
