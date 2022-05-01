@@ -11,7 +11,8 @@ export class FindPlanView {
   public async render(): Promise<Plan[]> {
     try {
       return await this.searchPlanController.control();
-    } catch (e) {
+    } catch (error) {
+      // TODO: Manage domain errors
       return [];
     }
   }

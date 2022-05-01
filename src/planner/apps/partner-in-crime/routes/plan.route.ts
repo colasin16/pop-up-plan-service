@@ -14,9 +14,7 @@ export const register = (app: any) => {
 
       res.status(200).send({
         success: true,
-        plans: planList.map((plan) => {
-          plan.toPrimitives();
-        }),
+        plans: planList.map((plan) => plan.toPrimitives()),
       });
     } catch (error) {
       console.error(error);
