@@ -33,6 +33,7 @@ describe("Unit test", () => {
       password: "password",
       id: new Identifier().toString(),
     });
+
     describe(".hasCategory", () => {
       it("should tell if the plan is of the given category", () => {
         const walkCategory = new Category(ECategory.WALK);
@@ -43,7 +44,7 @@ describe("Unit test", () => {
     });
 
     describe(".addAttendees", () => {
-      it("should add an attendee to the attendees list of the plan", () => {
+      it("it should add an attendee to the attendees list of the plan", () => {
         genericPlan.addAttendee(attendee);
 
         expect(genericPlan.containsAttendee(attendee)).to.eq(true);

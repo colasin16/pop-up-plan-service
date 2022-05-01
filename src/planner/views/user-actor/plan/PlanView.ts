@@ -33,9 +33,11 @@ export class PlanView {
   async renderCreateJoinPlanRequest(message: CreateJoinPlanRequestMessage) {
     await this.createJoinPlanRequestView.render(message);
   }
+
   async renderGetJoinPlanRequest() {
     return await this.getJoinPlanRequestView.render();
   }
+
   async renderPostPlanMessage(message: PostPlanMessageMessage) {
     await this.postPlanMessageView.render(message);
   }
