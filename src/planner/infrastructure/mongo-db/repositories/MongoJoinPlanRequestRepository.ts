@@ -1,6 +1,5 @@
 import { Collection } from "mongodb";
 import { autoInjectable } from "tsyringe";
-import { Identifier } from "../../../models/Identifier";
 import { JoinPlanRequest } from "../../../models/join-plan-request/JoinPlanRequest";
 import { JoinPlanRequestRepository } from "../../../models/join-plan-request/JoinPlanRequestRepository";
 import { MongoJoinPlanRequestConverter } from "../converters/JoinPlanRequestConverter";
