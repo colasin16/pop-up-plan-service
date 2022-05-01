@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb";
+import { MongoMessage } from "./MongoMessage";
 import { MongoUser } from "./MongoUser";
 
 export interface MongoPlan {
@@ -12,4 +13,5 @@ export interface MongoPlan {
   attendees: MongoUser[];
   description?: string;
   image?: string;
+  feed: MongoMessage[];
 }

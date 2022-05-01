@@ -4,18 +4,22 @@ import { GetJoinPlanRequestsView } from "../join-plan-request/GetJoinPlanRequest
 import { CreatePlanMessage } from "../../../controllers/plan/CreatePlanController";
 import { CreatePlanView } from "./CreatePlanView";
 import { FindPlanView } from "./FindPlanView";
+import { PostPlanMessageView } from "./PostPlanMessageView";
+import { PostPlanMessageMessage } from "../../../controllers/plan/PostPlanMessageController";
 
 export class PlanView {
   private readonly createPlanView: CreatePlanView;
   private readonly findPlanView: FindPlanView;
   private readonly createJoinPlanRequestView: CreateJoinPlanRequestView;
   private readonly getJoinPlanRequestView: GetJoinPlanRequestsView;
+  private readonly postPlanMessageView: PostPlanMessageView;
 
   constructor() {
     this.createPlanView = new CreatePlanView();
     this.findPlanView = new FindPlanView();
     this.createJoinPlanRequestView = new CreateJoinPlanRequestView();
     this.getJoinPlanRequestView = new GetJoinPlanRequestsView();
+    this.postPlanMessageView = new PostPlanMessageView();
   }
 
   async renderCreate(message: CreatePlanMessage) {
@@ -29,7 +33,12 @@ export class PlanView {
   async renderCreateJoinPlanRequest(message: CreateJoinPlanRequestMessage) {
     await this.createJoinPlanRequestView.render(message);
   }
+
   async renderGetJoinPlanRequest() {
     return await this.getJoinPlanRequestView.render();
+  }
+
+  async renderPostPlanMessage(message: PostPlanMessageMessage) {
+    await this.postPlanMessageView.render(message);
   }
 }

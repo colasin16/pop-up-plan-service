@@ -11,8 +11,8 @@ export class CreatePlanView {
   public async render(message: CreatePlanMessage): Promise<Identifier | null> {
     try {
       return await this.planController.create(message);
-    } catch (e) {
-      // Manage domain errors
+    } catch (error) {
+      // TODO: Manage domain errors
       return null;
     }
   }

@@ -9,43 +9,55 @@ import { User } from "../../src/planner/models/user/User";
 
 describe("Unit test", () => {
   describe("Plan", () => {
+    const owner = User.fromPrimitives({
+      name: { firstName: "Maria", lastName: "Smith" },
+      email: "maeria@owner.pic",
+      phoneNumber: "123123123",
+      password: "password",
+      id: new Identifier().toString(),
+    });
+    const genericPlan = new Plan(
+      "A walk to test",
+      "123456789",
+      new Date().valueOf(),
+      new Privacy(EPrivacy.PRIVATE),
+      new Category(ECategory.WALK)
+    );
+
+    genericPlan.setOwner(owner);
+
+    const attendee = User.fromPrimitives({
+      name: { firstName: "Jhon", lastName: "Doe" },
+      email: "jhondoe@owner.pic",
+      phoneNumber: "123123123",
+      password: "password",
+      id: new Identifier().toString(),
+    });
+
     describe(".hasCategory", () => {
       it("should tell if the plan is of the given category", () => {
         const walkCategory = new Category(ECategory.WALK);
-        const walkPlan = new Plan(
-          "Walk plan",
-          "Spain",
-          new Date().valueOf(),
-          new Privacy(EPrivacy.PRIVATE),
-          walkCategory
-        );
 
-        const isWalkCategory = walkPlan.hasCategory(walkCategory);
+        const isWalkCategory = genericPlan.hasCategory(walkCategory);
         expect(isWalkCategory).to.be.eq(true);
       });
     });
 
     describe(".addAttendees", () => {
       it("it should add an attendee to the attendees list of the plan", () => {
-        const attendee = User.fromPrimitives({
-          name: { firstName: "Jhon", lastName: "Doe" },
-          email: "jhondoe@owner.pic",
-          phoneNumber: "123123123",
-          password: "password",
-          id: new Identifier().toString(),
-        });
+        genericPlan.addAttendee(attendee);
 
-        const plan = new Plan(
-          "A walk to test",
-          "123456789",
-          new Date().valueOf(),
-          new Privacy("public"),
-          new Category("walk")
-        );
+        expect(genericPlan.containsAttendee(attendee)).to.eq(true);
+      });
+    });
 
-        plan.addAttendee(attendee);
+    describe(".postMessageToFeed", () => {
+      it("should add a new message to the feed", () => {
+        const content = "Hello there! Are you hyped?";
+        genericPlan.postMessageToFeed(owner, content);
 
-        expect(plan.containsAttendee(attendee)).to.eq(true);
+        expect(genericPlan.getFeed()).to.be.length.greaterThan(0);
+        expect(genericPlan.getFeed()[0].content).to.eq(content);
       });
     });
   });
