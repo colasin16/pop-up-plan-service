@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { container } from "tsyringe";
 import { CreatePlanMessage } from "../../../controllers/plan/CreatePlanController";
 import { Identifier } from "../../../models/Identifier";
-import { JoinRequest } from "../../../models/join-request/JoinRequest";
+import { JoinPlanRequest } from "../../../models/join-plan-request/JoinPlanRequest";
 import { User } from "../../../models/user/User";
 import { UserActor } from "../../../views/user-actor/UserActor";
 
@@ -88,7 +88,7 @@ export const register = (app: any) => {
             .json({ message: "Requested plan no longer has an owner" });
         }
 
-        await view.createJoinRequest({
+        await view.createJoinPlanRequest({
           plan: requestedPlan.toPrimitives(),
           requester: user.toPrimitives(),
         });
@@ -130,17 +130,17 @@ export const register = (app: any) => {
         }
 
         // TODO: Implement join-request.route.ts with endpoints to fetch the join requests
-        // TODO: implement and use view.getJoinRequestById()
+        // TODO: implement and use view.getJoinPlanRequestById()
         const fakeRequesterUser = await view.getUser(
           "626d41aaf7dd454d1de11ffa"
         );
-        const fakeJoinRequest = new JoinRequest(
+        const fakeJoinPlanRequest = new JoinPlanRequest(
           requestedPlan,
           fakeRequesterUser as User
         );
 
-        await view.answerJoinRequest({
-          joinRequest: fakeJoinRequest,
+        await view.answerJoinPlanRequest({
+          joinRequest: fakeJoinPlanRequest,
           answer: req.body.accept,
         });
 

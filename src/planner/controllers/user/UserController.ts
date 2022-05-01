@@ -1,6 +1,6 @@
 import {
-  AnswerJoinRequestController,
-  AnswerJoinRequestMessage,
+  AnswerJoinPlanRequestController,
+  AnswerJoinPlanRequestMessage,
 } from "./AnswerJoinRequestController";
 import {
   CreateUserController,
@@ -11,12 +11,13 @@ import { GetUserController, GetUserMessage } from "./GetUserController";
 export class UserController {
   private readonly getUserController: GetUserController;
   private readonly createUserController: CreateUserController;
-  private readonly answerJoinRequestController: AnswerJoinRequestController;
+  private readonly answerJoinPlanRequestController: AnswerJoinPlanRequestController;
 
   constructor() {
     this.getUserController = new GetUserController();
     this.createUserController = new CreateUserController();
-    this.answerJoinRequestController = new AnswerJoinRequestController();
+    this.answerJoinPlanRequestController =
+      new AnswerJoinPlanRequestController();
   }
 
   public async get(message: GetUserMessage) {
@@ -27,7 +28,7 @@ export class UserController {
     return await this.createUserController.control(message);
   }
 
-  public async answerJoinRequest(message: AnswerJoinRequestMessage) {
-    await this.answerJoinRequestController.control(message);
+  public async answerJoinPlanRequest(message: AnswerJoinPlanRequestMessage) {
+    await this.answerJoinPlanRequestController.control(message);
   }
 }

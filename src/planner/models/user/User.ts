@@ -2,7 +2,7 @@ import { UserPrimitives } from "./UserPrimitives";
 import { FullName } from "../../types/FullName";
 import { Identifier } from "../Identifier";
 import { Plan } from "../plan/Plan";
-import { JoinRequest } from "../join-request/JoinRequest";
+import { JoinPlanRequest } from "../join-plan-request/JoinPlanRequest";
 
 export class User {
   private id: Identifier;

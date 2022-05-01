@@ -1,0 +1,26 @@
+import { Collection } from "mongodb";
+import { autoInjectable } from "tsyringe";
+import { JoinPlanRequest } from "../../../models/join-plan-request/JoinPlanRequest";
+import { JoinPlanRequestRepository } from "../../../models/join-plan-request/JoinPlanRequestRepository";
+import { MongoJoinPlanRequestConverter } from "../converters/JoinPlanRequestConverter";
+import { MongoJoinPlanRequest } from "../models/MongoJoinRequest";
+import { MongoDBClient } from "../MongoDBClient";
+
+@autoInjectable()
+export class MongoJoinPlanRequestRepository
+  implements JoinPlanRequestRepository
+{
+  private collection: Collection<MongoJoinPlanRequest>;
+
+  constructor(mongoDBClient?: MongoDBClient) {
+    this.collection = mongoDBClient!.client
+      .db("FriendInCrime")
+      .collection<MongoJoinPlanRequest>("JoinPlanRequests");
+  }
+
+  public async create(joinRequest: JoinPlanRequest): Promise<void> {
+    await this.collection.insertOne(
+      MongoJoinPlanRequestConverter.toMongo(joinRequest)
+    );
+  }
+}

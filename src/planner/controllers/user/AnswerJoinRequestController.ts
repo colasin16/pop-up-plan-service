@@ -1,14 +1,14 @@
-import { JoinRequest } from "../../models/join-request/JoinRequest";
+import { JoinPlanRequest } from "../../models/join-plan-request/JoinPlanRequest";
 import { MongoPlanRepository } from "../../infrastructure/mongo-db/repositories/MongoPlanRepository";
 import { PlanRepository } from "../../models/plan/PlanRepository";
 
-export interface AnswerJoinRequestMessage {
-  joinRequest: JoinRequest;
+export interface AnswerJoinPlanRequestMessage {
+  joinRequest: JoinPlanRequest;
   answer: boolean;
 }
 
-export class AnswerJoinRequestController {
-  public async control(message: AnswerJoinRequestMessage): Promise<void> {
+export class AnswerJoinPlanRequestController {
+  public async control(message: AnswerJoinPlanRequestMessage): Promise<void> {
     const planRepository: PlanRepository = new MongoPlanRepository();
 
     if (message.answer) {

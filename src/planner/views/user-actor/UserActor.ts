@@ -9,8 +9,8 @@ import {
 } from "../../controllers/LoginController";
 import { UserView } from "./user/UserView";
 import { PlanView } from "./plan/PlanView";
-import { CreateJoinRequestMessage } from "../../controllers/CreateJoinRequestController";
-import { AnswerJoinRequestMessage } from "../../controllers/user/AnswerJoinRequestController";
+import { CreateJoinPlanRequestMessage } from "../../controllers/CreateJoinRequestController";
+import { AnswerJoinPlanRequestMessage } from "../../controllers/user/AnswerJoinRequestController";
 
 export class UserActor {
   private userView: UserView;
@@ -27,16 +27,16 @@ export class UserActor {
     return await this.planView.renderCreate(message);
   }
 
-  public async createJoinRequest(
-    message: CreateJoinRequestMessage
+  public async createJoinPlanRequest(
+    message: CreateJoinPlanRequestMessage
   ): Promise<void> {
-    await this.planView.renderCreateJoinRequest(message);
+    await this.planView.renderCreateJoinPlanRequest(message);
   }
 
-  public async answerJoinRequest(
-    message: AnswerJoinRequestMessage
+  public async answerJoinPlanRequest(
+    message: AnswerJoinPlanRequestMessage
   ): Promise<void> {
-    await this.userView.renderAnswerJoinRequest(message);
+    await this.userView.renderAnswerJoinPlanRequest(message);
   }
 
   public async createUser(

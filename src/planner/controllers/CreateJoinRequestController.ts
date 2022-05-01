@@ -1,22 +1,22 @@
 import { PlanPrimitives } from "../models/plan/PlanPrimitives";
-import { JoinRequestRepository } from "../models/join-request/JoinRequestRepository";
-import { MongoJoinRequestRepository } from "../infrastructure/mongo-db/repositories/MongoJoinRequestRepository";
-import { JoinRequest } from "../models/join-request/JoinRequest";
+import { JoinPlanRequestRepository } from "../models/join-plan-request/JoinPlanRequestRepository";
+import { MongoJoinPlanRequestRepository } from "../infrastructure/mongo-db/repositories/MongoJoinPlanRequestRepository";
+import { JoinPlanRequest } from "../models/join-plan-request/JoinPlanRequest";
 import { Plan } from "../models/plan/Plan";
 import { UserPrimitives } from "../models/user/UserPrimitives";
 import { User } from "../models/user/User";
 
-export interface CreateJoinRequestMessage {
+export interface CreateJoinPlanRequestMessage {
   plan: PlanPrimitives;
   requester: UserPrimitives;
 }
 
-export class CreateJoinRequestController {
-  public async control(message: CreateJoinRequestMessage): Promise<void> {
-    const joinRequestRepository: JoinRequestRepository =
-      new MongoJoinRequestRepository();
+export class CreateJoinPlanRequestController {
+  public async control(message: CreateJoinPlanRequestMessage): Promise<void> {
+    const joinRequestRepository: JoinPlanRequestRepository =
+      new MongoJoinPlanRequestRepository();
 
-    const joinRequest = new JoinRequest(
+    const joinRequest = new JoinPlanRequest(
       Plan.fromPrimitives(message.plan),
       User.fromPrimitives(message.requester)
     );

@@ -1,21 +1,21 @@
-import { LoginMessage } from "../../../controllers/LoginController";
-import { AnswerJoinRequestMessage } from "../../../controllers/user/AnswerJoinRequestController";
+import { AnswerJoinPlanRequestMessage } from "../../../controllers/user/AnswerJoinRequestController";
 import { CreateUserMessage } from "../../../controllers/user/CreateUserController";
-import { AnswerJoinRequestView } from "./AnswerJoinRequestView";
+import { AnswerJoinPlanRequestView } from "./AnswerJoinRequestView";
+import { LoginMessage } from "../../../controllers/LoginController";
 import { CreateUserView } from "./CreateUserView";
-import { GetUserView } from "./GetUserView";
 import { LoginUserView } from "./LoginUserView";
+import { GetUserView } from "./GetUserView";
 
 export class UserView {
   private readonly createUserView: CreateUserView;
   private readonly getUserView: GetUserView;
-  private readonly answerJoinRequestView: AnswerJoinRequestView;
+  private readonly answerJoinPlanRequestView: AnswerJoinPlanRequestView;
   private readonly loginUserView: LoginUserView;
 
   constructor() {
     this.createUserView = new CreateUserView();
     this.getUserView = new GetUserView();
-    this.answerJoinRequestView = new AnswerJoinRequestView();
+    this.answerJoinPlanRequestView = new AnswerJoinPlanRequestView();
     this.loginUserView = new LoginUserView();
   }
 
@@ -27,8 +27,8 @@ export class UserView {
     return await this.getUserView.render(id);
   }
 
-  async renderAnswerJoinRequest(message: AnswerJoinRequestMessage) {
-    await this.answerJoinRequestView.render(message);
+  async renderAnswerJoinPlanRequest(message: AnswerJoinPlanRequestMessage) {
+    await this.answerJoinPlanRequestView.render(message);
   }
 
   async renderLogin(message: LoginMessage) {

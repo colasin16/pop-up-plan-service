@@ -1,17 +1,17 @@
-import { AnswerJoinRequestMessage } from "../../../controllers/user/AnswerJoinRequestController";
+import { AnswerJoinPlanRequestMessage } from "../../../controllers/user/AnswerJoinRequestController";
 import { UserController } from "../../../controllers/user/UserController";
 
-export class AnswerJoinRequestView {
+export class AnswerJoinPlanRequestView {
   private userController: UserController;
   constructor() {
     this.userController = new UserController();
   }
 
-  public async render(message: AnswerJoinRequestMessage): Promise<void> {
+  public async render(message: AnswerJoinPlanRequestMessage): Promise<void> {
     try {
-      await this.userController.answerJoinRequest(message);
+      await this.userController.answerJoinPlanRequest(message);
     } catch (error) {
-      // Manage domain errors else keep throwing
+      // TODO: Manage domain errors else keep throwing
     }
   }
 }

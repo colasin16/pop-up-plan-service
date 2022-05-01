@@ -1,7 +1,7 @@
 import { PlanPrimitives } from "../plan/PlanPrimitives";
 import { UserPrimitives } from "../user/UserPrimitives";
 
-export interface JoinRequestPrimitives {
+export interface JoinPlanRequestPrimitives {
   id: string;
   plan: PlanPrimitives;
   requester: UserPrimitives;

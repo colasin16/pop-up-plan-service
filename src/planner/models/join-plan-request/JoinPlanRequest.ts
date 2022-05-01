@@ -1,9 +1,9 @@
 import { Identifier } from "../Identifier";
 import { Plan } from "../plan/Plan";
 import { User } from "../user/User";
-import { JoinRequestPrimitives } from "./JoinRequestPrimitives";
+import { JoinPlanRequestPrimitives } from "./JoinPlanRequestPrimitives";
 
-export class JoinRequest {
+export class JoinPlanRequest {
   private id: Identifier;
   public plan: Plan;
   public requester: User;
@@ -14,7 +14,7 @@ export class JoinRequest {
     this.requester = requester;
   }
 
-  public toPrimitives(): JoinRequestPrimitives {
+  public toPrimitives(): JoinPlanRequestPrimitives {
     return {
       id: this.id.toString(),
       plan: this.plan.toPrimitives(),
@@ -23,9 +23,9 @@ export class JoinRequest {
   }
 
   public static fromPrimitives(
-    joinRequestPrimitives: JoinRequestPrimitives
-  ): JoinRequest {
-    const joinRequest = new JoinRequest(
+    joinRequestPrimitives: JoinPlanRequestPrimitives
+  ): JoinPlanRequest {
+    const joinRequest = new JoinPlanRequest(
       Plan.fromPrimitives(joinRequestPrimitives.plan),
       User.fromPrimitives(joinRequestPrimitives.requester)
     );
