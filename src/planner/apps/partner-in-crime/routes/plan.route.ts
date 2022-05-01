@@ -51,12 +51,28 @@ export const register = (app: any) => {
         return res.status(500).json({ message: "Error creating plan" });
       }
 
-      return res.status(200).json({ planId: planId.toString() });
+      return res.status(200).json({ success: true, planId: planId.toString() });
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: "internal-error" });
     }
   });
+
+  app.post(
+    "/plans/:planId/post-message",
+    async (req: Request, res: Response) => {
+      try {
+        // TODO: get user id from the jwt in the Authorization Bearer header
+        // const user = await view.getUser(req.header.get("Authorization Bearer"));
+        const user = await view.getUser("626d3f7b7aa88b9339627665");
+
+        return res.status(200).json({ success: true });
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: "internal-error" });
+      }
+    }
+  );
 
   app.post(
     "/plans/:planId/join-request",
