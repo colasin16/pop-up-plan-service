@@ -1,5 +1,6 @@
 import { ECategory } from "../../types/Category";
 import { EPrivacy } from "../../types/Privacy";
+import { MessagePrimitives } from "../message/MessagePrimitives";
 import { UserPrimitives } from "../user/UserPrimitives";
 
 export interface PlanPrimitives {
@@ -13,4 +14,5 @@ export interface PlanPrimitives {
   category: ECategory;
   attendees: UserPrimitives[];
   image?: string;
+  feed: MessagePrimitives[];
 }

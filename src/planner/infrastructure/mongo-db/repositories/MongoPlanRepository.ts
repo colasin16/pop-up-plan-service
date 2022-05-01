@@ -1,5 +1,5 @@
 import { autoInjectable } from "tsyringe";
-import { Collection } from "mongodb";
+import { Collection, ObjectId } from "mongodb";
 
 import { MongoPlanConverter } from "../converters/PlanConverter";
 import { PlanRepository } from "../../../models/plan/PlanRepository";
@@ -20,7 +20,10 @@ export class MongoPlanRepository implements PlanRepository {
   }
 
   public async find(id: Identifier): Promise<Plan | null> {
-    const mongoPlan = await this.collection.findOne({ _id: id });
+    const mongoPlan = await this.collection.findOne({
+      _id: new ObjectId(id.toString()),
+    });
+
     return mongoPlan ? MongoPlanConverter.toDomain(mongoPlan) : null;
   }
 

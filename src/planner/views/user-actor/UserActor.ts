@@ -11,6 +11,7 @@ import { UserView } from "./user/UserView";
 import { PlanView } from "./plan/PlanView";
 import { CreateJoinPlanRequestMessage } from "../../controllers/join-plan-request/CreateJoinRequestController";
 import { AnswerJoinPlanRequestMessage } from "../../controllers/user/AnswerJoinRequestController";
+import { PostPlanMessageMessage } from "../../controllers/plan/PostPlanMessageController";
 
 export class UserActor {
   private userView: UserView;
@@ -41,6 +42,10 @@ export class UserActor {
     message: AnswerJoinPlanRequestMessage
   ): Promise<void> {
     await this.userView.renderAnswerJoinPlanRequest(message);
+  }
+
+  public async postPlanMessage(message: PostPlanMessageMessage) {
+    await this.planView.renderPostPlanMessage(message);
   }
 
   public async createUser(

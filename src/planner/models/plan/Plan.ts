@@ -1,8 +1,9 @@
-import { Identifier } from "../Identifier";
 import { PlanPrimitives } from "./PlanPrimitives";
 import { Category } from "../../types/Category";
 import { Privacy } from "../../types/Privacy";
+import { Identifier } from "../Identifier";
 import { User } from "../user/User";
+import { Message } from "../message/Message";
 
 export class Plan {
   private id: Identifier;
@@ -15,6 +16,7 @@ export class Plan {
   private attendees: User[];
   private description?: string;
   private image?: string;
+  private feed: Message[];
 
   constructor(
     title: string,
@@ -34,6 +36,7 @@ export class Plan {
     this.category = category;
     this.attendees = new Array<User>();
     this.image = image;
+    this.feed = new Array<Message>();
   }
 
   public static fromPrimitives(primitives: PlanPrimitives): Plan {
@@ -52,6 +55,10 @@ export class Plan {
     plan.attendees = primitives.attendees.map((attendee) =>
       User.fromPrimitives(attendee)
     );
+    plan.feed = primitives.feed.map((message) =>
+      Message.fromPrimitives(message)
+    );
+
     return plan;
   }
 
@@ -67,6 +74,7 @@ export class Plan {
       category: this.category.value,
       attendees: this.attendees.map((attendee) => attendee.toPrimitives()),
       image: this.image,
+      feed: this.feed.map((message) => message.toPrimitives()),
     };
   }
 
@@ -100,5 +108,14 @@ export class Plan {
     return this.attendees.some((attendee) =>
       attendee.getId().equals(user.getId())
     );
+  }
+
+  postMessageToFeed(user: User, content: string) {
+    const message = new Message(user, content);
+    this.feed.push(message);
+  }
+
+  getFeed() {
+    return this.feed;
   }
 }
