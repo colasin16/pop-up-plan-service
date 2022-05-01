@@ -1,7 +1,7 @@
 import {
   CreateJoinPlanRequestController,
   CreateJoinPlanRequestMessage,
-} from "../../../controllers/CreateJoinRequestController";
+} from "../../../controllers/join-plan-request/CreateJoinRequestController";
 
 export class CreateJoinPlanRequestView {
   private createJoinPlanRequestController: CreateJoinPlanRequestController;

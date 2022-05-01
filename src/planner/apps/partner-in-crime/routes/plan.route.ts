@@ -2,10 +2,8 @@
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 import { CreatePlanMessage } from "../../../controllers/plan/CreatePlanController";
-import { Identifier } from "../../../models/Identifier";
-import { JoinPlanRequest } from "../../../models/join-plan-request/JoinPlanRequest";
-import { User } from "../../../models/user/User";
 import { UserActor } from "../../../views/user-actor/UserActor";
+import { Identifier } from "../../../models/Identifier";
 
 export const register = (app: any) => {
   const view = container.resolve(UserActor);
@@ -108,20 +106,6 @@ export const register = (app: any) => {
         // TODO: get user id from the jwt in the Authorization Bearer header
         // const user = await view.getUser(req.header.get("Authorization Bearer"));
         const user = await view.getUser("626d3f7b7aa88b9339627665");
-        const planId = req.params.planId as string;
-
-        // TODO: Use the view.findPlanById()
-        const plans = await view.findAll();
-
-        const requestedPlan = plans.find((plan) =>
-          plan.getId().equals(Identifier.fromString(planId))
-        );
-
-        if (!requestedPlan) {
-          return res
-            .status(404)
-            .json({ message: "Requested plan does not exist" });
-        }
 
         if (!user) {
           return res
@@ -129,18 +113,20 @@ export const register = (app: any) => {
             .json({ message: "Requested plan no longer has an owner" });
         }
 
-        // TODO: Implement join-request.route.ts with endpoints to fetch the join requests
-        // TODO: implement and use view.getJoinPlanRequestById()
-        const fakeRequesterUser = await view.getUser(
-          "626d41aaf7dd454d1de11ffa"
-        );
-        const fakeJoinPlanRequest = new JoinPlanRequest(
-          requestedPlan,
-          fakeRequesterUser as User
+        const planId = req.params.planId as string;
+        const joinPlanRequests = await view.getJoinPlanRequest();
+        const joinPlanRequest = joinPlanRequests.find((request) =>
+          request.plan.getId().equals(Identifier.fromString(planId))
         );
 
+        if (!joinPlanRequest) {
+          return res.status(404).json({
+            message: "No join request was found for this plan to be answered",
+          });
+        }
+
         await view.answerJoinPlanRequest({
-          joinRequest: fakeJoinPlanRequest,
+          joinRequest: joinPlanRequest,
           answer: req.body.accept,
         });
 

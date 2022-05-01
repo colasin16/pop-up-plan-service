@@ -1,5 +1,6 @@
 import { Collection } from "mongodb";
 import { autoInjectable } from "tsyringe";
+import { Identifier } from "../../../models/Identifier";
 import { JoinPlanRequest } from "../../../models/join-plan-request/JoinPlanRequest";
 import { JoinPlanRequestRepository } from "../../../models/join-plan-request/JoinPlanRequestRepository";
 import { MongoJoinPlanRequestConverter } from "../converters/JoinPlanRequestConverter";
@@ -22,5 +23,12 @@ export class MongoJoinPlanRequestRepository
     await this.collection.insertOne(
       MongoJoinPlanRequestConverter.toMongo(joinRequest)
     );
+  }
+
+  public async findAll(): Promise<JoinPlanRequest[]> {
+    const mongoJoinPlanRequests = await this.collection.find().toArray();
+    return mongoJoinPlanRequests.length > 0
+      ? MongoJoinPlanRequestConverter.manyToDomain(mongoJoinPlanRequests)
+      : [];
   }
 }
