@@ -16,25 +16,6 @@ export class Plan {
   private description?: string;
   private image?: string;
 
-  public static fromPrimitives(primitives: PlanPrimitives): Plan {
-    const plan = new Plan(
-      primitives.title,
-      primitives.location,
-      primitives.time,
-      new Privacy(primitives.privacy),
-      new Category(primitives.category),
-      primitives.description,
-      primitives.image
-    );
-
-    plan.id = Identifier.fromString(primitives.id);
-    plan.setOwner(User.fromPrimitives(primitives.owner));
-    plan.attendees = primitives.attendees.map((attendee) =>
-      User.fromPrimitives(attendee)
-    );
-    return plan;
-  }
-
   constructor(
     title: string,
     location: string,
@@ -55,20 +36,23 @@ export class Plan {
     this.image = image;
   }
 
-  public getId(): Identifier {
-    return this.id;
-  }
+  public static fromPrimitives(primitives: PlanPrimitives): Plan {
+    const plan = new Plan(
+      primitives.title,
+      primitives.location,
+      primitives.time,
+      new Privacy(primitives.privacy),
+      new Category(primitives.category),
+      primitives.description,
+      primitives.image
+    );
 
-  public setOwner(user: User) {
-    this.owner = user;
-  }
-
-  public hasCategory(category: Category) {
-    return category.equals(this.category);
-  }
-
-  public addAttendees(attendees: User[]) {
-    this.attendees.push(...attendees);
+    plan.id = Identifier.fromString(primitives.id);
+    plan.setOwner(User.fromPrimitives(primitives.owner));
+    plan.attendees = primitives.attendees.map((attendee) =>
+      User.fromPrimitives(attendee)
+    );
+    return plan;
   }
 
   public toPrimitives(): PlanPrimitives {
@@ -84,5 +68,33 @@ export class Plan {
       attendees: this.attendees.map((attendee) => attendee.toPrimitives()),
       image: this.image,
     };
+  }
+
+  public getId(): Identifier {
+    return this.id;
+  }
+
+  public setOwner(user: User) {
+    this.owner = user;
+  }
+
+  public hasCategory(category: Category) {
+    return category.equals(this.category);
+  }
+
+  public addAttendee(newAttendee: User) {
+    const attendeeAlreadyExists = this.attendees.some((attendee) => {
+      attendee.getId().equals(newAttendee.getId());
+    });
+
+    if (!attendeeAlreadyExists) {
+      this.attendees.push(newAttendee);
+    }
+  }
+
+  public containsAttendee(user: User) {
+    return this.attendees.some((attendee) =>
+      attendee.getId().equals(user.getId())
+    );
   }
 }

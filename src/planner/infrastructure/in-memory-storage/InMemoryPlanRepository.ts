@@ -3,12 +3,16 @@ import { Plan } from "../../models/plan/Plan";
 import { Identifier } from "../../models/Identifier";
 import { Category } from "../../types/Category";
 import { PlanPrimitives } from "../../models/plan/PlanPrimitives";
+import { User } from "../../models/user/User";
 
 export class InMemoryPlanRepository implements PlanRepository {
   private map: Map<string, PlanPrimitives>;
 
   constructor() {
     this.map = new Map<string, PlanPrimitives>();
+  }
+  addAttendee(id: Identifier, user: User): Promise<void> {
+    throw new Error("Method not implemented.");
   }
 
   public async create(plan: Plan): Promise<Plan | null> {
@@ -27,8 +31,8 @@ export class InMemoryPlanRepository implements PlanRepository {
     throw new Error("Method not implemented.");
   }
 
-  public update(plan: Plan): void {
-    this.map.set(plan.getId().toString(), plan.toPrimitives());
+  public update(plan: Plan): Promise<void> {
+    throw new Error("Method not implemented.");
   }
 
   public async delete(id: Identifier): Promise<void> {

@@ -9,6 +9,8 @@ import {
 } from "../../controllers/LoginController";
 import { UserView } from "./user/UserView";
 import { PlanView } from "./plan/PlanView";
+import { CreateJoinPlanRequestMessage } from "../../controllers/join-plan-request/CreateJoinRequestController";
+import { AnswerJoinPlanRequestMessage } from "../../controllers/user/AnswerJoinRequestController";
 
 export class UserActor {
   private userView: UserView;
@@ -23,6 +25,22 @@ export class UserActor {
     message: CreatePlanMessage
   ): Promise<Identifier | null> {
     return await this.planView.renderCreate(message);
+  }
+
+  public async createJoinPlanRequest(
+    message: CreateJoinPlanRequestMessage
+  ): Promise<void> {
+    await this.planView.renderCreateJoinPlanRequest(message);
+  }
+
+  public async getJoinPlanRequest() {
+    return await this.planView.renderGetJoinPlanRequest();
+  }
+
+  public async answerJoinPlanRequest(
+    message: AnswerJoinPlanRequestMessage
+  ): Promise<void> {
+    await this.userView.renderAnswerJoinPlanRequest(message);
   }
 
   public async createUser(

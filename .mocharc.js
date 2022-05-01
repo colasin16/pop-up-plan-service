@@ -1,11 +1,8 @@
 module.exports = {
   timeout: 60000,
-  require: [
-    "ts-node/register",
-    // "reflect-metadata",
-  ],
+  require: ["ts-node/register", "reflect-metadata"],
   "full-trace": true,
   bail: true,
   exit: true,
-  spec: "test/**/*.test.ts",
+  spec: "tests/**/*.test.ts",
 };
