@@ -5,16 +5,17 @@ import { User } from "../../../models/user/User";
 import { Category } from "../../../types/Category";
 import { Privacy } from "../../../types/Privacy";
 import { MongoPlan } from "../models/MongoPlan";
+import { MongoMessageConverter } from "./MessageConverter";
 import { MongoUserConverter } from "./UserConverter";
 
 export class MongoPlanConverter {
   static toDomain(mongoPlan: MongoPlan): Plan {
-    const owner = MongoUserConverter.toDomain(mongoPlan.owner);
     const attendees = MongoUserConverter.manyToDomain(mongoPlan.attendees);
+    const feedMessaged = MongoMessageConverter.manyToDomain(mongoPlan.feed);
 
     const planPrimitives: PlanPrimitives = {
       id: mongoPlan._id.toString(),
-      owner: owner.toPrimitives(),
+      owner: MongoUserConverter.toDomain(mongoPlan.owner).toPrimitives(),
       title: mongoPlan.title,
       location: mongoPlan.location,
       time: mongoPlan.time,
@@ -23,6 +24,7 @@ export class MongoPlanConverter {
       attendees: attendees.map((attendee) => attendee.toPrimitives()),
       description: mongoPlan.description,
       image: mongoPlan.image,
+      feed: feedMessaged.map((message) => message.toPrimitives()),
     };
 
     return Plan.fromPrimitives(planPrimitives);
@@ -47,6 +49,7 @@ export class MongoPlanConverter {
       ),
       description: planPrimitives.description,
       image: planPrimitives.image,
+      feed: MongoMessageConverter.manyToMongo(plan.getFeed()),
     };
   }
 

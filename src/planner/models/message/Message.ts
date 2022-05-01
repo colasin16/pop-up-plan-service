@@ -4,7 +4,8 @@ import { Identifier } from "../Identifier";
 
 export class Message {
   private id: Identifier;
-  constructor(private readonly user: User, private content: string) {
+  // createdAt: number
+  constructor(public readonly user: User, public readonly content: string) {
     this.id = new Identifier();
     this.user = user;
     this.content = content;
