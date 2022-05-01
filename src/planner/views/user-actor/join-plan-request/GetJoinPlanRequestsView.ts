@@ -2,15 +2,15 @@ import { GetJoinPlanRequestsController } from "../../../controllers/join-plan-re
 import { JoinPlanRequest } from "../../../models/join-plan-request/JoinPlanRequest";
 
 export class GetJoinPlanRequestsView {
-  private getJoinPlanRequestController: GetJoinPlanRequestsController;
+  private getJoinPlanRequestsController: GetJoinPlanRequestsController;
   constructor() {
-    this.getJoinPlanRequestController = new GetJoinPlanRequestsController();
+    this.getJoinPlanRequestsController = new GetJoinPlanRequestsController();
   }
 
   public async render(): Promise<JoinPlanRequest[]> {
     try {
-      return await this.getJoinPlanRequestController.control();
-    } catch (e) {
+      return await this.getJoinPlanRequestsController.control();
+    } catch (error) {
       // TODO: Manage domain errors
       return [];
     }

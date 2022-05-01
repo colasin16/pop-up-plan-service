@@ -86,6 +86,10 @@ export class Plan {
     this.owner = user;
   }
 
+  public isOwner(user: User) {
+    return this.owner.getId().equals(user.getId());
+  }
+
   public hasCategory(category: Category) {
     return category.equals(this.category);
   }

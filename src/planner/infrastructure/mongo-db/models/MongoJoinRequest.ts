@@ -6,4 +6,5 @@ export interface MongoJoinPlanRequest {
   _id: ObjectId;
   plan: MongoPlan;
   requester: MongoUser;
+  status: string;
 }

@@ -31,6 +31,7 @@ describe("Unit test", () => {
         joinPlanRequest.accept();
 
         expect(plan.containsAttendee(requester)).to.eq(true);
+        expect(joinPlanRequest.isAccepted).to.eq(true);
       });
     });
   });

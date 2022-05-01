@@ -43,7 +43,7 @@ export class MongoPlanRepository implements PlanRepository {
     const mongoPlan = MongoPlanConverter.toMongo(plan);
     await this.collection.findOneAndUpdate(
       { _id: mongoPlan._id },
-      { $set: MongoPlanConverter.toMongo(plan) }
+      { $set: mongoPlan }
     );
   }
 
