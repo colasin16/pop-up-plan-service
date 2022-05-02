@@ -58,6 +58,7 @@ export class LoginController {
    */
   private generateAuthorizationToken(message: LoginMessage): string {
     const tokenSecret: string | undefined = process.env.TOKEN_SECRET
+    console.log('tokenSecret:', tokenSecret)
     if (tokenSecret === undefined) {
       throw Error("'TOKEN_SECRET' environment variable must be set")
     }

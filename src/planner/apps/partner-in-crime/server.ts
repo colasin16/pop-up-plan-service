@@ -4,7 +4,6 @@ import Router from "express-promise-router";
 import * as http from "http";
 import cors from "cors";
 import { registerRoutes } from "./routes";
-import { timeStamp } from "console";
 import { authenticateTokenMiddleware } from "./middlewares/VerifyToken";
 
 export class Server {
@@ -18,7 +17,7 @@ export class Server {
     this.express.use(bodyParser.json());
     this.express.use(cors());
     // TODO: exclude login api: https://thewebdev.info/2021/09/12/how-to-exclude-a-route-from-running-an-express-middleware/
-    this.express.use(authenticateTokenMiddleware)
+    this.express.use(this.unless('/login', authenticateTokenMiddleware))
     const router = Router();
     this.express.use(router);
     registerRoutes(router);
@@ -49,4 +48,14 @@ export class Server {
       return resolve();
     });
   }
+
+  private unless = (path, middleware) => {
+    return (req, res, next) => {
+      if (path === req.path) {
+        return next();
+      } else {
+        return middleware(req, res, next);
+      }
+    };
+  };
 }
