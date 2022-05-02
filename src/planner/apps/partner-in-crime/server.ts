@@ -4,6 +4,8 @@ import Router from "express-promise-router";
 import * as http from "http";
 import cors from "cors";
 import { registerRoutes } from "./routes";
+import { timeStamp } from "console";
+import { authenticateTokenMiddleware } from "./middlewares/VerifyToken";
 
 export class Server {
   private express: express.Express;
@@ -15,6 +17,8 @@ export class Server {
     this.express = express();
     this.express.use(bodyParser.json());
     this.express.use(cors());
+    // TODO: exclude login api: https://thewebdev.info/2021/09/12/how-to-exclude-a-route-from-running-an-express-middleware/
+    this.express.use(authenticateTokenMiddleware)
     const router = Router();
     this.express.use(router);
     registerRoutes(router);
@@ -25,8 +29,7 @@ export class Server {
       (resolve) => (this.httpServer = this.express.listen(this.port, resolve))
     );
     console.info(
-      `  HTTP App is running at http://localhost:${
-        this.port
+      `  HTTP App is running at http://localhost:${this.port
       } in ${this.express.get("env")} mode`
     );
     console.info("  Press CTRL-C to stop\n");
