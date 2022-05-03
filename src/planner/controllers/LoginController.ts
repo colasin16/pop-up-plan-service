@@ -63,17 +63,25 @@ export class LoginController {
       throw Error("'TOKEN_SECRET' environment variable must be set")
     }
 
-    const tokenExpiresIn: string | undefined = process.env?.TOKEN_EXPIRARES_IN
+    const tokenExpiresIn: string | undefined = process.env.TOKEN_EXPIRARES_IN
     if (tokenExpiresIn === undefined) {
       throw Error("'TOKEN_EXPIRARES_IN' environment variable must be set")
     }
 
-    const accessToken = jwt.sign({
+    const payload = {
       username: message.username,
-      expiresIn: tokenExpiresIn,
       // TODO: add role
       //role: message.role,
-    }, tokenSecret)
+    }
+
+    const signOptions = {
+      //expiresIn e.g.: 2h, 1800s, ...
+      expiresIn: tokenExpiresIn,
+
+    }
+
+    const accessToken = jwt.sign(payload, tokenSecret, signOptions)
+
     return accessToken
   }
 }
