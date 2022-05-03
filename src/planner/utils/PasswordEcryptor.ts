@@ -18,7 +18,7 @@ export class PasswordEncryptor {
               // throw hashError;
               reject(`hash error: ${JSON.stringify(hashError)}`);
             } else {
-              console.log(`hash: ${hash}`);
+              console.debug(`hash: ${hash}`);
               resolve(hash);
               //$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K
             }
@@ -37,10 +37,10 @@ export class PasswordEncryptor {
           // throw error;
           reject(JSON.stringify(error));
         } else if (!isMatch) {
-          console.log("Password doesn't match!");
+          console.debug("Password doesn't match!");
           resolve(false);
         } else {
-          console.log("Password matches!");
+          console.debug("Password matches!");
           resolve(true);
         }
       });

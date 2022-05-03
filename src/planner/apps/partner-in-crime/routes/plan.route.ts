@@ -4,6 +4,7 @@ import { container } from "tsyringe";
 import { CreatePlanMessage } from "../../../controllers/plan/CreatePlanController";
 import { UserActor } from "../../../views/user-actor/UserActor";
 import { Identifier } from "../../../models/Identifier";
+import jwt from "jsonwebtoken"
 
 export const register = (app: any) => {
   const view = container.resolve(UserActor);
@@ -26,7 +27,9 @@ export const register = (app: any) => {
     try {
       // TODO: get user id from the jwt in the Authorization Bearer header
       // const user = await view.getUser(req.header.get("Authorization Bearer"));
-      const user = await view.getUser("626d3f7b7aa88b9339627665");
+
+      const userId: string = req["userId"]
+      const user = await view.getUser(userId);
 
       if (!user) {
         return res.status(404).json();

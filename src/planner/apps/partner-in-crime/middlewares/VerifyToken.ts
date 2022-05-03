@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { JwtTokenPayload } from '../../../types/JwtTokenPayload';
 
 /**
  * This is a middleware in which token is checked in http authorization header, 
@@ -15,12 +16,14 @@ export function authenticateTokenMiddleware(req, res, next) {
 
     if (token == null) return res.sendStatus(401)
 
-    jwt.verify(token, process.env.TOKEN_SECRET as string, (err: any, user: any) => {
-        console.log(err)
+    jwt.verify(token, process.env.TOKEN_SECRET as string, (err: any, payload: JwtTokenPayload) => {
+        if (err) {
+            console.error(err)
+        }
 
         if (err) return res.sendStatus(403)
 
-        req.user = user
+        req.userId = payload.userId
 
         next()
     })

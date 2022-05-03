@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken"
 import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
 import { UserPrimitives } from "../models/user/UserPrimitives";
 import { UserRepository } from "../models/user/UserRepository";
+import { JwtTokenPayload } from "../types/JwtTokenPayload";
 import { PasswordEncryptor } from "../utils/PasswordEcryptor";
 
 
@@ -36,7 +37,8 @@ export class LoginController {
 
       if (loggedIn) {
         console.debug(`user: ${message.username}, Logged in successfully`);
-        const authorizationToken: string = this.generateAuthorizationToken(message)
+        const userId: string = user.toPrimitives().id
+        const authorizationToken: string = this.generateAuthorizationToken(userId)
         return { token: authorizationToken, user: user.toPrimitives() };
       } else {
         console.debug(`user:${message.username}, Login failed`);
@@ -55,9 +57,9 @@ export class LoginController {
    * @param message 
    * @returns 
    */
-  private generateAuthorizationToken(message: LoginMessage): string {
+  private generateAuthorizationToken(userId: string): string {
     const tokenSecret: string | undefined = process.env.TOKEN_SECRET
-    console.log('tokenSecret:', tokenSecret)
+    console.debug('tokenSecret:', tokenSecret)
     if (tokenSecret === undefined) {
       throw Error("'TOKEN_SECRET' environment variable must be set")
     }
@@ -67,8 +69,8 @@ export class LoginController {
       throw Error("'TOKEN_EXPIRARES_IN' environment variable must be set")
     }
 
-    const payload = {
-      username: message.username,
+    const payload: JwtTokenPayload= {
+      userId: userId,
       // TODO: add role
       //role: message.role,
     }
