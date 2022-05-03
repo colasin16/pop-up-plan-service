@@ -4,7 +4,6 @@ import { UserPrimitives } from "../models/user/UserPrimitives";
 import { UserRepository } from "../models/user/UserRepository";
 import { PasswordEncryptor } from "../utils/PasswordEcryptor";
 
-const accessTokenSecret = 'youraccesstokensecret';
 
 export interface LoginMessage {
   username: string;
