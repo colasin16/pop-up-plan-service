@@ -51,12 +51,6 @@ export class LoginController {
     return null;
   }
 
-  /**
-   * Generates authorization token
-   * reference: https://www.digitalocean.com/community/tutorials/nodejs-jwt-expressjs
-   * @param message 
-   * @returns 
-   */
   private generateAuthorizationToken(userId: string): string {
     const tokenSecret: string | undefined = process.env.TOKEN_SECRET
     console.debug('tokenSecret:', tokenSecret)
