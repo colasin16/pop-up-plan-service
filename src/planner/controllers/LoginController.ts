@@ -41,7 +41,6 @@ export class LoginController {
         const authorizationToken: string = this.generateAuthorizationToken(userId)
         return { token: authorizationToken, user: user.toPrimitives() };
       } else {
-        console.debug(`user:${message.username}, Login failed`);
         return null;
       }
     }
