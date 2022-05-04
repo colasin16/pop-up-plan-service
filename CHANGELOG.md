@@ -4,6 +4,11 @@ All changes are be kept here.
 
 ## [0.3.0]
 
+## [0.3.0] - 2022-05-04
+
+### Added
+
+- `/plans/:planId` API has been added.
 
 ## [0.3.0] - 2022-05-03
 
