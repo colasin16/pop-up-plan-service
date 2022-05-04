@@ -10,7 +10,7 @@ export class MongoDBClient {
   public async setup() {
     const client = new MongoClient(this.uri, {
       ignoreUndefined: true,
-      serverSelectionTimeoutMS: 20000,
+      serverSelectionTimeoutMS: 10000,
     });
 
     try {

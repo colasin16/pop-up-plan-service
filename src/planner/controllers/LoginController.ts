@@ -1,10 +1,7 @@
-import jwt from "jsonwebtoken"
 import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
 import { UserPrimitives } from "../models/user/UserPrimitives";
-import { UserRepository } from "../models/user/UserRepository";
-import { JwtTokenPayload } from "../types/JwtTokenPayload";
 import { PasswordEncryptor } from "../utils/PasswordEcryptor";
-
+import { UserRepository } from "../models/user/UserRepository";
 
 export interface LoginMessage {
   username: string;
@@ -30,6 +27,7 @@ export class LoginController {
 
     if (user) {
       const plainPassword = message.password;
+      console.log(`plainPassword: ${plainPassword}`);
       const loggedIn = await PasswordEncryptor.comparePassword(
         plainPassword,
         user.toPrimitives().password
@@ -37,9 +35,8 @@ export class LoginController {
 
       if (loggedIn) {
         console.debug(`user: ${message.username}, Logged in successfully`);
-        const userId: string = user.toPrimitives().id
-        const authorizationToken: string = this.generateAuthorizationToken(userId)
-        return { token: authorizationToken, user: user.toPrimitives() };
+        // TODO: implement token part
+        return { token: "fakeToken", user: user.toPrimitives() };
       } else {
         console.debug(`user:${message.username}, Login failed`);
         return null;
@@ -50,40 +47,5 @@ export class LoginController {
     );
 
     return null;
-  }
-
-  /**
-   * Generates authorization token
-   * reference: https://www.digitalocean.com/community/tutorials/nodejs-jwt-expressjs
-   * @param message 
-   * @returns 
-   */
-  private generateAuthorizationToken(userId: string): string {
-    const tokenSecret: string | undefined = process.env.TOKEN_SECRET
-    console.debug('tokenSecret:', tokenSecret)
-    if (tokenSecret === undefined) {
-      throw Error("'TOKEN_SECRET' environment variable must be set")
-    }
-
-    const tokenExpiresIn: string | undefined = process.env.TOKEN_EXPIRARES_IN
-    if (tokenExpiresIn === undefined) {
-      throw Error("'TOKEN_EXPIRARES_IN' environment variable must be set")
-    }
-
-    const payload: JwtTokenPayload= {
-      userId: userId,
-      // TODO: add role
-      //role: message.role,
-    }
-
-    const signOptions = {
-      //expiresIn e.g.: 2h, 1800s, ...
-      expiresIn: tokenExpiresIn,
-
-    }
-
-    const accessToken = jwt.sign(payload, tokenSecret, signOptions)
-
-    return accessToken
   }
 }

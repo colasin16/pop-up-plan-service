@@ -5,10 +5,6 @@ import { LoginMessage } from "../../../controllers/LoginController";
 import { CreateUserMessage } from "../../../controllers/user/CreateUserController";
 import { UserActor } from "../../../views/user-actor/UserActor";
 
-export const USER_PATH = {
-  LOGIN: "/login"
-}
-
 export const register = (app: any) => {
   const view = container.resolve(UserActor);
 
@@ -49,7 +45,7 @@ export const register = (app: any) => {
     }
   });
 
-  app.post(USER_PATH.LOGIN, async (req: Request, res: Response) => {
+  app.post("/login", async (req: Request, res: Response) => {
     try {
       const message: LoginMessage = {
         username: req.body.username,

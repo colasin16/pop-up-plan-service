@@ -4,8 +4,6 @@ import Router from "express-promise-router";
 import * as http from "http";
 import cors from "cors";
 import { registerRoutes } from "./routes";
-import { authenticateTokenMiddleware } from "./middlewares/VerifyToken";
-import { USER_PATH } from "./routes/user.route";
 
 export class Server {
   private express: express.Express;
@@ -17,7 +15,6 @@ export class Server {
     this.express = express();
     this.express.use(bodyParser.json());
     this.express.use(cors());
-    this.express.use(this.unless(USER_PATH.LOGIN, authenticateTokenMiddleware))
     const router = Router();
     this.express.use(router);
     registerRoutes(router);
@@ -48,22 +45,4 @@ export class Server {
       return resolve();
     });
   }
-
-  /**
-   * 
-   * exclude a specific API to being process by a middleware
-   * ref: https://thewebdev.info/2021/09/12/how-to-exclude-a-route-from-running-an-express-middleware/
-   * @param path 
-   * @param middleware 
-   * @returns 
-   */
-  private unless = (path, middleware) => {
-    return (req, res, next) => {
-      if (path === req.path) {
-        return next();
-      } else {
-        return middleware(req, res, next);
-      }
-    };
-  };
 }

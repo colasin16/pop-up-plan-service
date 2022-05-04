@@ -3,14 +3,21 @@ import { Request, Response } from "express";
 import { container } from "tsyringe";
 import { UserActor } from "../../../views/user-actor/UserActor";
 import { Identifier } from "../../../models/Identifier";
-import { User } from "../../../models/user/User";
 
 export const register = (app: any) => {
   const view = container.resolve(UserActor);
 
   app.get("/join-plan-requests", async (req: Request, res: Response) => {
     try {
-      const user: User = req["user"]
+      // TODO: get user id from the jwt in the Authorization Bearer header
+      // const user = await view.getUser(req.header.get("Authorization Bearer"));
+      const user = await view.getUser("626d3f7b7aa88b9339627665");
+
+      if (!user) {
+        return res
+          .status(404)
+          .json({ message: "Requested plan no longer has an owner" });
+      }
 
       const joinPlanRequests = await view.getJoinPlanRequests();
       const joinPlanRequestsPrimitives = joinPlanRequests
@@ -31,7 +38,15 @@ export const register = (app: any) => {
     "/join-plan-requests/:joinPlanRequestId/answer",
     async (req: Request, res: Response) => {
       try {
-        const user: User = req["user"]
+        // TODO: get user id from the jwt in the Authorization Bearer header
+        // const user = await view.getUser(req.header.get("Authorization Bearer"));
+        const user = await view.getUser("626d3f7b7aa88b9339627665");
+
+        if (!user) {
+          return res
+            .status(404)
+            .json({ message: "Requested plan no longer has an owner" });
+        }
 
         const joinPlanRequestId = req.params.joinPlanRequestId as string;
         const joinPlanRequests = await view.getJoinPlanRequests();
