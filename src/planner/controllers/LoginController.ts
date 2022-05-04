@@ -38,7 +38,7 @@ export class LoginController {
       if (loggedIn) {
         console.debug(`user: ${message.username}, Logged in successfully`);
         const userId = user.getId().toString()
-        const authorizationToken: string = this.generateAuthorizationToken(userId)
+        const authorizationToken = this.generateAuthorizationToken(userId)
         return { token: authorizationToken, user: user.toPrimitives() };
       } else {
         return null;
