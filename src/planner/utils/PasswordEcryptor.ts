@@ -36,7 +36,6 @@ export class PasswordEncryptor {
           // throw error;
           reject(JSON.stringify(error));
         } else if (!isMatch) {
-          console.debug("Password doesn't match!");
           resolve(false);
         } else {
           console.debug("Password matches!");
