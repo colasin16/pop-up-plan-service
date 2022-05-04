@@ -2,9 +2,9 @@
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 import { CreatePlanMessage } from "../../../controllers/plan/CreatePlanController";
-import { UserActor } from "../../../views/user-actor/UserActor";
 import { Identifier } from "../../../models/Identifier";
-import jwt from "jsonwebtoken"
+import { User } from "../../../models/user/User";
+import { UserActor } from "../../../views/user-actor/UserActor";
 
 export const register = (app: any) => {
   const view = container.resolve(UserActor);
@@ -25,12 +25,7 @@ export const register = (app: any) => {
 
   app.post("/plans", async (req: Request, res: Response) => {
     try {
-      const userId: string = req["userId"]
-      const user = await view.getUser(userId);
-
-      if (!user) {
-        return res.status(404).json();
-      }
+      const user: User = req["user"]
 
       const createPlanMessage: CreatePlanMessage = {
         owner: user.toPrimitives(),
@@ -49,7 +44,7 @@ export const register = (app: any) => {
         return res.status(500).json({ message: "Error creating plan" });
       }
 
-      return res.status(200).json({ success: true, planId: planId.toString() });
+      return res.status(201).json({ success: true, planId: planId.toString() });
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: "internal-error" });
@@ -60,14 +55,7 @@ export const register = (app: any) => {
     "/plans/:planId/post-message",
     async (req: Request, res: Response) => {
       try {
-        const userId: string = req["userId"]
-        const user = await view.getUser(userId);
-
-        if (!user) {
-          return res
-            .status(404)
-            .json({ message: "Requested plan no longer has an owner" });
-        }
+        const user: User = req["user"]
 
         const planId = req.params.planId as string;
         const content = req.body.content as string;
@@ -90,14 +78,7 @@ export const register = (app: any) => {
     "/plans/:planId/join-request",
     async (req: Request, res: Response) => {
       try {
-        const userId: string = req["userId"]
-        const user = await view.getUser(userId);
-
-        if (!user) {
-          return res
-            .status(404)
-            .json({ message: "Requested plan no longer has an owner" });
-        }
+        const user: User = req["user"]
 
         const planId = req.params.planId as string;
 
@@ -131,14 +112,7 @@ export const register = (app: any) => {
     "/plans/:planId/join-requests",
     async (req: Request, res: Response) => {
       try {
-        const userId: string = req["userId"]
-        const user = await view.getUser(userId);
-
-        if (!user) {
-          return res
-            .status(404)
-            .json({ message: "Requested plan no longer has an owner" });
-        }
+        const user: User = req["user"]
 
         const planId = req.params.planId as string;
         const joinPlanRequests = await view.getJoinPlanRequests();
