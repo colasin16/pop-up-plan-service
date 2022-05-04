@@ -25,9 +25,6 @@ export const register = (app: any) => {
 
   app.post("/plans", async (req: Request, res: Response) => {
     try {
-      // TODO: get user id from the jwt in the Authorization Bearer header
-      // const user = await view.getUser(req.header.get("Authorization Bearer"));
-
       const userId: string = req["userId"]
       const user = await view.getUser(userId);
 
@@ -63,9 +60,8 @@ export const register = (app: any) => {
     "/plans/:planId/post-message",
     async (req: Request, res: Response) => {
       try {
-        // TODO: get user id from the jwt in the Authorization Bearer header
-        // const user = await view.getUser(req.header.get("Authorization Bearer"));
-        const user = await view.getUser("626d3f7b7aa88b9339627665");
+        const userId: string = req["userId"]
+        const user = await view.getUser(userId);
 
         if (!user) {
           return res
@@ -94,9 +90,8 @@ export const register = (app: any) => {
     "/plans/:planId/join-request",
     async (req: Request, res: Response) => {
       try {
-        // TODO: get user id from the jwt in the Authorization Bearer header
-        // const user = await view.getUser(req.header.get("Authorization Bearer"));
-        const user = await view.getUser("626d41aaf7dd454d1de11ffa");
+        const userId: string = req["userId"]
+        const user = await view.getUser(userId);
 
         if (!user) {
           return res
@@ -136,9 +131,8 @@ export const register = (app: any) => {
     "/plans/:planId/join-requests",
     async (req: Request, res: Response) => {
       try {
-        // TODO: get user id from the jwt in the Authorization Bearer header
-        // const user = await view.getUser(req.header.get("Authorization Bearer"));
-        const user = await view.getUser("626d3f7b7aa88b9339627665");
+        const userId: string = req["userId"]
+        const user = await view.getUser(userId);
 
         if (!user) {
           return res

@@ -9,9 +9,8 @@ export const register = (app: any) => {
 
   app.get("/join-plan-requests", async (req: Request, res: Response) => {
     try {
-      // TODO: get user id from the jwt in the Authorization Bearer header
-      // const user = await view.getUser(req.header.get("Authorization Bearer"));
-      const user = await view.getUser("626d3f7b7aa88b9339627665");
+      const userId: string = req["userId"]
+      const user = await view.getUser(userId);
 
       if (!user) {
         return res
@@ -38,9 +37,8 @@ export const register = (app: any) => {
     "/join-plan-requests/:joinPlanRequestId/answer",
     async (req: Request, res: Response) => {
       try {
-        // TODO: get user id from the jwt in the Authorization Bearer header
-        // const user = await view.getUser(req.header.get("Authorization Bearer"));
-        const user = await view.getUser("626d3f7b7aa88b9339627665");
+        const userId: string = req["userId"]
+        const user = await view.getUser(userId);
 
         if (!user) {
           return res
