@@ -49,14 +49,6 @@ export class Server {
     });
   }
 
-  /**
-   * 
-   * exclude a specific API to being process by a middleware
-   * ref: https://thewebdev.info/2021/09/12/how-to-exclude-a-route-from-running-an-express-middleware/
-   * @param path 
-   * @param middleware 
-   * @returns 
-   */
   private unless = (path, middleware) => {
     return (req, res, next) => {
       if (path === req.path) {
