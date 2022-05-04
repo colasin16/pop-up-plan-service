@@ -12,6 +12,7 @@ import { PlanView } from "./plan/PlanView";
 import { CreateJoinPlanRequestMessage } from "../../controllers/join-plan-request/CreateJoinRequestController";
 import { AnswerJoinPlanRequestMessage } from "../../controllers/user/AnswerJoinRequestController";
 import { PostPlanMessageMessage } from "../../controllers/plan/PostPlanMessageController";
+import { GetPlanMessage } from "../../controllers/plan/GetPlanController";
 
 export class UserActor {
   private userView: UserView;
@@ -66,5 +67,9 @@ export class UserActor {
 
   public async findAll(): Promise<Plan[]> {
     return await this.planView.renderFind();
+  }
+
+  public async getPlan(message: GetPlanMessage): Promise<Plan | null> {
+    return await this.planView.renderGet(message);
   }
 }
