@@ -25,7 +25,8 @@ export class Server {
       (resolve) => (this.httpServer = this.express.listen(this.port, resolve))
     );
     console.info(
-      `  HTTP App is running at http://localhost:${this.port
+      `  HTTP App is running at http://localhost:${
+        this.port
       } in ${this.express.get("env")} mode`
     );
     console.info("  Press CTRL-C to stop\n");

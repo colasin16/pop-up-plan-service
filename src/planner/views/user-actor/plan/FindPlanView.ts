@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 import { SearchPlanController } from "../../../controllers/plan/SearchPlanController";
 import { Plan } from "../../../models/plan/Plan";
 
