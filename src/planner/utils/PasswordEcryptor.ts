@@ -38,7 +38,6 @@ export class PasswordEncryptor {
         } else if (!isMatch) {
           resolve(false);
         } else {
-          console.debug("Password matches!");
           resolve(true);
         }
       });
