@@ -2,6 +2,7 @@
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 import { CreatePlanMessage } from "../../../controllers/plan/CreatePlanController";
+import { GetPlanMessage } from "../../../controllers/plan/GetPlanController";
 import { Identifier } from "../../../models/Identifier";
 import { User } from "../../../models/user/User";
 import { UserActor } from "../../../views/user-actor/UserActor";
@@ -16,6 +17,31 @@ export const register = (app: any) => {
       res.status(200).send({
         success: true,
         plans: planList.map((plan) => plan.toPrimitives()),
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "internal-error" });
+    }
+  });
+
+  app.get("/plans/:planId", async (req: Request, res: Response) => {
+
+    try {
+      const message: GetPlanMessage = {
+        id: req.params.planId as string
+      }
+
+      const gottenPlan = await view.getPlan(message);
+
+      if (!gottenPlan) {
+        res.status(404).send({
+          success: false,
+        });
+      }
+
+      res.status(200).send({
+        success: true,
+        plan: gottenPlan?.toPrimitives(),
       });
     } catch (error) {
       console.error(error);
