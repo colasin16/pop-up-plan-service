@@ -21,11 +21,12 @@ export function authenticateTokenMiddleware(req, res, next) {
         // here we hold user object in `req` object, so in all the views we can find who sends the request.
         // TODO: add role later, maybe for some APIs we need to limit the access
         const user = await view.getUser(payload.userId);
-        req.user = user
 
         if (!user) {
             return res.sendStatus(403);
         }
+
+        req.user = user.toPrimitives()
 
         next()
     })

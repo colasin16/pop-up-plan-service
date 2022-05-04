@@ -66,11 +66,9 @@ export class LoginController {
     const payload: JwtTokenPayload = {
       userId: userId,
       // TODO: add role
-      //role: message.role,
     }
 
     const signOptions = {
-      //expiresIn e.g.: 2h, 1800s, ...
       expiresIn: tokenExpiresIn,
 
     }
