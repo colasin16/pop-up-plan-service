@@ -8,10 +8,17 @@
       "type": "pwa-node",
       "request": "launch",
       "name": "Launch Program",
-      "skipFiles": ["<node_internals>/**"],
-      "args": ["ts-node/register"],
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "args": [
+        "ts-node/register"
+      ],
       "program": "${workspaceFolder}/src/planner/apps/partner-in-crime/index.ts",
-      "outFiles": ["${workspaceFolder}/**/*.js"]
+      "outFiles": [
+        "${workspaceFolder}/**/*.js"
+      ],
+      "envFile": "${workspaceFolder}/.env.dev"
     }
   ]
 }

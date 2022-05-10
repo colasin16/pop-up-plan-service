@@ -4,6 +4,14 @@ All changes are be kept here.
 
 ## [0.3.0]
 
+
+## [0.3.0] - 2022-05-03
+
+### Added
+
+- JWT token support added, including detecting userId from token, expiration time ('1800s') and login API excluded from forcing to have
+`Authorization: Bearer` in header.
+
 ## [0.3.0] - 2022-04-18
 
 ### Fixed

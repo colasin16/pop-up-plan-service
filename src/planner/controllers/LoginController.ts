@@ -1,7 +1,10 @@
+import jwt from "jsonwebtoken"
 import { MongoUserRepository } from "../infrastructure/mongo-db/repositories/MongoUserRepository";
 import { UserPrimitives } from "../models/user/UserPrimitives";
-import { PasswordEncryptor } from "../utils/PasswordEcryptor";
 import { UserRepository } from "../models/user/UserRepository";
+import { JwtTokenPayload } from "../types/JwtTokenPayload";
+import { PasswordEncryptor } from "../utils/PasswordEcryptor";
+
 
 export interface LoginMessage {
   username: string;
@@ -27,7 +30,6 @@ export class LoginController {
 
     if (user) {
       const plainPassword = message.password;
-      console.log(`plainPassword: ${plainPassword}`);
       const loggedIn = await PasswordEncryptor.comparePassword(
         plainPassword,
         user.toPrimitives().password
@@ -35,10 +37,10 @@ export class LoginController {
 
       if (loggedIn) {
         console.debug(`user: ${message.username}, Logged in successfully`);
-        // TODO: implement token part
-        return { token: "fakeToken", user: user.toPrimitives() };
+        const userId = user.getId().toString()
+        const authorizationToken = this.generateAuthorizationToken(userId)
+        return { token: authorizationToken, user: user.toPrimitives() };
       } else {
-        console.debug(`user:${message.username}, Login failed`);
         return null;
       }
     }
@@ -47,5 +49,31 @@ export class LoginController {
     );
 
     return null;
+  }
+
+  private generateAuthorizationToken(userId: string): string {
+    const tokenSecret: string | undefined = process.env.TOKEN_SECRET
+    if (tokenSecret === undefined) {
+      throw Error("'TOKEN_SECRET' environment variable must be set")
+    }
+
+    const tokenExpiresIn: string | undefined = process.env.TOKEN_EXPIRES_IN
+    if (tokenExpiresIn === undefined) {
+      throw Error("'TOKEN_EXPIRES_IN' environment variable must be set")
+    }
+
+    const payload: JwtTokenPayload = {
+      userId: userId,
+      // TODO: add role
+    }
+
+    const signOptions = {
+      expiresIn: tokenExpiresIn,
+
+    }
+
+    const accessToken = jwt.sign(payload, tokenSecret, signOptions)
+
+    return accessToken
   }
 }
