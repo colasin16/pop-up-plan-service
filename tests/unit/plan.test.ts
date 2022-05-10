@@ -44,7 +44,7 @@ describe("Unit test", () => {
     });
 
     describe(".addAttendees", () => {
-      it("it should add an attendee to the attendees list of the plan", () => {
+      it("should add an attendee to the attendees list of the plan", () => {
         genericPlan.addAttendee(attendee);
 
         expect(genericPlan.containsAttendee(attendee)).to.eq(true);
